@@ -102,7 +102,7 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
       try {
         const config = JSON.parse(fs.readFileSync(configPath))
         if (config.name) nombreBot = config.name
-      } catch (e) { console.error('🌀 Error leyendo config:', e) }
+      } catch (e) { console.error('👑 Error leyendo config:', e) }
     }
 
     const tipo = conn.user.jid === global.conn.user.jid ? '🔥 PRINCIPAL' : '⚡ SUB-Elyssia-MD'
