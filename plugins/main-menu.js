@@ -117,7 +117,7 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
             menuConfig.body
               .replace(/%cmd/g, menu.prefix ? h : `${_p}${h}`)
               .replace(/%islimit/g, menu.limit ? '🔒' : '')
-              .replace(/%isPremium/g, menu.premium ? '💎' : '🌀')
+              .replace(/%isPremium/g, menu.premium ? '💎' : '🌸')
           ).join('\n')).join('\n')
         return cmds ? [menuConfig.header.replace(/%category/g, tags[tag]), cmds, menuConfig.footer].join('\n') : ''
       }).filter(Boolean),
@@ -159,7 +159,7 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
 
     const messageContent = {
       caption: text.trim(),
-      footer: '🌀 *Elyssia MD* - ¡Comandos Oficiales!',
+      footer: '🌸 *Elyssia MD* - ¡Comandos Oficiales!',
       buttons,
       headerType: 1,
       mentionedJid: conn.parseMention(text),
@@ -177,7 +177,7 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
     }
 
     await conn.sendMessage(m.chat, messageContent, { quoted: m })
-    await m.react('🌀')
+    await m.react('🌸')
     setTimeout(() => m.react('⚡'), 500)
     setTimeout(() => m.react('🌸'), 1000)
 
@@ -186,11 +186,11 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
     await conn.reply(
       m.chat,
       `
-🌀 *¡Ups! Algo salió mal~* (´•̥̥̥ω•̥̥̥\)
+🌸 *¡Ups! Algo salió mal~* (´•̥̥̥ω•̥̥̥\)
 
 El menú de Elyssia MD no pudo cargarse...
 ⚡ Causa: Energía insuficiente
-🌀 Solución: Intenta de nuevo~
+🌸 Solución: Intenta de nuevo~
 
 Mientras usa: ${_p}help simple
       `,
