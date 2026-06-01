@@ -1,8 +1,10 @@
 import yts from 'yt-search'
 import fetch from 'node-fetch'
 
+const API_KEY = 'dvyer079708280996'
+
 const handler = async (m, { conn, text }) => {
-  if (!text) return m.reply('🎵 Ingresa el nombre o enlace de YouTube.')
+  if (!text) return m.reply('🎵 Ingresa un nombre o enlace de YouTube.')
 
   await m.react('🎧')
 
@@ -23,18 +25,18 @@ const handler = async (m, { conn, text }) => {
       const search = await yts({ videoId: getVideoId(text) })
 
       if (!search) {
-        return m.reply('❌ No pude obtener información del video.')
+        return m.reply('❌ No pude obtener información.')
       }
 
       video = search
     }
 
-    const info = `
-✧━───『 𝙰𝚄𝙳𝙸𝙾 𝚈𝚃 』───━✧
+    const caption = `
+✧━━━『 ✨ AUDIO YT ✨ 』━━━✧
 
 🎼 *Título:* ${video.title}
 📺 *Canal:* ${video.author?.name || 'Desconocido'}
-⏳ *Duración:* ${video.timestamp || 'Desconocida'}
+⏳ *Duración:* ${video.timestamp}
 👁️ *Vistas:* ${formatViews(video.views)}
 🔗 *URL:* ${url}
 
@@ -45,43 +47,49 @@ const handler = async (m, { conn, text }) => {
       m.chat,
       {
         image: { url: video.thumbnail },
-        caption: info
+        caption
       },
       { quoted: m }
     )
 
-    const wait = await conn.sendMessage(
+    const msg = await conn.sendMessage(
       m.chat,
       { text: '⏳ Descargando audio...' },
       { quoted: m }
     )
 
-    const api = `https://dv-yer-api.online/ytmp3?url=${encodeURIComponent(url)}`
-    const res = await fetch(api)
+    const apiUrl =
+      `https://dv-yer-api.online/ytmp3?url=${encodeURIComponent(url)}&apikey=${API_KEY}`
+
+    const res = await fetch(apiUrl)
+
+    console.log('STATUS:', res.status)
+
+    const raw = await res.text()
+
+    console.log('RESPUESTA:', raw)
 
     if (!res.ok) {
       throw new Error(`HTTP ${res.status}`)
     }
 
-    const data = await res.json()
-
-    console.log('DV-YER:', data)
+    const data = JSON.parse(raw)
 
     const audioUrl =
       data.download ||
       data.url ||
       data.result?.download ||
-      data.result?.url
+      data.result?.url ||
+      data.result?.download_url
 
     if (!audioUrl) {
-      throw new Error('No se encontró el enlace del audio.')
+      throw new Error('No se encontró el enlace de descarga.')
     }
 
     const title = cleanName(
       data.title ||
       data.result?.title ||
-      video.title ||
-      'audio'
+      video.title
     )
 
     await conn.sendMessage(
@@ -94,15 +102,13 @@ const handler = async (m, { conn, text }) => {
       { quoted: m }
     )
 
-    try {
-      await conn.sendMessage(
-        m.chat,
-        {
-          text: `✅ Audio enviado\n\n🎼 ${title}`,
-          edit: wait.key
-        }
-      )
-    } catch {}
+    await conn.sendMessage(
+      m.chat,
+      {
+        text: `✅ Audio enviado\n\n🎼 ${title}`,
+        edit: msg.key
+      }
+    )
 
     await m.react('✅')
 
@@ -137,8 +143,8 @@ function getVideoId(url) {
   return match ? match[1] : null
 }
 
-handler.help = ['mp3 <texto|url>']
-handler.tags = ['descargas']
 handler.command = ['mp3', 'yta', 'ytmp3']
+handler.help = ['mp3']
+handler.tags = ['descargas']
 
 export default handler
