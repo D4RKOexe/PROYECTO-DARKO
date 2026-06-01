@@ -2,26 +2,30 @@ let handler = async (m, { conn, usedPrefix, command }) => {
   const opciones = ['piedra', 'papel', 'tijera']
   const emojis = { piedra: '✊', papel: '✋', tijera: '✌️' }
 
+  // Detecta la jugada si vino en texto del botón
   let user = (m.text || '').toLowerCase().trim()
 
-  // MENU INICIAL SI NO HAY ELECCIÓN
+  // 🔹 Configurar botones
+  const buttons = [
+    { buttonId: `${usedPrefix}${command} piedra`, buttonText: { displayText: '✊ Piedra' }, type: 1 },
+    { buttonId: `${usedPrefix}${command} papel`, buttonText: { displayText: '✋ Papel' }, type: 1 },
+    { buttonId: `${usedPrefix}${command} tijera`, buttonText: { displayText: '✌️ Tijera' }, type: 1 }
+  ]
+
+  // 🔹 Si no hay elección (solo entró al comando), mostramos botones iniciales
   if (!user || !opciones.includes(user)) {
-    return m.reply(`
-╭━━━〔 🎮 PPT ELYSSIA MD 〕━━━⬣
-┃ ✊ piedra
-┃ ✋ papel
-┃ ✌️ tijera
-┃
-┃ 💡 Escribe tu jugada o toca un botón si tu bot lo soporta
-┃ Ejemplo: ${usedPrefix}${command} piedra
-╰━━━━━━━━━━━━━━━━━━━━⬣
-    `)
+    return await conn.sendMessage(m.chat, {
+      text: '✨ *PIEDRA, PAPEL O TIJERA – ELYSSIA MD* ✨\n💡 Presiona un botón para jugar:',
+      footer: '🎮 Elyssia MD • Modo Pro',
+      buttons,
+      headerType: 1
+    }, { quoted: m })
   }
 
-  // BOT ELIGE ALEATORIAMENTE
-  let bot = opciones[Math.floor(Math.random() * opciones.length)]
+  // 🔹 El bot elige aleatoriamente
+  const bot = opciones[Math.floor(Math.random() * opciones.length)]
 
-  // RESULTADO
+  // 🔹 Resultado
   let resultado = ''
   if (user === bot) resultado = '🤝 EMPATE'
   else if (
@@ -31,22 +35,27 @@ let handler = async (m, { conn, usedPrefix, command }) => {
   ) resultado = '🏆 GANASTE'
   else resultado = '💀 PERDISTE'
 
-  // MENSAJE ESTILO ELYSSIA
-  let txt = `
-╭━━━〔 🎮 PPT – ELYSSIA MD 〕━━━⬣
+  // 🔹 Mensaje final con botones para seguir jugando
+  const mensaje = `
+╭━━━〔 🎮 RESULTADO PPT 〕━━━⬣
 ┃ 👤 Tú: ${emojis[user]} ${user}
 ┃ 🤖 Bot: ${emojis[bot]} ${bot}
 ┃
 ┃ 📊 ${resultado}
 ╰━━━━━━━━━━━━━━━━━━━━⬣
 
-💡 Escribe ${usedPrefix}${command} piedra/papel/tijera para jugar otra vez
+💡 Presiona un botón para jugar otra vez
   `
 
-  await conn.sendMessage(m.chat, { text: txt }, { quoted: m })
+  await conn.sendMessage(m.chat, {
+    text: mensaje,
+    footer: '🎮 Elyssia MD • Modo Pro',
+    buttons,
+    headerType: 1
+  }, { quoted: m })
 }
 
-handler.help = ['ppt <piedra/papel/tijera>']
+handler.help = ['ppt']
 handler.tags = ['game']
 handler.command = ['ppt']
 
