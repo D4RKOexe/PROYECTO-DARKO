@@ -21,13 +21,13 @@ global.libreria = 'Baileys'
 global.baileys = 'V 6.7.16'
 global.vs = '2.2.0'
 global.sessions = 'sessions'
-global.jadi = 'subsaiyan'
+global.jadi = 'subElyssia'
 global.yukiJadibts = true
 
 global.namecanal = '❇️'
 global.idcanal = '120363404707199986@newsletter'
 global.idcanal2 = '120363404707199986@newsletter'
-global.canal = 'https://whatsapp.com/channel/0029Vb7ntULLY6d8uOvyDy0C'
+global.canal = 'pronto'
 global.canalreg = '120363404707199986@newsletter'
 
 global.ch = {
