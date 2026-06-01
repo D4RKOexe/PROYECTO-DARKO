@@ -19,7 +19,7 @@ Un espacio creado para mantenerte informado sobre todas las novedades, mejoras y
 ╰────────────────────╯
 
 ╭─❖「 🔗 ENLACE OFICIAL 」❖─╮
-│ por el momento no ay
+│ https://chat.whatsapp.com/BvwpdcsxzPeDaZ4i02BEtj
 ╰────────────────────╯
 
 🌸 Forma parte de la comunidad Elyssia MD
