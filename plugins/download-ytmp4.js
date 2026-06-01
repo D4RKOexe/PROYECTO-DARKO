@@ -4,77 +4,67 @@ import fetch from 'node-fetch'
 const API_KEY = 'dvyer079708280996'
 
 const handler = async (m, { conn, text }) => {
-  if (!text) return m.reply('🎬 Ingresa el nombre o enlace de YouTube.')
+  if (!text) return m.reply('🎬 Ingresa un nombre o enlace de YouTube.')
 
   await m.react('🎥')
 
   try {
-    let url = text
-    let video
+    // Buscar los primeros 4 videos
+    const search = await yts(text)
+    if (!search.videos.length) return m.reply('❌ No encontré resultados.')
 
-    // Buscar video si es texto
-    if (!/^https?:\/\/(www\.)?(youtube\.com|youtu\.be)\//i.test(text)) {
-      const search = await yts(text)
-      if (!search.videos.length) return m.reply('❌ No encontré resultados.')
-      video = search.videos[0]
-      url = video.url
-    } else {
-      const search = await yts({ videoId: getVideoId(text) })
-      if (!search) return m.reply('❌ No pude obtener información.')
-      video = search
+    const results = search.videos.slice(0, 4)
+
+    // Preparar el mensaje con botones
+    let txt = `╭━━〔 🎬 PLAY2 SEARCH 🎬 〕━━⬣\n\nSelecciona un resultado para descargar:\n\n`
+    for (let i = 0; i < results.length; i++) {
+      txt += `${i + 1}. ${results[i].title}\n`
     }
+    txt += '\n🌸 ElyssiaMD 🌸'
 
-    const caption = `
-✧━━━『 ✨ PLAY2 YT ✨ 』━━━✧
-
-🎼 *Título:* ${video.title}
-📺 *Canal:* ${video.author?.name || 'Desconocido'}
-⏳ *Duración:* ${video.timestamp}
-👁️ *Vistas:* ${formatViews(video.views)}
-🔗 *URL:* ${url}
-
-🌸 Powered by ElyssiaMD 🌸
-`
+    const buttons = results.map((v, i) => ({
+      buttonId: `.ytmp4 ${v.url}`,
+      buttonText: { displayText: `🎥 Video ${i + 1}` },
+      type: 1
+    }))
 
     await conn.sendMessage(
       m.chat,
-      { image: { url: video.thumbnail }, caption },
+      {
+        image: { url: results[0].thumbnail },
+        caption: txt,
+        buttons,
+        headerType: 4
+      },
       { quoted: m }
     )
 
+  } catch (e) {
+    console.error(e)
+    await m.react('❌')
+    m.reply(`Error:\n${e.message}`)
+  }
+}
+
+// Función de descarga MP4 reutilizando tu API Key
+export const downloadYtMp4 = async (url, conn, m) => {
+  try {
     const msg = await conn.sendMessage(
       m.chat,
       { text: '⏳ Descargando video...' },
       { quoted: m }
     )
 
-    const apiUrl =
-      `https://dv-yer-api.online/ytmp4?url=${encodeURIComponent(url)}&apikey=${API_KEY}`
+    const apiUrl = `https://dv-yer-api.online/ytmp4?url=${encodeURIComponent(url)}&apikey=${API_KEY}`
 
     const res = await fetch(apiUrl)
-    console.log('STATUS:', res.status)
-
-    const raw = await res.text()
-    console.log('RESPUESTA:', raw)
-
     if (!res.ok) throw new Error(`HTTP ${res.status}`)
 
-    const data = JSON.parse(raw)
-
-    const videoUrl =
-      data.download ||
-      data.url ||
-      data.result?.download ||
-      data.result?.url ||
-      data.result?.download_url
-
+    const data = await res.json()
+    const videoUrl = data.download || data.url || data.result?.download || data.result?.url || data.result?.download_url
     if (!videoUrl) throw new Error('No se encontró el enlace del video.')
 
-    const title = cleanName(
-      data.title ||
-      data.result?.title ||
-      video.title
-    )
+    const title = (data.title || data.result?.title || 'video').replace(/[^\w\s.-]/g, '').substring(0, 60)
 
     await conn.sendMessage(
       m.chat,
@@ -88,11 +78,10 @@ const handler = async (m, { conn, text }) => {
 
     await conn.sendMessage(
       m.chat,
-      { text: `✅ Video enviado\n\n🎼 ${title}`, edit: msg.key }
+      { text: `✅ Video enviado\n🎬 ${title}`, edit: msg.key }
     )
 
     await m.react('✅')
-
   } catch (e) {
     console.error(e)
     await m.react('❌')
@@ -100,19 +89,7 @@ const handler = async (m, { conn, text }) => {
   }
 }
 
-// Funciones auxiliares
-function cleanName(text) {
-  return String(text).replace(/[^\w\s.-]/g, '').substring(0, 60)
-}
-
-function formatViews(views) {
-  const n = Number(views)
-  if (n >= 1e9) return (n / 1e9).toFixed(1) + 'B'
-  if (n >= 1e6) return (n / 1e6).toFixed(1) + 'M'
-  if (n >= 1e3) return (n / 1e3).toFixed(1) + 'K'
-  return String(n || 0)
-}
-
+// Función auxiliar para extraer ID de YouTube
 function getVideoId(url) {
   const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]{11})/)
   return match ? match[1] : null
