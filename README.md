@@ -105,7 +105,7 @@ termux-setup-storage
 # EDITOR DESARROLLADOR Y PROPIETARIO DEL BOT
 
 <p align="center">
-  <img src="[url=https://postimg.cc/3kjz0rzQ][img]https://i.postimg.cc/3kjz0rzQ/1000515694.png[/img][/url]" width="250">
+  <img src="https://i.postimg.cc/Mpgw4vDH/1000515694.png"250">
 </p>
 
 <p align="center">
