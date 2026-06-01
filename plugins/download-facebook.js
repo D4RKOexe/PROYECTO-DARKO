@@ -1,39 +1,36 @@
 import axios from 'axios'
 
-var handler = async (m, { conn, text, usedPrefix, command }) => {
+let handler = async (m, { conn, text, usedPrefix, command }) => {
+    // Obtener enlace del mensaje o texto citado
     let query = text ? text.trim() : (m.quoted?.text || null)
-    if (!query) return conn.reply(m.chat, `🌸 *Ingresa un enlace de Facebook para descargar*\n\n> *Ejemplo:* ${usedPrefix + command} https://facebook.com/...`, m)
+    if (!query) 
+        return conn.reply(m.chat, `🌸 *Ingresa un enlace de Facebook para descargar*\n\n> *Ejemplo:* ${usedPrefix + command} https://facebook.com/...`, m)
 
-    await m.react('🌀')
+    await m.react('🌀') // Emoji de “procesando”
 
     try {
-        // API de Facebook sin API key
-        const apiUrl = `https://api-gohan.onrender.com/download/facebook?url=${encodeURIComponent(query)}`
-        
+        // API DVYER con API key
+        const apiUrl = `https://dv-yer-api.online/api/facebook?apikey=dvyer079708280996&url=${encodeURIComponent(query)}`
+
         const { data } = await axios.get(apiUrl)
 
-        // Verificar la estructura de respuesta de esta API
-        if (!data || !data.resultados || !data.resultados.length) {
+        if (!data || !data.result || !data.result.url) {
             await m.react('❌')
-            return m.reply('🌸 *No se pudo obtener el video. Verifica el enlace.*')
+            return m.reply('⚠️ *No se pudo obtener el video. Verifica el enlace.*', m)
         }
 
-        // Obtener la URL del primer resultado
-        const downloadUrl = data.resultados[0].url
-        
-        if (!downloadUrl) {
-            await m.react('❌')
-            return m.reply('⚠️ *No se pudo encontrar el enlace de descarga.*')
-        }
+        const downloadUrl = data.result.url
+        const quality = data.result.quality || 'HD'
 
-        let ui = `┏━━━━━━━━━━━━━━━━┓\n`
-        ui += `┃   📥 *DESCARGADOR* ┃\n`
-        ui += `┃      FACEBOOK     ┃\n`
-        ui += `┗━━━━━━━━━━━━━━━━┛\n\n`
-        ui += `📝 *CALIDAD:* ${data.resultados[0].quality || 'HD'}\n\n`
-        ui += `━━━━━━━━━━━━━━━━━━━━\n`
-        ui += `⚡ *By: AmilcarGit*\n`
-        ui += `🌐 *𝙴𝙻𝚈𝚂𝚂𝙸𝙰 MD*`
+        // Mensaje con estilo Elyssia
+        const ui = `
+╭━━━〔 📥 DESCARGADOR 〕━━━⬣
+┃ 🌸 Facebook Video
+┃
+┃ 📝 Calidad: ${quality}
+┃ 🌐 Elyssia MD
+╰━━━━━━━━━━━━━━━━━━⬣
+        `
 
         await conn.sendMessage(m.chat, { 
             video: { url: downloadUrl }, 
@@ -41,12 +38,12 @@ var handler = async (m, { conn, text, usedPrefix, command }) => {
             mimetype: 'video/mp4'
         }, { quoted: m })
 
-        await m.react('🌸')
+        await m.react('🌸') // Emoji de “listo”
 
     } catch (e) {
         console.error(e)
         await m.react('❌')
-        m.reply('⚠️ *Error al conectar con la API. Verifica el enlace o intenta más tarde.*')
+        m.reply('⚠️ *Error al conectar con la API. Verifica el enlace o intenta más tarde.*', m)
     }
 }
 
