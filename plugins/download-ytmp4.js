@@ -1,400 +1,126 @@
+import yts from 'yt-search'
 import fetch from 'node-fetch'
-import fs from 'fs'
-import path from 'path'
-import {
-  generateWAMessageFromContent,
-  prepareWAMessageMedia,
-  proto
-} from '@whiskeysockets/baileys'
 
-let pendientes = {}
+const API_KEY = 'dvyer079708280996'
 
-let handler = async (m, { conn, text, usedPrefix, command }) => {
-  if (!text) {
-    const interactiveMessage = proto.Message.InteractiveMessage.create({
-      header: {
-        title: '║✨ 𝙴𝙻𝚈𝚂𝚂𝙸𝙰 𝙼𝙳 ✨  ║ - VIDEO',
-        subtitle: 'Youtube a Mp4',
-        hasMediaAttachment: false
-      },
-      body: {
-        text: `> ¡Hola, buenas tardes! ⸜(｡˃ ᵕ ˂ )⸝♡
+const handler = async (m, { conn, text }) => {
+  if (!text) return m.reply('🎬 Ingresa el nombre o enlace de YouTube.')
 
-𑁍𓂃 𓈒𓏸 *COMANDO ::* ${usedPrefix + command}
-𑁍𓂃 𓈒𓏸 *USO ::* Envía un enlace de YouTube o una búsqueda
+  await m.react('🎥')
 
-> *ELYSSIA MD desarrollado por AmilcarGit* ૮(˶ᵔᵕᵔ˶)ა`
-      },
-      footer: {
-        text: '⫏⫏ ELYSSIA - вσт ✿'
-      },
-      nativeFlowMessage: {
-        buttons: [{
-          name: 'single_select',
-          buttonParamsJson: JSON.stringify({
-            title: '🎬 YTVIDEO',
-            sections: [{
-              title: '🔗 ENLACE O BÚSQUEDA',
-              rows: [{
-                header: '📥 DESCARGA DIRECTA',
-                title: '🎬 PEGAR LINK O NOMBRE',
-                description: 'Ejemplo: https://youtu.be/... o Paulo Londra',
-                id: `video `
-              }]
-            }]
-          })
-        }]
-      }
-    })
+  try {
+    let url = text
+    let video
 
-    const msg = generateWAMessageFromContent(
+    // Buscar video si es texto
+    if (!/^https?:\/\/(www\.)?(youtube\.com|youtu\.be)\//i.test(text)) {
+      const search = await yts(text)
+      if (!search.videos.length) return m.reply('❌ No encontré resultados.')
+      video = search.videos[0]
+      url = video.url
+    } else {
+      const search = await yts({ videoId: getVideoId(text) })
+      if (!search) return m.reply('❌ No pude obtener información.')
+      video = search
+    }
+
+    const caption = `
+✧━━━『 ✨ PLAY2 YT ✨ 』━━━✧
+
+🎼 *Título:* ${video.title}
+📺 *Canal:* ${video.author?.name || 'Desconocido'}
+⏳ *Duración:* ${video.timestamp}
+👁️ *Vistas:* ${formatViews(video.views)}
+🔗 *URL:* ${url}
+
+🌸 Powered by ElyssiaMD 🌸
+`
+
+    await conn.sendMessage(
       m.chat,
-      {
-        viewOnceMessage: {
-          message: {
-            messageContextInfo: {},
-            interactiveMessage
-          }
-        }
-      },
+      { image: { url: video.thumbnail }, caption },
       { quoted: m }
     )
 
-    await conn.relayMessage(m.chat, msg.message, { messageId: msg.key.id })
-    return
-  }
-
-  await m.react('🎬')
-
-  let query = text.trim()
-  let isDirectLink = query.includes('youtu.be') || query.includes('youtube.com')
-
-  try {
-    if (!isDirectLink) {
-      const searchUrl = `https://api-de-el-vigilante-8jnf.onrender.com/search/youtube?q=${encodeURIComponent(query)}`
-      const searchRes = await fetch(searchUrl)
-      const searchData = await searchRes.json()
-
-      if (!searchData.status || !searchData.result?.length) {
-        throw new Error('No se encontraron resultados')
-      }
-
-      const resultados = searchData.result.slice(0, 5)
-
-      const rows = resultados.map((video, i) => ({
-        header: `🎬 ${video.channel || 'Desconocido'}`,
-        title: video.title.substring(0, 35),
-        description: `⏱️ ${video.duration || '?'} | 👁️ ${video.views || '?'}`,
-        id: `video_${i}_${Buffer.from(video.url).toString('base64')}_${Buffer.from(video.title).toString('base64')}`
-      }))
-
-      const interactiveMessage = proto.Message.InteractiveMessage.create({
-        header: {
-          title: 'ELYSSIA MD  - VIDEO',
-          subtitle: 'Selecciona un video',
-          hasMediaAttachment: false
-        },
-        body: {
-          text: `> ¡Hola, buenas tardes! ⸜(｡˃ ᵕ ˂ )⸝♡
-
-𑁍𓂃 𓈒𓏸 *BÚSQUEDA ::* ${query}
-𑁍𓂃 𓈒𓏸 *RESULTADOS ::* ${resultados.length}
-
-> *ELYSSIA MD desarrollado por AMILCARGIT* ૮(˶ᵔᵕᵔ˶)ა`
-        },
-        footer: {
-          text: '⫏⫏ ║✨ 𝙴𝙻𝚈𝚂𝚂𝙸𝙰 𝙼𝙳 ✨ ║ - вσт ✿'
-        },
-        nativeFlowMessage: {
-          buttons: [{
-            name: 'single_select',
-            buttonParamsJson: JSON.stringify({
-              title: '🎬 VER RESULTADOS',
-              sections: [{
-                title: '📋 SELECCIONA UN VIDEO',
-                rows
-              }]
-            })
-          }]
-        }
-      })
-
-      const msg = generateWAMessageFromContent(
-        m.chat,
-        {
-          viewOnceMessage: {
-            message: {
-              messageContextInfo: {},
-              interactiveMessage
-            }
-          }
-        },
-        { quoted: m }
-      )
-
-      await conn.relayMessage(m.chat, msg.message, { messageId: msg.key.id })
-      return
-    }
-
-    await conn.sendMessage(m.chat, { text: '⏳ *Procesando video...*' }, { quoted: m })
-
-    const downloadUrl = `https://api-de-el-vigilante-8jnf.onrender.com/download/ytvideo?url=${encodeURIComponent(query)}`
-    const response = await fetch(downloadUrl)
-    const data = await response.json()
-
-    if (!data.status || !data.result?.download_url) {
-      throw new Error('No se pudo obtener el video')
-    }
-
-    const { title, duration, thumbnail, download_url } = data.result
-    const minutos = Math.floor(duration / 60)
-    const segundos = duration % 60
-    const duracion = `${minutos}:${segundos.toString().padStart(2, '0')}`
-
-    const chatId = m.chat
-    pendientes[chatId] = { url: download_url, title }
-
-    setTimeout(() => {
-      if (pendientes[chatId]) delete pendientes[chatId]
-    }, 60000)
-
-    let media = null
-    const tmpDir = path.join(process.cwd(), 'tmp')
-    if (!fs.existsSync(tmpDir)) fs.mkdirSync(tmpDir, { recursive: true })
-
-    if (thumbnail) {
-      const thumbPath = path.join(tmpDir, `thumb_${Date.now()}.jpg`)
-      const thumbRes = await fetch(thumbnail)
-      if (thumbRes.ok) {
-        const thumbBuffer = await thumbRes.buffer()
-        fs.writeFileSync(thumbPath, thumbBuffer)
-        media = await prepareWAMessageMedia(
-          { image: fs.readFileSync(thumbPath) },
-          { upload: conn.waUploadToServer }
-        )
-        fs.unlinkSync(thumbPath)
-      }
-    }
-
-    const interactiveMessage = proto.Message.InteractiveMessage.create({
-      header: {
-        title: 'ELYSSIA MD- VIDEO',
-        subtitle: 'Youtube a Mp4',
-        hasMediaAttachment: !!media,
-        imageMessage: media ? media.imageMessage : undefined
-      },
-      body: {
-        text: `> ¡Holi! ⸜(｡˃ ᵕ ˂ )⸝♡
-
-𑁍𓂃 𓈒𓏸 *TÍTULO ::* ${title}
-𑁍𓂃 𓈒𓏸 *DURACIÓN ::* ${duracion}
-
-> *Toca el botón para descargar*
-
-> *ELYSSIA MD desarrollado por AmilcarGit* ૮(˶ᵔᵕᵔ˶)ა`
-      },
-      footer: {
-        text: '⫏⫏ ELYSSIA MD- вσт ✿'
-      },
-      nativeFlowMessage: {
-        buttons: [{
-          name: 'single_select',
-          buttonParamsJson: JSON.stringify({
-            title: '🎬 DESCARGAR',
-            sections: [{
-              title: '✅ VIDEO ENCONTRADO',
-              rows: [{
-                header: '📥 TOCA PARA DESCARGAR',
-                title: title.substring(0, 35),
-                description: `Duración: ${duracion}`,
-                id: `video_download_${chatId}`
-              }]
-            }]
-          })
-        }]
-      }
-    })
-
-    const msg = generateWAMessageFromContent(
+    const msg = await conn.sendMessage(
       m.chat,
-      {
-        viewOnceMessage: {
-          message: {
-            messageContextInfo: {},
-            interactiveMessage
-          }
-        }
-      },
+      { text: '⏳ Descargando video...' },
       { quoted: m }
     )
 
-    await conn.relayMessage(m.chat, msg.message, { messageId: msg.key.id })
+    const apiUrl =
+      `https://dv-yer-api.online/ytmp4?url=${encodeURIComponent(url)}&apikey=${API_KEY}`
 
-  } catch (error) {
-    console.error(error)
-    await m.react('❌')
-    m.reply(`❌ Error al procesar. Verifica que sea válido.`)
-  }
-}
+    const res = await fetch(apiUrl)
+    console.log('STATUS:', res.status)
 
-handler.before = async (m, { conn }) => {
-  const nativeFlow = m.message?.interactiveResponseMessage?.nativeFlowResponseMessage
-  if (!nativeFlow) return false
+    const raw = await res.text()
+    console.log('RESPUESTA:', raw)
 
-  try {
-    const data = JSON.parse(nativeFlow.paramsJson || '{}')
-    const id = data.id || data.selectedId || data.selectedRowId || null
+    if (!res.ok) throw new Error(`HTTP ${res.status}`)
 
-    if (!id) return false
+    const data = JSON.parse(raw)
 
-    if (id.startsWith('video_') && !id.startsWith('video_download_')) {
-      const parts = id.split('_')
-      const urlBase64 = parts[2]
-      const titleBase64 = parts[3]
-      const videoUrl = Buffer.from(urlBase64, 'base64').toString()
-      const videoTitle = Buffer.from(titleBase64, 'base64').toString()
+    const videoUrl =
+      data.download ||
+      data.url ||
+      data.result?.download ||
+      data.result?.url ||
+      data.result?.download_url
 
-      await m.react('⏳')
-      await conn.sendMessage(m.chat, { text: `🌸 *Obteniendo video: ${videoTitle.substring(0, 40)}...*` }, { quoted: m })
+    if (!videoUrl) throw new Error('No se encontró el enlace del video.')
 
-      const downloadUrl = `https://api-de-el-vigilante-8jnf.onrender.com/download/ytvideo?url=${encodeURIComponent(videoUrl)}`
-      const response = await fetch(downloadUrl)
-      const result = await response.json()
+    const title = cleanName(
+      data.title ||
+      data.result?.title ||
+      video.title
+    )
 
-      if (!result.status || !result.result?.download_url) {
-        throw new Error('No se pudo obtener el video')
-      }
-
-      const { title, duration, thumbnail, download_url } = result.result
-      const minutos = Math.floor(duration / 60)
-      const segundos = duration % 60
-      const duracion = `${minutos}:${segundos.toString().padStart(2, '0')}`
-
-      const chatId = m.chat
-      pendientes[chatId] = { url: download_url, title }
-
-      setTimeout(() => {
-        if (pendientes[chatId]) delete pendientes[chatId]
-      }, 60000)
-
-      let media = null
-      const tmpDir = path.join(process.cwd(), 'tmp')
-      if (!fs.existsSync(tmpDir)) fs.mkdirSync(tmpDir, { recursive: true })
-
-      if (thumbnail) {
-        const thumbPath = path.join(tmpDir, `thumb_${Date.now()}.jpg`)
-        const thumbRes = await fetch(thumbnail)
-        if (thumbRes.ok) {
-          const thumbBuffer = await thumbRes.buffer()
-          fs.writeFileSync(thumbPath, thumbBuffer)
-          media = await prepareWAMessageMedia(
-            { image: fs.readFileSync(thumbPath) },
-            { upload: conn.waUploadToServer }
-          )
-          fs.unlinkSync(thumbPath)
-        }
-      }
-
-      const interactiveMessage = proto.Message.InteractiveMessage.create({
-        header: {
-          title: 'YO OFC - VIDEO',
-          subtitle: 'Youtube a Mp4',
-          hasMediaAttachment: !!media,
-          imageMessage: media ? media.imageMessage : undefined
-        },
-        body: {
-          text: `> ¡Hola, buenas tardes! ⸜(｡˃ ᵕ ˂ )⸝♡
-
-𑁍𓂃 𓈒𓏸 *TÍTULO ::* ${title}
-𑁍𓂃 𓈒𓏸 *DURACIÓN ::* ${duracion}
-
-> *Toca el botón para descargar*
-
-> *ELYSSIA MD desarrollado por AmilcarGit* ૮(˶ᵔᵕᵔ˶)ა`
-        },
-        footer: {
-          text: '⫏⫏ ELYSSIA MD- вσт ✿'
-        },
-        nativeFlowMessage: {
-          buttons: [{
-            name: 'single_select',
-            buttonParamsJson: JSON.stringify({
-              title: '🎬 DESCARGAR',
-              sections: [{
-                title: '✅ VIDEO ENCONTRADO',
-                rows: [{
-                  header: '📥 TOCA PARA DESCARGAR',
-                  title: title.substring(0, 35),
-                  description: `Duración: ${duracion}`,
-                  id: `video_download_${chatId}`
-                }]
-              }]
-            })
-          }]
-        }
-      })
-
-      const msg = generateWAMessageFromContent(
-        m.chat,
-        {
-          viewOnceMessage: {
-            message: {
-              messageContextInfo: {},
-              interactiveMessage
-            }
-          }
-        },
-        { quoted: m }
-      )
-
-      await conn.relayMessage(m.chat, msg.message, { messageId: msg.key.id })
-      return true
-    }
-
-    if (id.startsWith('video_download_')) {
-      const chatId = id.replace('video_download_', '')
-      const pendiente = pendientes[chatId]
-
-      if (!pendiente) {
-        await conn.sendMessage(m.chat, { text: `❌ El enlace expiró. Usa *video* nuevamente.` }, { quoted: m })
-        return true
-      }
-
-      await m.react('⏳')
-      await conn.sendMessage(m.chat, { text: `⏳ *Descargando ${pendiente.title}...*` }, { quoted: m })
-
-      const tmpDir = path.join(process.cwd(), 'tmp')
-      if (!fs.existsSync(tmpDir)) fs.mkdirSync(tmpDir, { recursive: true })
-
-      const videoPath = path.join(tmpDir, `${Date.now()}.mp4`)
-      const videoRes = await fetch(pendiente.url)
-      const videoBuffer = await videoRes.buffer()
-      fs.writeFileSync(videoPath, videoBuffer)
-
-      await conn.sendMessage(m.chat, {
-        document: fs.readFileSync(videoPath),
+    await conn.sendMessage(
+      m.chat,
+      {
+        video: { url: videoUrl },
         mimetype: 'video/mp4',
-        fileName: `${pendiente.title}.mp4`
-      }, { quoted: m })
+        fileName: `${title}.mp4`
+      },
+      { quoted: m }
+    )
 
-      fs.unlinkSync(videoPath)
-      delete pendientes[chatId]
-      await m.react('✅')
-      return true
-    }
+    await conn.sendMessage(
+      m.chat,
+      { text: `✅ Video enviado\n\n🎼 ${title}`, edit: msg.key }
+    )
 
-    return false
+    await m.react('✅')
 
   } catch (e) {
     console.error(e)
-    await conn.sendMessage(m.chat, { text: `❌ Error: ${e.message}` }, { quoted: m })
     await m.react('❌')
-    return true
+    m.reply(`Error:\n${e.message}`)
   }
 }
 
-handler.help = ['ytvideo']
-handler.tags = ['downloader']
-handler.command = ['video', 'mp4', 'ytvideo', 'ytmp4']
+// Funciones auxiliares
+function cleanName(text) {
+  return String(text).replace(/[^\w\s.-]/g, '').substring(0, 60)
+}
+
+function formatViews(views) {
+  const n = Number(views)
+  if (n >= 1e9) return (n / 1e9).toFixed(1) + 'B'
+  if (n >= 1e6) return (n / 1e6).toFixed(1) + 'M'
+  if (n >= 1e3) return (n / 1e3).toFixed(1) + 'K'
+  return String(n || 0)
+}
+
+function getVideoId(url) {
+  const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]{11})/)
+  return match ? match[1] : null
+}
+
+// Configuración del handler
+handler.command = ['play2', 'ytmp4', 'playvideo']
+handler.help = ['play2 <texto|url>']
+handler.tags = ['descargas']
 
 export default handler
