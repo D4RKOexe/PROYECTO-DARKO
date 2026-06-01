@@ -141,7 +141,25 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
 # WhatsApp Bot Sessions
 sessions/
 *.session
 auth_info/
+
+# Logs
+logs
+*.log
+
+# Config sensible (opcional si tienes tokens o keys)
+.env
+.env.*
+
+# Cache del bot / Node
+node_modules/
+.cache/
+.npm
+
+# Archivos temporales
+temp/
+tmp/
