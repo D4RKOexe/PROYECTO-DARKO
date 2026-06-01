@@ -1,4 +1,4 @@
-// 🐉⚡ GOHAN BEAST MODE - MAIN BOT ⚡🐉
+// 🌸⚡ ELYSSIABOT-MD MODE - MAIN BOT ⚡🌸
 import fs from 'fs'
 import path, { join } from 'path';
 import { fileURLToPath, pathToFileURL } from 'url';
@@ -80,9 +80,9 @@ const __dirname = global.__dirname(import.meta.url);
 
 // Banner de Gohan Bestia al iniciar main.js
 console.log(chalk.bold.cyan('\n' + '═'.repeat(60)));
-console.log(chalk.bold.yellow('   🐉⚡ GOHAN BESTIA - PODER MÁXIMO ACTIVADO ⚡🐉'));
+console.log(chalk.bold.yellow('   🌸⚡ ELYSSIA MD - BRILLO MÁXIMO ACTIVADO ⚡🌸'));
 console.log(chalk.bold.cyan('═'.repeat(60)));
-console.log(chalk.magenta('   「¡Este es mi poder definitivo! No me detendré hasta proteger a todos」'));
+console.log(chalk.magenta('   「¡Este es mi brillo definitivo! No me detendré hasta embellecer a todos」'));
 console.log(chalk.bold.cyan('═'.repeat(60) + '\n'));
 
 // Parsing de argumentos
@@ -201,12 +201,12 @@ try {
  * @param {string} botPath - Ruta de la sesión del sub-bot
  */
 async function reconnectSubBot(botPath) {
-  console.log(chalk.yellow(`🌀 [GOHAN BESTIA] Despertando poder secundario en: ${path.basename(botPath)}`));
+  console.log(chalk.yellow(`🌀 [ELYSSIABOT-MD] Despertando brillo secundario en: ${path.basename(botPath)}`));
   try {
     const { state: subBotState, saveCreds: saveSubBotCreds } = await useMultiFileAuthState(botPath);
 
     if (!subBotState.creds.registered) {
-      console.warn(chalk.yellow(`⚠️ [GOHAN BESTIA] Poder secundario en ${path.basename(botPath)} no está registrado`));
+      console.warn(chalk.yellow(`⚠️ [ELYSSIABOT-MD] Brillo secundario en ${path.basename(botPath)} no está registrado`));
       return;
     }
 
@@ -235,24 +235,24 @@ async function reconnectSubBot(botPath) {
     subBotConn.ev.on('connection.update', (update) => {
       const { connection, lastDisconnect } = update;
       if (connection === 'open') {
-        console.log(chalk.green(`✨ [GOHAN BESTIA] Poder secundario despertado: ${path.basename(botPath)}`));
+        console.log(chalk.green(`✨ [ELYSSIABOT-MD] Brillo secundario despertado: ${path.basename(botPath)}`));
         const yaExiste = global.conns.some(c => c.user?.jid === subBotConn.user?.jid);
         if (!yaExiste) {
           global.conns.push(subBotConn);
-          console.log(chalk.green(`⚡ [GOHAN BESTIA] Poder fusionado: ${subBotConn.user?.jid}`));
+          console.log(chalk.green(`⚡ [ELYSSIABOT-MD] brillo fusionado: ${subBotConn.user?.jid}`));
         }
       } else if (connection === 'close') {
         const reason = new Boom(lastDisconnect?.error)?.output?.statusCode;
-        console.error(chalk.red(`💥 [GOHAN BESTIA] Poder secundario disminuido en ${path.basename(botPath)}. Razón: ${reason}`));
+        console.error(chalk.red(`💥 [ELYSSIABOT-MD] Brillo secundario disminuido en ${path.basename(botPath)}. Razón: ${reason}`));
 
         if (reason === DisconnectReason.loggedOut || reason === 401) {
-          console.log(chalk.red(`❌ [GOHAN BESTIA] Desconexión permanente. Eliminando poder secundario en ${path.basename(botPath)}.`));
+          console.log(chalk.red(`❌ [ELYSSIABOT-MD] Desconexión permanente. Eliminando brillo secundario en ${path.basename(botPath)}.`));
           global.conns = global.conns.filter(conn => conn.user?.jid !== subBotConn.user?.jid);
           try {
             rmSync(botPath, { recursive: true, force: true });
-            console.log(chalk.green(`✅ [GOHAN BESTIA] Poder secundario eliminado: ${botPath}`));
+            console.log(chalk.green(`✅ [ELYSSIABOT-MD] Brillo secundario eliminado: ${botPath}`));
           } catch (e) {
-            console.error(chalk.red(`❌ [ERROR] No se pudo eliminar poder secundario ${botPath}: ${e}`));
+            console.error(chalk.red(`❌ [ERROR] No se pudo eliminar brillo secundario ${botPath}: ${e}`));
           }
         }
       }
@@ -261,7 +261,7 @@ async function reconnectSubBot(botPath) {
     subBotConn.ev.on('creds.update', saveSubBotCreds);
     subBotConn.handler = handler.bind(subBotConn);
     subBotConn.ev.on('messages.upsert', subBotConn.handler);
-    console.log(chalk.blue(`🌀 [GOHAN BESTIA] Manejador asignado a poder secundario: ${path.basename(botPath)}`));
+    console.log(chalk.blue(`🌀 [ELYSSIABOT-MD] Manejador asignado a brillo secundario: ${path.basename(botPath)}`));
 
     if (!global.subBots) {
       global.subBots = {};
@@ -269,7 +269,7 @@ async function reconnectSubBot(botPath) {
     global.subBots[path.basename(botPath)] = subBotConn;
 
   } catch (e) {
-    console.error(chalk.red(`💥 [ERROR GOHAN BESTIA] Error al despertar poder secundario en ${path.basename(botPath)}:`), e);
+    console.error(chalk.red(`💥 [ERROR ELYSSIABOT-MD] Error al despertar Brillo secundario en ${path.basename(botPath)}:`), e);
   }
 }
 
@@ -281,31 +281,31 @@ async function startSubBots() {
 
   if (!existsSync(rutaJadiBot)) {
     mkdirSync(rutaJadiBot, { recursive: true });
-    console.log(chalk.bold.cyan(`📁 [GOHAN BESTIA] Cámara de gravedad creada: ${rutaJadiBot}`));
+    console.log(chalk.bold.cyan(`📁 [ELYSSIABOT-MD] Cámara de gravedad creada: ${rutaJadiBot}`));
   } else {
-    console.log(chalk.bold.cyan(`📁 [GOHAN BESTIA] Cámara de gravedad detectada: ${rutaJadiBot}`));
+    console.log(chalk.bold.cyan(`📁 [ELYSSIABOT-MD] Cámara de gravedad detectada: ${rutaJadiBot}`));
   }
 
   const readRutaJadiBot = readdirSync(rutaJadiBot);
   if (readRutaJadiBot.length > 0) {
     const credsFile = 'creds.json';
-    console.log(chalk.magenta(`🌀 [GOHAN BESTIA] Buscando poders secundarios... Total: ${readRutaJadiBot.length}`));
+    console.log(chalk.magenta(`🌀 [ELYSSIABOT-MD] Buscando brillos secundarios... Total: ${readRutaJadiBot.length}`));
 
     for (const subBotDir of readRutaJadiBot) {
       const botPath = join(rutaJadiBot, subBotDir);
       if (statSync(botPath).isDirectory()) {
         const readBotPath = readdirSync(botPath);
         if (readBotPath.includes(credsFile)) {
-          console.log(chalk.magenta(`⚡ [GOHAN BESTIA] Poder detectado en ${subBotDir}. Despertando...`));
+          console.log(chalk.magenta(`⚡ [ELYSSIABOT-MD] brillo detectado en ${subBotDir}. Despertando...`));
           await reconnectSubBot(botPath);
         } else {
-          console.log(chalk.yellow(`⚠️ [GOHAN BESTIA] Poder latente en ${subBotDir} (sin creds.json)`));
+          console.log(chalk.yellow(`⚠️ [ELYSSIABOT-MD] brillo latente en ${subBotDir} (sin creds.json)`));
         }
       }
     }
-    console.log(chalk.magenta(`✅ [GOHAN BESTIA] Proceso de despertar de poderes completado.`));
+    console.log(chalk.magenta(`✅ [ELYSSIABOT-MD] Proceso de despertar de brillos completado.`));
   } else {
-    console.log(chalk.gray(`🌙 [GOHAN BESTIA] No hay poders secundarios para despertar.`));
+    console.log(chalk.gray(`🌙 [ELYSSIABOT-MD] No hay brillo secundarios para despertar.`));
   }
 }
 
@@ -317,14 +317,14 @@ await startSubBots();
  */
 async function handleLogin() {
   if (conn.authState.creds.registered) {
-    console.log(chalk.green('✅ [GOHAN BESTIA] Poder principal ya registrado.'));
+    console.log(chalk.green('✅ [ELYSSIABOT-MD] Brillo principal ya registrado.'));
     return;
   }
 
   let loginMethod = await question(
     chalk.green(`\n` +
     `╔════════════════════════════════════╗\n` +
-    `║     🐉 GOHAN BESTIA MODE 🐉       ║\n` +
+    `║     🌸 ELYSSIABOT-MD MODE 🌸       ║\n` +
     `╠════════════════════════════════════╣\n` +
     `║ ¿Cómo deseas activar el poder?     ║\n` +
     `║                                    ║\n` +
@@ -340,7 +340,7 @@ async function handleLogin() {
   loginMethod = loginMethod.toLowerCase().trim();
 
   if (loginMethod === 'code') {
-    let phoneNumber = await question(chalk.cyan('📱 Ingresa el número de WhatsApp (con código país, ej: 5215551234567):\n> '));
+    let phoneNumber = await question(chalk.cyan('📱 Ingresa el número de WhatsApp (con código país, ej: 51910227479):\n> '));
     phoneNumber = phoneNumber.replace(/\D/g, '');
 
     // Formateo para México
@@ -396,7 +396,7 @@ if (!opts['test']) {
       if (global.db.data && global.isDatabaseModified) {
         await global.db.write();
         global.isDatabaseModified = false;
-        console.log(chalk.gray('💾 [GOHAN BESTIA] Base de datos guardada'));
+        console.log(chalk.gray('💾 [ELYSSIABOT-MD] Base de datos guardada'));
       }
       if (opts['autocleartmp']) {
         const tmp = [tmpdir(), 'tmp', 'serbot'];
@@ -426,17 +426,17 @@ function clearTmp() {
 setInterval(() => {
   if (global.stopped === 'close' || !conn || !conn.user) return;
   clearTmp();
-  console.log(chalk.gray('🧹 [GOHAN BESTIA] Limpieza temporal completada'));
+  console.log(chalk.gray('🧹 [ELYSSIABOT-MD] Limpieza temporal completada'));
 }, 180000);
 
 // Recolección de basura si está disponible
 if (typeof global.gc === 'function') {
   setInterval(() => {
-    console.log(chalk.gray(`🧠 [GOHAN BESTIA] Optimizando poder...`));
+    console.log(chalk.gray(`🧠 [ELYSSIABOT-MD] Optimizando poder...`));
     global.gc();
   }, 180000);
 } else {
-  console.log(chalk.yellow(`⚠️ [GOHAN BESTIA] Para optimizar memoria, ejecuta con --expose-gc`));
+  console.log(chalk.yellow(`⚠️ [ELYSSIABOT-MD] Para optimizar memoria, ejecuta con --expose-gc`));
 }
 
 /**
@@ -448,7 +448,7 @@ async function connectionUpdate(update) {
 
   if (isNewLogin) {
     conn.isInit = true;
-    console.log(chalk.green('✅ [GOHAN BESTIA] Nuevo login detectado'));
+    console.log(chalk.green('✅ [ELYSSIABOT-MD] Nuevo login detectado'));
   }
 
   const code =
@@ -464,8 +464,8 @@ async function connectionUpdate(update) {
 
   if (connection === 'open') {
     console.log(chalk.bold.green('\n════════════════════════════════════'));
-    console.log(chalk.bold.yellow('   🐉 GOHAN BESTIA HA DESPERTADO 🐉'));
-    console.log(chalk.bold.cyan(`   👤 Usuario: ${conn.user?.name || 'Gohan'}`));
+    console.log(chalk.bold.yellow('   🌸 ELYSSIABOT-MD HA DESPERTADO 🌸'));
+    console.log(chalk.bold.cyan(`   👤 Usuario: ${conn.user?.name || 'Elyssia'}`));
     console.log(chalk.bold.cyan(`   📱 Número: ${conn.user?.id?.split(':')[0] || 'Desconocido'}`));
     console.log(chalk.bold.green('════════════════════════════════════\n'));
   }
@@ -513,7 +513,7 @@ async function connectionUpdate(update) {
 
 // Manejo de errores no capturados
 process.on('uncaughtException', (err) => {
-  console.error(chalk.red('💥 [GOHAN BESTIA] Error no capturado:'), err);
+  console.error(chalk.red('💥 [ELYSSIABOT-MD] Error no capturado:'), err);
 });
 
 let isInit = true;
@@ -562,7 +562,7 @@ const pluginFilter = (filename) => /\.js$/.test(filename);
 global.plugins = {};
 
 async function filesInit() {
-  console.log(chalk.blue('📂 [GOHAN BESTIA] Cargando plugins...'));
+  console.log(chalk.blue('📂 [ELYSSIABOT-MD] Cargando plugins...'));
   let loaded = 0;
   for (const filename of readdirSync(pluginFolder).filter(pluginFilter)) {
     try {
@@ -575,7 +575,7 @@ async function filesInit() {
       delete global.plugins[filename];
     }
   }
-  console.log(chalk.green(`✅ [GOHAN BESTIA] ${loaded} plugins cargados correctamente`));
+  console.log(chalk.green(`✅ [ELYSSIABOT-MD] ${loaded} plugins cargados correctamente`));
 }
 
 await filesInit();
@@ -616,6 +616,6 @@ await global.reloadHandler();
 
 // Mensaje final att wilker
 console.log(chalk.bold.magenta('\n' + '⭐'.repeat(30)));
-console.log(chalk.bold.yellow('   🐉 GOHAN BESTIA - LISTO PARA PELEAR 🐉'));
-console.log(chalk.bold.cyan('   「El poder de un Saiyajin no tiene límites」'));
+console.log(chalk.bold.yellow('   🌸 ELYSSIABOT-MD - LISTO PARA EL BRILLO 🌸'));
+console.log(chalk.bold.cyan('   「El poder de un brillo no tiene límites」'));
 console.log(chalk.bold.magenta('⭐'.repeat(30) + '\n'));
