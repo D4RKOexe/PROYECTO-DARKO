@@ -1,6 +1,6 @@
-import speed from 'performance-now'
-import os from 'os'
-import process from 'process'
+const speed = require('performance-now')
+const os = require('os')
+const process = require('process')
 
 let handler = async (m, { conn, usedPrefix }) => {
   const start = speed()
@@ -72,10 +72,7 @@ ${emoji} *Estado:* ${status}
 `
 
   try {
-    await conn.sendMessage(m.chat, {
-      text: result,
-      edit: sentMsg.key
-    })
+    await conn.sendMessage(m.chat, { text: result, edit: sentMsg.key })
   } catch {
     await m.reply(result)
   }
@@ -87,4 +84,4 @@ handler.help = ['ping']
 handler.tags = ['info']
 handler.command = /^(ping|p|speed|status|velocidad)$/i
 
-export default handler
+module.exports = handler
