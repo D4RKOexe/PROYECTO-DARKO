@@ -1,51 +1,41 @@
-import { generateWAMessageFromContent, proto } from '@whiskeysockets/baileys'
-
 let handler = async (m, { conn, text }) => {
-  if (!text) return conn.sendMessage(m.chat, { text: '❌ Por favor escribe tu reporte o sugerencia.' }, { quoted: m })
+  if (!text) {
+    return conn.reply(
+      m.chat,
+      `🌸 *Elyssia Bot MD - Reporte*\n\nEjemplo:\n.report El comando menú no funciona`,
+      m
+    )
+  }
 
-  const creatorNumber = '51910227479@s.whatsapp.net' // Número del creador
+  const owner = '51910227479@s.whatsapp.net'
 
-  // Mensaje que se envía al creador
-  const reportMsg = `
-📩 *Nuevo Reporte / Sugerencia*
+  const reporte = `
+╭━━━〔 📢 REPORTE 〕━━━⬣
+┃ 👤 Usuario:
+┃ wa.me/${m.sender.split('@')[0]}
+┃
+┃ 💬 Mensaje:
+┃ ${text}
+┃
+┃ 📍 Chat:
+┃ ${m.chat}
+╰━━━━━━━━━━━━⬣
+`
 
-*De:* @${m.sender.split('@')[0]}
-*Chat:* ${m.chat}
-*Mensaje:*
-${text}
-  `
-
-  // Botón de respuesta (opcional, solo para estilo Elyssia)
-  const buttons = [
-    {
-      buttonId: 'report_ok',
-      buttonText: { displayText: '✅ Reporte recibido' },
-      type: 1
-    }
-  ]
-
-  const message = generateWAMessageFromContent(creatorNumber, {
-    templateMessage: {
-      hydratedTemplate: {
-        hydratedContentText: reportMsg,
-        hydratedFooterText: '📌 Elyssia-Bot-MD',
-        hydratedButtons: buttons
-      }
-    }
+  await conn.sendMessage(owner, {
+    text: reporte,
+    mentions: [m.sender]
   })
 
-  await conn.relayMessage(creatorNumber, message.message, { messageId: message.key.id })
-
-  // Confirmación para el usuario
-  const confirmation = `
-✅ Tu reporte ha sido enviado al creador.
-Gracias por tu feedback 🌸
-  `
-  await conn.sendMessage(m.chat, { text: confirmation }, { quoted: m })
+  await conn.reply(
+    m.chat,
+    `✅ Tu reporte fue enviado correctamente al desarrollador.\n\n🌸 Gracias por ayudar a mejorar Elyssia Bot MD.`,
+    m
+  )
 }
 
-handler.command = ['report', 'reporte', 'sugerencia']
+handler.help = ['report <texto>']
 handler.tags = ['info']
-handler.help = ['report <mensaje>']
+handler.command = ['report', 'reporte']
 
 export default handler
