@@ -59,7 +59,7 @@ let handler = async (m, { conn, usedPrefix: _p }) => {
         desc: p.desc || ''
       }))
 
-    let bannerFinal = 'https://files.catbox.moe/r60c8l.jpg' // PON LA URL DE LA FOTO AQUÍ
+    let bannerFinal = 'https://files.catbox.moe/r60c8l.jpg' 
 
     let textoMenu = defaultMenu.before
       .replace(/%time/g, new Date().toLocaleString())
