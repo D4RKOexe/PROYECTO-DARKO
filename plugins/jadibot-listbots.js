@@ -5,6 +5,8 @@ let handler = async (m, { conn }) => {
 
   if (!global.conns || !Array.isArray(global.conns)) global.conns = []
 
+  const now = Date.now()
+
   for (const connSub of global.conns) {
     if (connSub.user && connSub.ws?.socket?.readyState !== ws.CLOSED) {
       const jid = connSub.user.jid
@@ -17,24 +19,25 @@ let handler = async (m, { conn }) => {
           nombre = `Usuario ${numero}`
         }
       }
-      uniqueUsers.set(jid, nombre || `Usuario ${numero}`)
+      const connectedAt = connSub.connectedAt || now // guarda la hora de conexión
+      const uptimeSub = clockString(now - connectedAt)
+      uniqueUsers.set(jid, { nombre: nombre || `Usuario ${numero}`, uptime: uptimeSub, numero })
     }
   }
 
-  const uptime = process.uptime() * 1000
-  const formatUptime = clockString(uptime)
+  const uptimeTotal = clockString(process.uptime() * 1000)
   const totalUsers = uniqueUsers.size
 
   let txt = `🌸 *SUBS 𝙴𝙻𝚈𝚂𝚂𝙸𝙰 ACTIVOS* 🌸\n\n`
-  txt += `🫣 *Tiempo Activo:* ${formatUptime}\n`
+  txt += `🫣 *Tiempo Activo del Bot:* ${uptimeTotal}\n`
   txt += `🌸 *Total Conectados:* ${totalUsers}\n`
 
   if (totalUsers > 0) {
     txt += `\n📋 *LISTA DE SUBS Elyssia MD*\n\n`
     let i = 1
-    for (const [jid, nombre] of uniqueUsers) {
-      const numero = jid.split('@')[0]
+    for (const [jid, { nombre, uptime, numero }] of uniqueUsers) {
       txt += `🌸 *${i++}.* ${nombre}\n`
+      txt += `⏱️ Conectado: ${uptime}\n`
       txt += `👑 https://wa.me/${numero}\n\n`
     }
   } else {
