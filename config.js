@@ -5,7 +5,7 @@ import { fileURLToPath } from 'url'
 global.owner = [
   ['51910227479', 'AmilcarGit', true],
   ['51910227479'],
-  ['5493875132593'],
+  ['51925679896'],
   ['51910227479']
 ]
 
