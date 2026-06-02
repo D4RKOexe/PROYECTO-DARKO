@@ -1,95 +1,49 @@
-let minerales = [
-  { nombre: '🪨 Piedra', cantidad: [1, 5] },
-  { nombre: '⛓️ Hierro', cantidad: [1, 3] },
-  { nombre: '🥈 Plata', cantidad: [1, 2] },
-  { nombre: '🥇 Oro', cantidad: [1, 2] },
-  { nombre: '💎 Diamante', cantidad: [1, 1] }
-]
-
-let cooldown = 300000 // 5 minutos
+const cooldown = 60000 // 1 min
 
 const handler = async (m, { conn }) => {
+
   let user = global.db.data.users[m.sender]
 
-  if (!user.mineria) user.mineria = 0
+  if (Date.now() - (user.lastmining || 0) < cooldown)
+    return m.reply("🌸 Espera un poco antes de minar otra vez...")
 
-  let tiempo = cooldown - (Date.now() - user.mineria)
+  let items = [
+    { name: "🪨 Piedra", value: "piedra", min: 1, max: 8 },
+    { name: "⛓️ Hierro", value: "hierro", min: 1, max: 5 },
+    { name: "🥈 Plata", value: "plata", min: 1, max: 3 },
+    { name: "🥇 Oro", value: "oro", min: 1, max: 2 },
+    { name: "💎 Diamante", value: "diamond", min: 1, max: 1 }
+  ]
 
-  if (tiempo > 0) {
-    return conn.reply(
-      m.chat,
-`🌸 *Mina Elyssia* 🌸
+  let item = items[Math.floor(Math.random() * items.length)]
+  let amount = Math.floor(Math.random() * (item.max - item.min + 1)) + item.min
 
-Aún estás descansando, minera~ ⛏️
+  user[item.value] = (user[item.value] || 0) + amount
 
-⏳ Regresa en:
-*${msToTime(tiempo)}*
-
-✨ La montaña seguirá esperándote.`,
-      m
-    )
-  }
-
-  let mineral = minerales[Math.floor(Math.random() * minerales.length)]
-
-  let cantidad =
-    Math.floor(
-      Math.random() *
-      (mineral.cantidad[1] - mineral.cantidad[0] + 1)
-    ) + mineral.cantidad[0]
-
-  switch (mineral.nombre) {
-    case '🪨 Piedra':
-      user.piedra = (user.piedra || 0) + cantidad
-      break
-    case '⛓️ Hierro':
-      user.hierro = (user.hierro || 0) + cantidad
-      break
-    case '🥈 Plata':
-      user.plata = (user.plata || 0) + cantidad
-      break
-    case '🥇 Oro':
-      user.oro = (user.oro || 0) + cantidad
-      break
-    case '💎 Diamante':
-      user.diamante = (user.diamante || 0) + cantidad
-      break
-  }
-
-  let xp = Math.floor(Math.random() * 150) + 50
-  let coins = Math.floor(Math.random() * 300) + 100
+  let xp = Math.floor(Math.random() * 50) + 10
+  let coins = Math.floor(Math.random() * 100) + 20
 
   user.exp += xp
-  user.money += coins
-  user.mineria = Date.now()
+  user.coin += coins
+  user.lastmining = Date.now()
 
-  conn.reply(
-    m.chat,
-`🌸 *MINA ELYSSIA* 🌸
+  let txt = `
+🌸 MINA ELYSSIA 🌸
 
-⛏️ Has explorado una cueva misteriosa...
+⛏️ Encontraste:
+➤ ${item.name} x${amount}
 
-╭─「 RECOMPENSAS 」
-│ ${mineral.nombre} × ${cantidad}
-│ ✨ XP +${xp}
-│ 💰 Coins +${coins}
-╰────────────
+✨ XP +${xp}
+🪙 Coins +${coins}
 
-🌷 ¡Excelente trabajo, minera!
-💖 Sigue explorando para encontrar tesoros más raros.`,
-    m
-  )
+💖 Sigue minando para más tesoros
+`
+
+  conn.reply(m.chat, txt, m)
 }
 
-handler.help = ['minar']
+handler.command = /^(minar|mine)$/i
 handler.tags = ['eco']
-handler.command = ['minar', 'mine']
+handler.help = ['minar']
 
 export default handler
-
-function msToTime(duration) {
-  let minutes = Math.floor((duration / (1000 * 60)) % 60)
-  let seconds = Math.floor((duration / 1000) % 60)
-
-  return `${minutes}m ${seconds}s`
-}
