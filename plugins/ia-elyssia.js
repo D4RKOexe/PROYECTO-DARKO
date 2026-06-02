@@ -4,7 +4,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
     if (!text)
         return conn.reply(
             m.chat,
-            `🌸 *ELYSSIA AI* 🌸\n\n✦ Escribe lo que deseas decirle a Elyssia\n\n> Ejemplo: ${usedPrefix + command} Hola, ¿cómo estás?`,
+            `🌸 *ELYSSIA AI* 🌸\n\n✦ Escribe lo que deseas decirle a Elyssia\n\n> Ejemplo: ${usedPrefix + command} Hola`,
             m
         )
 
@@ -14,7 +14,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
         const apiKey = 'sk-b9c406e478c20c53a588ea4b875339fff5d60464d52b05f795a54e4b94554ef5'
 
         const prompt = encodeURIComponent(
-            'Eres Elyssia, una inteligencia artificial femenina, elegante, calmada, ligeramente misteriosa y emocional. Respondes en español con estilo poético y humano.'
+            'Eres Elyssia, una chica elegante, misteriosa y sarcástica. Responde en español con estilo poético y humano.'
         )
 
         const query = encodeURIComponent(text.trim())
@@ -23,16 +23,21 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
 
         const { data } = await axios.get(apiUrl)
 
+        // Verificar que la API respondió
         if (!data || !data.result) {
             await m.react('❌')
-            return conn.reply(m.chat, '⚠️ *ELYSSIA no pudo generar respuesta en este momento.*', m)
+            return conn.reply(
+                m.chat,
+                '⚠️ *ELYSSIA no pudo generar respuesta en este momento.*',
+                m
+            )
         }
 
         const reply = data.result
 
         const ui = `
 ╭━━━〔 🌸 ELYSSIA AI 〕━━━⬣
-┃ ✨ Inteligencia Elyssia
+┃ ✨ Elyssia ChatGPT
 ┃
 ┃ 🪶 Pregunta:
 ┃ ${text}
@@ -62,7 +67,7 @@ ${reply}
 }
 
 handler.help = ['chat']
-handler.tags = ['ia', 'ai']
+handler.tags = ['ia']
 handler.command = /^(elyssia|ai|chat)$/i
 
 export default handler
