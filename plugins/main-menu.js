@@ -4,7 +4,7 @@ import { xpRange } from '../lib/levelling.js'
 
 const tags = {
   jadibot: '🌸 SUBBOTS ELYSSIA',
-  eco: '🙂‍↕️ ENERGÍA ELYSSIA',
+  eco: '💪 ECONOMÍA ELYSSIA',
   descargas: '📂 DESCARGAS ELYSSIA',
   tools: '🔧 HERRAMIENTAS ELYSSIA',
   owner: '👑 MAESTRA ELYSSIA',
