@@ -1,25 +1,43 @@
 import fs from 'fs'
 import path from 'path'
-import { pathToFileURL } from 'url'
 
-let handler = async (m, { conn }) => {
-    const pluginsPath = './plugins'
-    let report = []
-    let files = fs.readdirSync(pluginsPath).filter(f => f.endsWith('.js'))
+const handler = async (m, { conn, isROwner }) => {
+  if (!isROwner) return m.reply('❌ Solo el propietario de Elyssia MD puede usar este comando.');
 
-    for (let file of files) {
-        try {
-            // Intentar importar el plugin como módulo ES
-            await import(pathToFileURL(path.join(pluginsPath, file)).href)
-            report.push(`🐉 ${file} → Sin errores`)
-        } catch (err) {
-            report.push(`🌀 ${file} → ${err.message}`)
-        }
+  const pluginsPath = './plugins'
+  if (!fs.existsSync(pluginsPath)) return m.reply('📂 Carpeta de plugins no encontrada.');
+
+  const files = fs.readdirSync(pluginsPath).filter(f => f.endsWith('.js'))
+  if (files.length === 0) return m.reply('📂 No se encontraron plugins para revisar 🌸.')
+
+  let reportOK = []
+  let reportError = []
+
+  for (let file of files) {
+    try {
+      // Analiza si el archivo tiene errores de sintaxis sin ejecutarlo
+      const content = fs.readFileSync(path.join(pluginsPath, file), 'utf-8')
+      new Function(content) // solo comprueba sintaxis
+      reportOK.push(`😉 ${file} → Sin errores`)
+    } catch (err) {
+      reportError.push(`🌀 ${file} → ${err.message}`)
     }
+  }
 
-    if (!report.length) return m.reply('📂 No se encontraron plugins para revisar 🐉.')
+  // Crear mensaje final estilo Elyssia MD
+  let message = `╭━━━〔 🌸 ELYSSIA MD 〕━━━⬣\n`
+  message += `┃ 📋 Revisión de plugins 🫣\n`
+  message += `╰━━━━━━━━━━━━━━━━⬣\n\n`
 
-    m.reply(`📋 *Revisión de plugins Beast 🌀:*\n\n${report.join('\n')}`)
+  if (reportOK.length) {
+    message += `✅ *Plugins OK:*\n${reportOK.join('\n')}\n\n`
+  }
+  if (reportError.length) {
+    message += `⚠️ *Plugins con errores:*\n${reportError.join('\n')}\n\n`
+  }
+
+  message += `✨ Elyssia MD completó la revisión de plugins.`
+  await m.reply(message)
 }
 
 handler.command = /^checkplugins$/i
