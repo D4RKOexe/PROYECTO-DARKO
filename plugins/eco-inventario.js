@@ -60,7 +60,7 @@ const handler = async (m, { conn }) => {
 }
 
 handler.help = ['inventario']
-handler.tags = ['rpg']
+handler.tags = ['eco']
 handler.command = ['inventario', 'inv', 'bag']
 
 export default handler
