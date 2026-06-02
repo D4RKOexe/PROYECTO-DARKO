@@ -61,8 +61,8 @@ ${reply}
     }
 }
 
-handler.help = ['elyssia', 'ai', 'chat']
-handler.tags = ['elyssia', 'ai']
+handler.help = ['elyssia', 'ia', 'chat']
+handler.tags = ['ia', 'ai']
 handler.command = /^(elyssia|ai|chat)$/i
 
 export default handler
