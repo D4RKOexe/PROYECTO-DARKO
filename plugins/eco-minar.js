@@ -82,7 +82,7 @@ Aún estás descansando, minera~ ⛏️
 }
 
 handler.help = ['minar']
-handler.tags = ['rpg']
+handler.tags = ['eco']
 handler.command = ['minar', 'mine']
 
 export default handler
