@@ -129,7 +129,7 @@ handler.before = async (m, { conn }) => {
     if (m.messageStubType === 27) {
       await conn.sendMessage(m.chat, {
         image: { url: profilePic },
-        caption: `🐉 *BIENVENIDO*\n\n🌀 *Bienvenid@* a *${groupMetadata.subject}* \n🐉 ${userMention}\n🐉 Ahora somos *${groupSize}* miembros :)`,
+        caption: `🌸 *BIENVENIDO*\n\n🌀 *Bienvenid@* a *${groupMetadata.subject}* \n🌸 ${userMention}\n🌸 Ahora somos *${groupSize}* miembros :)`,
         contextInfo: { mentionedJid: [userId] }
       })
     }
@@ -137,7 +137,7 @@ handler.before = async (m, { conn }) => {
     if ([28, 32].includes(m.messageStubType)) {
       await conn.sendMessage(m.chat, {
         image: { url: profilePic },
-        caption: `🐉 *ADIÓS*\n\n🌀 *Adiós* de *${groupMetadata.subject}* \n🐉 ${userMention}\n🌀 Somos *${groupSize}* miembros aún. :)`,
+        caption: `🌸 *ADIÓS*\n\n🌀 *Adiós* de *${groupMetadata.subject}* \n🌸 ${userMention}\n🌀 Somos *${groupSize}* miembros aún. :)`,
         contextInfo: { mentionedJid: [userId] }
       })
     }
