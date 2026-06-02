@@ -73,9 +73,9 @@ ${mensaje}`,
   )
 }
 
-handler.help = ['tagultra']
+handler.help = ['tag']
 handler.tags = ['grupo']
-handler.command = ['hidetagultra', 'notifyultra', 'tagultra']
+handler.command = ['tag', 'tagultra']
 handler.group = true
 handler.admin = true
 
