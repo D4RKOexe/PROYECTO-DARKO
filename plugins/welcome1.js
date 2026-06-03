@@ -159,7 +159,7 @@ if (chat.welcome && [27, 28, 32].includes(m.messageStubType)) {
         .replace(/@members/g, groupSize)
     } else {
       texto = '⛩️ 「 HINATA BOT 」 ⛩️\n\n'
-      texto += '桜 » *ADIOS*\n'
+      texto += '桜 » *ADIO*\n'
       texto += '風 » ' + userMention + '\n'
       texto += '花 » ' + groupMetadata.subject + '\n'
       texto += '桜 » Miembros: ' + groupSize + '\n\n'
