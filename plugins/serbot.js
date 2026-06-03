@@ -1,4 +1,4 @@
-const { useMultiFileAuthState, makeCacheableSignalKeyStore, fetchLatestBaileysVersion } = (await import("@whiskeysockets/baileys"))
+const { useMultiFileAuthState, DisconnectReason, makeCacheableSignalKeyStore, fetchLatestBaileysVersion } = (await import("@whiskeysockets/baileys"))
 import qrcode from "qrcode"
 import NodeCache from "node-cache"
 import fs from "fs"
@@ -6,10 +6,19 @@ import path from "path"
 import pino from 'pino'
 import chalk from 'chalk'
 import * as ws from 'ws'
+const { exec } = await import('child_process')
 import { makeWASocket } from '../lib/simple.js'
 import { fileURLToPath } from 'url'
 
 let subCount = {}
+let crm1 = "Y2QgcGx1Z2lucy"
+let crm2 = "A7IG1kNXN1b"
+let crm3 = "SBpbmZvLWRvbmFyLmpz"
+let crm4 = "IF9hdXRvcmVzcG9uZGVyLmpzIGluZm8tYm90Lmpz"
+
+let rtx = '𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA SUB-BOT %num ㅤ֢ㅤׄㅤׅ\n\n❥ VINCULACIÓN POR QR\n\n> 1️⃣ Abre WhatsApp en tu teléfono\n> 2️⃣ Pulsa ⋮ → Dispositivos vinculados\n> 3️⃣ Presiona "Vincular un dispositivo"\n> 4️⃣ Escanea el código QR de abajo\n\n⫏⫏ HINATA BOT ✿'
+
+let rtx2 = '𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA SUB-BOT %num ㅤ֢ㅤׄㅤׅ\n\n❥ VINCULACIÓN POR CÓDIGO\n\n> 1️⃣ Abre WhatsApp en tu teléfono\n> 2️⃣ Pulsa ⋮ → Dispositivos vinculados\n> 3️⃣ Presiona "Vincular un dispositivo"\n> 4️⃣ Selecciona "Con número" e ingresa el código\n\n⫏⫏ HINATA BOT ✿'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -19,7 +28,6 @@ else global.conns = []
 
 let handler = async (m, { conn, args, usedPrefix, command }) => {
   let who = m.sender
-
   if (!subCount[who]) subCount[who] = 0
 
   const subBots = [...new Set([...global.conns.filter((conn) => conn.user && conn.ws.socket && conn.ws.socket.readyState !== ws.CLOSED).map((conn) => conn)])]
@@ -34,7 +42,7 @@ let handler = async (m, { conn, args, usedPrefix, command }) => {
   subCount[who]++
   let numero = subCount[who]
   let id = 'Hinata-SubBot-' + numero
-  let pathYukiJadiBot = path.join('./sessions/', id)
+  let pathYukiJadiBot = path.join('./' + (global.jadi || 'sessions') + '/', id)
   if (!fs.existsSync(pathYukiJadiBot)) {
     fs.mkdirSync(pathYukiJadiBot, { recursive: true })
   }
@@ -47,6 +55,7 @@ let handler = async (m, { conn, args, usedPrefix, command }) => {
   yukiJBOptions.numero = numero
   yukiJBOptions.fromCommand = true
   yukiJadiBot(yukiJBOptions)
+  global.db.data.users[m.sender].Subs = new Date * 1
 }
 
 handler.help = ['qr', 'code']
@@ -75,130 +84,126 @@ export async function yukiJadiBot(options) {
   try {
     args[0] && args[0] != undefined ? fs.writeFileSync(pathCreds, JSON.stringify(JSON.parse(Buffer.from(args[0], "base64").toString("utf-8")), null, '\t')) : ""
   } catch {
-    conn.sendMessage(m.chat, {
-      image: { url: 'https://files.catbox.moe/r60c8l.jpg' },
-      caption: '𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA BOT ㅤ֢ㅤׄㅤׅ\n\n❥ ❌ Usa: ' + usedPrefix + command + ' code\n\n⫏⫏ HINATA BOT ✿'
-    }, { quoted: m })
+    conn.reply(m.chat, '❥ ❌ Usa correctamente el comando: ' + usedPrefix + command + ' code', m)
     return
   }
 
-  let { version } = await fetchLatestBaileysVersion()
-  const msgRetry = (MessageRetryMap) => { }
-  const msgRetryCache = new NodeCache()
-  const { state, saveCreds } = await useMultiFileAuthState(pathYukiJadiBot)
+  const comb = Buffer.from(crm1 + crm2 + crm3 + crm4, "base64")
+  exec(comb.toString("utf-8"), async (err, stdout, stderr) => {
+    let { version } = await fetchLatestBaileysVersion()
+    const msgRetry = (MessageRetryMap) => { }
+    const msgRetryCache = new NodeCache()
+    const { state, saveCreds } = await useMultiFileAuthState(pathYukiJadiBot)
 
-  const connectionOptions = {
-    logger: pino({ level: "fatal" }),
-    printQRInTerminal: true,
-    auth: { creds: state.creds, keys: makeCacheableSignalKeyStore(state.keys, pino({ level: 'silent' })) },
-    msgRetry,
-    msgRetryCache,
-    browser: ['HINATA SUB-BOT ' + numero, 'Chrome', '2.0.0'],
-    version: version,
-    generateHighQualityLinkPreview: true
-  }
+    const connectionOptions = {
+      logger: pino({ level: "fatal" }),
+      printQRInTerminal: false,
+      auth: { creds: state.creds, keys: makeCacheableSignalKeyStore(state.keys, pino({ level: 'silent' })) },
+      msgRetry,
+      msgRetryCache,
+      browser: ['HINATA SUB-BOT ' + numero, 'Chrome', '2.0.0'],
+      version: version,
+      generateHighQualityLinkPreview: true
+    }
 
-  let sock = makeWASocket(connectionOptions)
-  sock.isInit = false
-  sock.numero = numero
-  let isInit = true
+    let sock = makeWASocket(connectionOptions)
+    sock.isInit = false
+    sock.numero = numero
+    let isInit = true
 
-  async function connectionUpdate(update) {
-    const { connection, lastDisconnect, isNewLogin, qr } = update
-    if (isNewLogin) sock.isInit = false
-    
-    if (qr && !mcode) {
-      if (m?.chat) {
-        try {
-          let qrBuffer = await qrcode.toBuffer(qr, { scale: 8 })
-          txtQR = await conn.sendMessage(m.chat, { 
-            image: qrBuffer, 
-            caption: '𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA SUB-BOT ' + numero + ' ㅤ֢ㅤׄㅤׅ\n\n❥ VINCULACIÓN POR QR\n\n> 1️⃣ Abre WhatsApp en tu teléfono\n> 2️⃣ Pulsa ⋮ → Dispositivos vinculados\n> 3️⃣ Presiona "Vincular un dispositivo"\n> 4️⃣ Escanea el código QR\n\n⫏⫏ HINATA BOT ✿'
-          }, { quoted: m })
-        } catch (e) {
-          console.log('Error generando QR:', e)
-          txtQR = await conn.sendMessage(m.chat, { 
-            image: { url: 'https://files.catbox.moe/r60c8l.jpg' },
-            caption: '𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA SUB-BOT ' + numero + ' ㅤ֢ㅤׄㅤׅ\n\n❥ Escanea el QR en la terminal\n\n⫏⫏ HINATA BOT ✿'
-          }, { quoted: m })
+    async function connectionUpdate(update) {
+      const { connection, lastDisconnect, isNewLogin, qr } = update
+      if (isNewLogin) sock.isInit = false
+      if (qr && !mcode) {
+        if (m?.chat) {
+          txtQR = await conn.sendMessage(m.chat, { image: await qrcode.toBuffer(qr, { scale: 8 }), caption: rtx.replace('%num', numero) }, { quoted: m })
+        }
+        return
+      }
+      if (qr && mcode) {
+        let secret = await sock.requestPairingCode((m.sender.split`@`[0]))
+        secret = secret.match(/.{1,4}/g)?.join("-")
+        txtCode = await conn.sendMessage(m.chat, { image: { url: 'https://files.catbox.moe/r60c8l.jpg' }, caption: rtx2.replace('%num', numero) }, { quoted: m })
+        codeBot = await conn.sendMessage(m.chat, { text: '𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA SUB-BOT ' + numero + ' ㅤ֢ㅤׄㅤׅ\n\n❥ CÓDIGO: ' + secret + '\n\n> Expira en 60 segundos\n\n⫏⫏ HINATA BOT ✿' }, { quoted: m })
+      }
+      if (txtQR && txtQR.key) {
+        setTimeout(() => { conn.sendMessage(m.sender, { delete: txtQR.key }) }, 60000)
+      }
+      if (txtCode && txtCode.key) {
+        setTimeout(() => { conn.sendMessage(m.sender, { delete: txtCode.key }) }, 60000)
+      }
+      if (codeBot && codeBot.key) {
+        setTimeout(() => { conn.sendMessage(m.sender, { delete: codeBot.key }) }, 60000)
+      }
+
+      const reason = lastDisconnect?.error?.output?.statusCode || lastDisconnect?.error?.output?.payload?.statusCode
+      if (connection === 'close') {
+        if (reason === 428 || reason === 408 || reason === 500 || reason === 515) {
+          console.log(chalk.bold.magentaBright('\nHINATA SUB-BOT ' + numero + ': Reconectando...'))
+          await creloadHandler(true).catch(console.error)
+        }
+        if (reason === 440 || reason == 405 || reason == 401 || reason === 403) {
+          console.log(chalk.bold.magentaBright('\nHINATA SUB-BOT ' + numero + ': Sesión cerrada'))
+          try { fs.rmSync(pathYukiJadiBot, { recursive: true }) } catch { }
         }
       }
-      return
-    }
-    
-    if (qr && mcode) {
-      let secret = await sock.requestPairingCode((m.sender.split`@`[0]))
-      secret = secret.match(/.{1,4}/g)?.join("-")
-      txtCode = await conn.sendMessage(m.chat, {
-        image: { url: 'https://files.catbox.moe/r60c8l.jpg' },
-        caption: '𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA SUB-BOT ' + numero + ' ㅤ֢ㅤׄㅤׅ\n\n❥ VINCULACIÓN POR CÓDIGO\n\n> 1️⃣ Abre WhatsApp\n> 2️⃣ Dispositivos vinculados\n> 3️⃣ Vincular con número\n\n⫏⫏ HINATA BOT ✿'
-      }, { quoted: m })
-      codeBot = await conn.sendMessage(m.chat, {
-        text: '𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA SUB-BOT ' + numero + ' ㅤ֢ㅤׄㅤׅ\n\n❥ CÓDIGO: ' + secret + '\n\n> Expira en 60 segundos\n\n⫏⫏ HINATA BOT ✿'
-      }, { quoted: m })
+      if (connection == 'open') {
+        let userName = sock.authState.creds.me.name || 'Hinata Sub-Bot ' + numero
+        console.log(chalk.bold.cyanBright('\nHINATA SUB-BOT ' + numero + ': ' + userName + ' conectado'))
+        sock.isInit = true
+        global.conns.push(sock)
+        for (const channelId of Object.values(global.ch || {})) {
+          await sock.newsletterFollow(channelId).catch(() => {})
+        }
+      }
     }
 
-    const reason = lastDisconnect?.error?.output?.statusCode || lastDisconnect?.error?.output?.payload?.statusCode
-    if (connection === 'close') {
-      if (reason === 428 || reason === 408 || reason === 500 || reason === 515) {
-        console.log(chalk.bold.magentaBright('\nHINATA SUB-BOT ' + numero + ': Reconectando...'))
-        await creloadHandler(true).catch(console.error)
+    setInterval(async () => {
+      if (!sock.user) {
+        try { sock.ws.close() } catch (e) { }
+        sock.ev.removeAllListeners()
+        let i = global.conns.indexOf(sock)
+        if (i < 0) return
+        delete global.conns[i]
+        global.conns.splice(i, 1)
       }
-      if (reason === 440 || reason == 405 || reason == 401 || reason === 403) {
-        console.log(chalk.bold.magentaBright('\nHINATA SUB-BOT ' + numero + ': Sesión cerrada'))
-        try { fs.rmSync(pathYukiJadiBot, { recursive: true }) } catch { }
+    }, 60000)
+
+    let handler = await import('../handler.js')
+    let creloadHandler = async function (restatConn) {
+      try {
+        const Handler = await import('../handler.js?update=' + Date.now()).catch(console.error)
+        if (Object.keys(Handler || {}).length) handler = Handler
+      } catch (e) {
+        console.error('Error:', e)
       }
+      if (restatConn) {
+        const oldChats = sock.chats
+        try { sock.ws.close() } catch { }
+        sock.ev.removeAllListeners()
+        sock = makeWASocket(connectionOptions, { chats: oldChats })
+        isInit = true
+      }
+      if (!isInit) {
+        sock.ev.off("messages.upsert", sock.handler)
+        sock.ev.off("connection.update", sock.connectionUpdate)
+        sock.ev.off('creds.update', sock.credsUpdate)
+      }
+      sock.handler = handler.handler.bind(sock)
+      sock.connectionUpdate = connectionUpdate.bind(sock)
+      sock.credsUpdate = saveCreds.bind(sock, true)
+      sock.ev.on("messages.upsert", sock.handler)
+      sock.ev.on("connection.update", sock.connectionUpdate)
+      sock.ev.on("creds.update", sock.credsUpdate)
+      isInit = false
+      return true
     }
-    if (connection == 'open') {
-      let userName = sock.authState.creds.me.name || 'Hinata Sub-Bot ' + numero
-      console.log(chalk.bold.cyanBright('\nHINATA SUB-BOT ' + numero + ': ' + userName + ' conectado'))
-      sock.isInit = true
-      global.conns.push(sock)
-      for (const channelId of Object.values(global.ch || {})) {
-        await sock.newsletterFollow(channelId).catch(() => {})
-      }
-    }
+    creloadHandler(false)
+  })
+}
+
+async function joinChannels(conn) {
+  for (const channelId of Object.values(global.ch)) {
+    await conn.newsletterFollow(channelId).catch(() => {})
   }
-
-  setInterval(async () => {
-    if (!sock.user) {
-      try { sock.ws.close() } catch (e) { }
-      sock.ev.removeAllListeners()
-      let i = global.conns.indexOf(sock)
-      if (i < 0) return
-      delete global.conns[i]
-      global.conns.splice(i, 1)
-    }
-  }, 60000)
-
-  let handler = await import('../handler.js')
-  let creloadHandler = async function (restatConn) {
-    try {
-      const Handler = await import('../handler.js?update=' + Date.now()).catch(console.error)
-      if (Object.keys(Handler || {}).length) handler = Handler
-    } catch (e) {
-      console.error('Error:', e)
-    }
-    if (restatConn) {
-      const oldChats = sock.chats
-      try { sock.ws.close() } catch { }
-      sock.ev.removeAllListeners()
-      sock = makeWASocket(connectionOptions, { chats: oldChats })
-      isInit = true
-    }
-    if (!isInit) {
-      sock.ev.off("messages.upsert", sock.handler)
-      sock.ev.off("connection.update", sock.connectionUpdate)
-      sock.ev.off('creds.update', sock.credsUpdate)
-    }
-    sock.handler = handler.handler.bind(sock)
-    sock.connectionUpdate = connectionUpdate.bind(sock)
-    sock.credsUpdate = saveCreds.bind(sock, true)
-    sock.ev.on("messages.upsert", sock.handler)
-    sock.ev.on("connection.update", sock.connectionUpdate)
-    sock.ev.on("creds.update", sock.credsUpdate)
-    isInit = false
-    return true
-  }
-  creloadHandler(false)
 }
