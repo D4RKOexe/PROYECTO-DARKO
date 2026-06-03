@@ -6,15 +6,10 @@ import path from "path"
 import pino from 'pino'
 import chalk from 'chalk'
 import * as ws from 'ws'
-const { exec } = await import('child_process')
 import { makeWASocket } from '../lib/simple.js'
 import { fileURLToPath } from 'url'
 
 let subCount = {}
-
-let rtx = '𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA SUB-BOT %num ㅤ֢ㅤׄㅤׅ\n\n❥ VINCULACIÓN POR QR\n\n> 1️⃣ Abre WhatsApp en tu teléfono\n> 2️⃣ Pulsa ⋮ → Dispositivos vinculados\n> 3️⃣ Presiona "Vincular un dispositivo"\n> 4️⃣ Escanea el código QR de abajo\n\n⫏⫏ HINATA BOT ✿'
-
-let rtx2 = '𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA SUB-BOT %num ㅤ֢ㅤׄㅤׅ\n\n❥ VINCULACIÓN POR CÓDIGO\n\n> 1️⃣ Abre WhatsApp en tu teléfono\n> 2️⃣ Pulsa ⋮ → Dispositivos vinculados\n> 3️⃣ Presiona "Vincular un dispositivo"\n> 4️⃣ Selecciona "Con número" e ingresa el código\n\n⫏⫏ HINATA BOT ✿'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -94,7 +89,7 @@ export async function yukiJadiBot(options) {
 
   const connectionOptions = {
     logger: pino({ level: "fatal" }),
-    printQRInTerminal: false,
+    printQRInTerminal: true,
     auth: { creds: state.creds, keys: makeCacheableSignalKeyStore(state.keys, pino({ level: 'silent' })) },
     msgRetry,
     msgRetryCache,
@@ -111,34 +106,36 @@ export async function yukiJadiBot(options) {
   async function connectionUpdate(update) {
     const { connection, lastDisconnect, isNewLogin, qr } = update
     if (isNewLogin) sock.isInit = false
+    
     if (qr && !mcode) {
       if (m?.chat) {
-        txtQR = await conn.sendMessage(m.chat, { image: await qrcode.toBuffer(qr, { scale: 8 }), caption: rtx.replace('%num', numero) }, { quoted: m })
-      } else {
-        return
-      }
-      if (txtQR && txtQR.key) {
-        setTimeout(() => { conn.sendMessage(m.sender, { delete: txtQR.key }) }, 30000)
+        try {
+          let qrBuffer = await qrcode.toBuffer(qr, { scale: 8 })
+          txtQR = await conn.sendMessage(m.chat, { 
+            image: qrBuffer, 
+            caption: '𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA SUB-BOT ' + numero + ' ㅤ֢ㅤׄㅤׅ\n\n❥ VINCULACIÓN POR QR\n\n> 1️⃣ Abre WhatsApp en tu teléfono\n> 2️⃣ Pulsa ⋮ → Dispositivos vinculados\n> 3️⃣ Presiona "Vincular un dispositivo"\n> 4️⃣ Escanea el código QR\n\n⫏⫏ HINATA BOT ✿'
+          }, { quoted: m })
+        } catch (e) {
+          console.log('Error generando QR:', e)
+          txtQR = await conn.sendMessage(m.chat, { 
+            image: { url: 'https://files.catbox.moe/r60c8l.jpg' },
+            caption: '𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA SUB-BOT ' + numero + ' ㅤ֢ㅤׄㅤׅ\n\n❥ Escanea el QR en la terminal\n\n⫏⫏ HINATA BOT ✿'
+          }, { quoted: m })
+        }
       }
       return
     }
+    
     if (qr && mcode) {
       let secret = await sock.requestPairingCode((m.sender.split`@`[0]))
       secret = secret.match(/.{1,4}/g)?.join("-")
       txtCode = await conn.sendMessage(m.chat, {
         image: { url: 'https://files.catbox.moe/r60c8l.jpg' },
-        caption: rtx2.replace('%num', numero)
+        caption: '𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA SUB-BOT ' + numero + ' ㅤ֢ㅤׄㅤׅ\n\n❥ VINCULACIÓN POR CÓDIGO\n\n> 1️⃣ Abre WhatsApp\n> 2️⃣ Dispositivos vinculados\n> 3️⃣ Vincular con número\n\n⫏⫏ HINATA BOT ✿'
       }, { quoted: m })
       codeBot = await conn.sendMessage(m.chat, {
-        image: { url: 'https://files.catbox.moe/r60c8l.jpg' },
-        caption: '𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA SUB-BOT ' + numero + ' ㅤ֢ㅤׄㅤׅ\n\n❥ CÓDIGO: ' + secret + '\n\n> Expira en 60 segundos\n\n⫏⫏ HINATA BOT ✿'
+        text: '𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA SUB-BOT ' + numero + ' ㅤ֢ㅤׄㅤׅ\n\n❥ CÓDIGO: ' + secret + '\n\n> Expira en 60 segundos\n\n⫏⫏ HINATA BOT ✿'
       }, { quoted: m })
-    }
-    if (txtCode && txtCode.key) {
-      setTimeout(() => { conn.sendMessage(m.sender, { delete: txtCode.key }) }, 30000)
-    }
-    if (codeBot && codeBot.key) {
-      setTimeout(() => { conn.sendMessage(m.sender, { delete: codeBot.key }) }, 30000)
     }
 
     const reason = lastDisconnect?.error?.output?.statusCode || lastDisconnect?.error?.output?.payload?.statusCode
