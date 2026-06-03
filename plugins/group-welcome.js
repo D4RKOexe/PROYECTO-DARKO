@@ -14,6 +14,7 @@ let handler = async (m, { conn, isAdmin, args }) => {
 
   if (opcion === 'on') {
     chat.welcome = true
+    global.markDatabaseModified()
     return conn.sendMessage(m.chat, {
       text: '👥 「 HINATA WELCOME 」 👥\n▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔\n\n✅ » Bienvenida activada\n🌸 » Nuevos miembros recibidos\n\n▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔'
     }, { quoted: m })
@@ -21,6 +22,7 @@ let handler = async (m, { conn, isAdmin, args }) => {
 
   if (opcion === 'off') {
     chat.welcome = false
+    global.markDatabaseModified()
     return conn.sendMessage(m.chat, {
       text: '👥 「 HINATA WELCOME 」 👥\n▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔\n\n❌ » Bienvenida desactivada\n🌸 » Ya no se anunciarán\n\n▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔'
     }, { quoted: m })
