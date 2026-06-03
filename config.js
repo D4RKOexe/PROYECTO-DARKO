@@ -10,16 +10,16 @@ global.owner = [
 global.mods = []
 global.prems = []
 
-global.namebot = '𝙴𝙻𝚈𝚂𝚂𝙸𝙰 𝙼𝙳 '
-global.packname = '𝙴𝙻𝚈𝚂𝚂𝙸𝙰 𝙼𝙳 🌸'
-global.author = 'AmilcarGit| © 𝟸𝟶𝟸𝟼 '
+global.namebot = 'Hinata-Bot'
+global.packname = 'Hinata Bot 🌸'
+global.author = 'El vigilante & Brayan RK| © 𝟸𝟶𝟸𝟼 '
 global.moneda = '𝙴𝙻𝚈𝚂𝚂𝙸𝙰 𝙼𝙳'
 
 global.libreria = 'Baileys'
 global.baileys = 'V 6.7.16'
 global.vs = '2.2.0'
 global.sessions = 'sessions'
-global.jadi = 'subElyssia'
+global.jadi = 'subHinata'
 global.yukiJadibts = true
 
 global.namecanal = '❇️'
