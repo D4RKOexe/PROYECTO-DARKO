@@ -46,7 +46,7 @@ let handler = async (m, { conn }) => {
   } else if (random < probSSR + probSR) {
     rarity = 'SR'
   } else {
-    rarity = 'R'
+    rarity = 'SR'
   }
 
   let pool = characters.filter(c => c.rarity === rarity)
