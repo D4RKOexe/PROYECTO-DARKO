@@ -176,4 +176,4 @@ if (chat.welcome && [27, 28, 32].includes(m.messageStubType)) {
 
 }
 
-export default handle
+export default handler
