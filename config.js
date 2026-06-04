@@ -35,6 +35,8 @@ global.ch = {
 global.multiplier = 69
 global.maxwarn = 2
 
+global.lastRoll = {}
+
 global.APIs = {
   adonix: { url: "https://api-adonix.ultraplus.click", key: "Yuki-WaBot" },
   vreden: { url: "https://api.vreden.web.id", key: null },
