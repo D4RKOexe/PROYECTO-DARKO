@@ -17,7 +17,7 @@ let handler = async (m, { conn, text }) => {
     }]
 
     const interactiveMessage = proto.Message.InteractiveMessage.create({
-      header: { title: '🌟 HINATA STICKERLY 🌟', subtitle: 'Busca paquetes de stickers', hasMediaAttachment: false },
+      header: { title: '🌟 HINATA STICKERLY 🌟', subtitle: 'Busca y descarga stickers', hasMediaAttachment: false },
       body: { text: '🌟 「 HINATA STICKERLY 」 🌟\n\n💫 » Busca stickers en Stickerly\n\n> #stickerly <búsqueda>\n> #stickerly Goku' },
       footer: { text: '⫏⫏ HINATA BOT ✿' },
       nativeFlowMessage: {
@@ -63,7 +63,7 @@ let handler = async (m, { conn, text }) => {
 
     const interactiveMessage = proto.Message.InteractiveMessage.create({
       header: { title: '🌟 HINATA STICKERLY 🌟', subtitle: 'Selecciona un paquete', hasMediaAttachment: false },
-      body: { text: '🌟 「 HINATA STICKERLY 」 🌟\n\n💫 » Búsqueda: ' + text + '\n📦 » ' + json.data.length + ' paquetes\n\n> Elige un paquete de stickers' },
+      body: { text: '🌟 「 HINATA STICKERLY 」 🌟\n\n💫 » Búsqueda: ' + text + '\n📦 » ' + json.data.length + ' paquetes\n\n> Elige un paquete' },
       footer: { text: '⫏⫏ HINATA BOT ✿' },
       nativeFlowMessage: {
         buttons: [{
@@ -104,19 +104,51 @@ handler.before = async (m, { conn }) => {
     let packUrl = Buffer.from(urlBase64, 'base64').toString()
     let packName = Buffer.from(nameBase64, 'base64').toString()
 
-    await conn.sendMessage(m.chat, { text: '🌟 「 HINATA STICKERLY 」 🌟\n\n🔗 » ' + packUrl + '\n📦 » ' + packName + '\n\n> Abre el enlace para descargar los stickers' }, { quoted: m })
+    await m.react('⏳')
+    await conn.sendMessage(m.chat, { text: '⏳ Descargando stickers...' }, { quoted: m })
 
+    let downloadUrl = `https://api.delirius.store/download/stickerly?url=${encodeURIComponent(packUrl)}`
+    let res = await fetch(downloadUrl)
+    let json = await res.json()
+
+    if (!json.status || !json.data?.stickers?.length) {
+      await m.react('❌')
+      return conn.sendMessage(m.chat, { text: '❌ Error al descargar stickers' }, { quoted: m })
+    }
+
+    let stickers = json.data.stickers
+    let enviados = 0
+
+    for (let i = 0; i < Math.min(stickers.length, 5); i++) {
+      try {
+        let stickerRes = await fetch(stickers[i])
+        let stickerBuffer = await stickerRes.buffer()
+        await conn.sendMessage(m.chat, {
+          sticker: stickerBuffer
+        }, { quoted: m })
+        enviados++
+      } catch (e) {
+        console.log('Error enviando sticker ' + i)
+      }
+    }
+
+    await conn.sendMessage(m.chat, {
+      text: '🌟 「 HINATA STICKERLY 」 🌟\n\n✅ » ' + enviados + '/' + stickers.length + ' stickers enviados\n📦 » ' + packName + '\n👤 » ' + json.data.author + '\n\n> Algunos stickers pueden ser animados'
+    }, { quoted: m })
+
+    await m.react('✅')
     return true
 
   } catch (e) {
     console.log(e)
-    return false
+    await m.react('❌')
+    return conn.sendMessage(m.chat, { text: '❌ Error: ' + e.message }, { quoted: m })
   }
 }
 
 handler.help = ['stickerly']
 handler.tags = ['downloader']
 handler.command = /^(stickerly|stickers|stickerpack)$/i
-handler.desc = 'Busca paquetes de stickers en Stickerly'
+handler.desc = 'Busca y descarga stickers de Stickerly'
 
 export default handler
