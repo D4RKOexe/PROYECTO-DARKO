@@ -1,5 +1,5 @@
 let handler = async (m, { conn, text }) => {
-  if (!m.isGroup) return conn.sendMessage(m.chat, { text: '𖣔 「 HINATA TAG 」 ˚ʚ♡ɞ˚\n\n💫 » Solo para grupos' }, { quoted: m })
+  if (!m.isGroup) return conn.sendMessage(m.chat, { text: '𖣔 」 ˚ʚ♡ɞ˚\n\n💫 » Solo para grupos' }, { quoted: m })
 
   let target
   let mensaje
@@ -15,20 +15,18 @@ let handler = async (m, { conn, text }) => {
     target = null
   } else {
     return conn.sendMessage(m.chat, { 
-      text: '𖣔 「 HINATA TAG 」 ˚ʚ♡ɞ˚\n\n💫 » Escribe un mensaje o responde a alguien\n\n> #tag hola\n> #tag @usuario mensaje' 
+      text: '𖣔 」 ˚ʚ♡ɞ˚\n\n💫 » Escribe un mensaje o responde a alguien\n\n> #tag hola\n> #tag @usuario mensaje' 
     }, { quoted: m })
   }
 
-  let texto = '𖣔 「 HINATA TAG 」 ˚ʚ♡ɞ˚\n\n'
+  let texto = ''
 
   if (target && mensaje) {
-    texto += '📢 » @' + target.split('@')[0] + '\n'
-    texto += '💬 » ' + mensaje
+    texto += '📢 @' + target.split('@')[0] + ' ' + mensaje
   } else if (target && !mensaje) {
-    texto += '📢 » @' + target.split('@')[0] + '\n'
-    texto += '💬 » Te están llamando'
+    texto += '📢 @' + target.split('@')[0] + ' te están llamando'
   } else if (!target && mensaje) {
-    texto += '💬 » ' + mensaje
+    texto += mensaje
   }
 
   let mentions = target ? [target] : []
@@ -39,7 +37,7 @@ let handler = async (m, { conn, text }) => {
 handler.help = ['tag']
 handler.tags = ['group']
 handler.command = /^(tag)$/i
-handler.desc = 'Envía mensaje'
+handler.desc = 'Envía mensaje mencionando'
 handler.group = true
 
 export default handler
