@@ -1,6 +1,4 @@
 import fetch from 'node-fetch'
-import fs from 'fs'
-import path from 'path'
 import {
   generateWAMessageFromContent,
   prepareWAMessageMedia,
@@ -26,22 +24,20 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
         imageMessage: media.imageMessage
       },
       body: {
-        text: '𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA BOT - PLAY ㅤ֢ㅤׄㅤׅ\n\n❥ *COMANDO:* ' + usedPrefix + command + '\n\n> Envía el nombre o link de YouTube\n> 💎 Cuesta 2 diamantes por descarga'
+        text: '🎵 「 HINATA PLAY 」 🎵\n\n💫 » Busca música en YouTube\n\n> ' + usedPrefix + command + ' <nombre>\n> Ejemplo: ' + usedPrefix + command + ' Twice\n> 💎 Cuesta 1 diamante por descarga'
       },
-      footer: {
-        text: '⫏⫏ HINATA BOT ✿'
-      },
+      footer: { text: '⫏⫏ HINATA BOT ✿' },
       nativeFlowMessage: {
         buttons: [{
           name: 'single_select',
           buttonParamsJson: JSON.stringify({
             title: '🎵 YOUTUBE',
             sections: [{
-              title: '🔗 BÚSQUEDA',
+              title: '🔍 BUSCAR',
               rows: [{
-                header: '📥 DESCARGAR',
-                title: '🎵 PEGAR LINK O NOMBRE',
-                description: '💎 2 diamantes | Ejemplo: Paulo Londra',
+                header: '🎧 MÚSICA',
+                title: 'Buscar canción',
+                description: '💎 1 diamante | Ejemplo: Twice',
                 id: 'play '
               }]
             }]
@@ -58,99 +54,49 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
     return
   }
 
-  if ((user.diamantes || 0) < 2) {
-    return conn.sendMessage(m.chat, {
-      text: '𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA BOT ㅤ֢ㅤׄㅤׅ\n\n❥ ❌ No tienes suficientes diamantes\n\n💎 Necesitas: 2 diamantes\n💰 Tienes: ' + (user.diamantes || 0) + ' diamantes\n\n> Usa #work para ganar'
-    }, { quoted: m })
-  }
-
-  await m.react('🎵')
-
-  let query = text.trim()
-  let isDirectLink = query.includes('youtu.be') || query.includes('youtube.com')
+  await m.react('🔍')
 
   try {
-    if (!isDirectLink) {
-      const searchUrl = `https://api.delirius.store/search/ytsearch?q=${encodeURIComponent(query)}`
-      const searchRes = await fetch(searchUrl)
-      const searchData = await searchRes.json()
+    let searchUrl = `https://api.delirius.store/search/ytsearch?q=${encodeURIComponent(text)}`
+    let searchRes = await fetch(searchUrl)
+    let searchData = await searchRes.json()
 
-      if (!searchData.status || !searchData.result?.length) {
-        throw new Error('No se encontraron resultados')
-      }
-
-      const resultados = searchData.result.slice(0, 10)
-      let primeraMiniatura = resultados[0].thumbnail || ''
-
-      let media = null
-      if (primeraMiniatura) {
-        media = await prepareWAMessageMedia({ image: { url: primeraMiniatura } }, { upload: conn.waUploadToServer })
-      }
-
-      const rows = resultados.map((video, i) => ({
-        header: '🎵 ' + (video.channel || 'Desconocido'),
-        title: video.title.substring(0, 35),
-        description: '⏱️ ' + (video.duration || '?') + ' | 👁️ ' + (video.views || '?'),
-        id: 'select_' + i + '_' + Buffer.from(video.url).toString('base64') + '_' + Buffer.from(video.title).toString('base64')
-      }))
-
-      const interactiveMessage = proto.Message.InteractiveMessage.create({
-        header: {
-          title: 'HINATA BOT - PLAY',
-          subtitle: 'Selecciona una canción',
-          hasMediaAttachment: !!media,
-          imageMessage: media ? media.imageMessage : undefined
-        },
-        body: {
-          text: '𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ RESULTADOS ㅤ֢ㅤׄㅤׅ\n\n❥ *BÚSQUEDA:* ' + query + '\n\n> Elige una opción\n> 💎 2 diamantes al descargar'
-        },
-        footer: {
-          text: '⫏⫏ HINATA BOT ✿'
-        },
-        nativeFlowMessage: {
-          buttons: [{
-            name: 'single_select',
-            buttonParamsJson: JSON.stringify({
-              title: '🎵 RESULTADOS',
-              sections: [{ title: '📋 ' + query.toUpperCase(), rows }]
-            })
-          }]
-        }
-      })
-
-      const msg = generateWAMessageFromContent(m.chat, {
-        viewOnceMessage: { message: { messageContextInfo: {}, interactiveMessage } }
-      }, { quoted: m })
-
-      await conn.relayMessage(m.chat, msg.message, { messageId: msg.key.id })
-      return
+    if (!searchData.status || !searchData.data?.length) {
+      throw new Error('No se encontraron resultados')
     }
 
-    let media = await prepareWAMessageMedia({ image: { url: 'https://files.catbox.moe/r60c8l.jpg' } }, { upload: conn.waUploadToServer })
+    let resultados = searchData.data.slice(0, 10)
+    let primeraImagen = resultados[0].thumbnail || resultados[0].image || ''
+
+    let media = null
+    if (primeraImagen) {
+      media = await prepareWAMessageMedia({ image: { url: primeraImagen } }, { upload: conn.waUploadToServer })
+    }
+
+    let rows = resultados.map((video, i) => ({
+      header: '🎵 ' + (video.author?.name || 'Desconocido'),
+      title: video.title.substring(0, 35),
+      description: '⏱️ ' + (video.duration || '?') + ' | 👁️ ' + (video.views?.toLocaleString() || '?'),
+      id: 'ytplay_' + i + '_' + Buffer.from(video.url).toString('base64') + '_' + Buffer.from(video.title).toString('base64')
+    }))
 
     const interactiveMessage = proto.Message.InteractiveMessage.create({
       header: {
         title: 'HINATA BOT - PLAY',
-        subtitle: 'Elige formato',
-        hasMediaAttachment: true,
-        imageMessage: media.imageMessage
+        subtitle: 'Selecciona una canción',
+        hasMediaAttachment: !!media,
+        imageMessage: media ? media.imageMessage : undefined
       },
       body: {
-        text: '𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ DESCARGAR ㅤ֢ㅤׄㅤׅ\n\n❥ *ENLACE:* ' + query + '\n\n> Elige audio o video\n> 💎 Cuesta 2 diamantes'
+        text: '🎵 「 HINATA PLAY 」 🎵\n\n💫 » Búsqueda: ' + text + '\n\n> Elige una canción\n> 💎 1 diamante al descargar'
       },
       footer: { text: '⫏⫏ HINATA BOT ✿' },
       nativeFlowMessage: {
         buttons: [{
           name: 'single_select',
           buttonParamsJson: JSON.stringify({
-            title: '📥 FORMATO',
-            sections: [{
-              title: '🎵 ELIGE',
-              rows: [
-                { header: '🎧 AUDIO', title: 'Descargar MP3', description: '💎 2 diamantes', id: 'dl_audio_' + Buffer.from(query).toString('base64') },
-                { header: '🎬 VIDEO', title: 'Descargar MP4', description: '💎 2 diamantes', id: 'dl_video_' + Buffer.from(query).toString('base64') }
-              ]
-            }]
+            title: '🎵 RESULTADOS',
+            sections: [{ title: '📋 ' + text.toUpperCase(), rows }]
           })
         }]
       }
@@ -162,10 +108,10 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
 
     await conn.relayMessage(m.chat, msg.message, { messageId: msg.key.id })
 
-  } catch (error) {
-    console.log(error)
+  } catch (e) {
+    console.log(e)
     await m.react('❌')
-    conn.sendMessage(m.chat, { text: '❌ Error al procesar' }, { quoted: m })
+    conn.sendMessage(m.chat, { text: '❌ No se encontraron resultados' }, { quoted: m })
   }
 }
 
@@ -176,122 +122,64 @@ handler.before = async (m, { conn }) => {
   try {
     const data = JSON.parse(nativeFlow.paramsJson || '{}')
     const id = data.id || data.selectedId || data.selectedRowId || null
-    if (!id) return false
+    if (!id || !id.startsWith('ytplay_')) return false
 
-    if (id.startsWith('select_')) {
-      const parts = id.split('_')
-      const urlBase64 = parts[2]
-      const titleBase64 = parts[3]
-      const videoUrl = Buffer.from(urlBase64, 'base64').toString()
-      const videoTitle = Buffer.from(titleBase64, 'base64').toString()
+    let who = m.sender
+    let user = global.db.data.users[who]
+    if (!user) {
+      global.db.data.users[who] = { diamantes: 0, diamond: 0 }
+      user = global.db.data.users[who]
+    }
 
-      let media = await prepareWAMessageMedia({ image: { url: 'https://files.catbox.moe/r60c8l.jpg' } }, { upload: conn.waUploadToServer })
-
-      const interactiveMessage = proto.Message.InteractiveMessage.create({
-        header: {
-          title: 'HINATA BOT - DESCARGAR',
-          subtitle: videoTitle.substring(0, 60),
-          hasMediaAttachment: true,
-          imageMessage: media.imageMessage
-        },
-        body: {
-          text: '𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ DESCARGAR ㅤ֢ㅤׄㅤׅ\n\n❥ *TÍTULO:* ' + videoTitle + '\n\n> Elige audio o video\n> 💎 Cuesta 2 diamantes'
-        },
-        footer: { text: '⫏⫏ HINATA BOT ✿' },
-        nativeFlowMessage: {
-          buttons: [{
-            name: 'single_select',
-            buttonParamsJson: JSON.stringify({
-              title: '📥 FORMATO',
-              sections: [{
-                title: '🎵 ELIGE',
-                rows: [
-                  { header: '🎧 AUDIO', title: 'Descargar MP3', description: '💎 2 diamantes', id: 'dl_audio_' + Buffer.from(videoUrl).toString('base64') + '_' + Buffer.from(videoTitle).toString('base64') },
-                  { header: '🎬 VIDEO', title: 'Descargar MP4', description: '💎 2 diamantes', id: 'dl_video_' + Buffer.from(videoUrl).toString('base64') + '_' + Buffer.from(videoTitle).toString('base64') }
-                ]
-              }]
-            })
-          }]
-        }
-      })
-
-      const msg = generateWAMessageFromContent(m.chat, {
-        viewOnceMessage: { message: { messageContextInfo: {}, interactiveMessage } }
-      }, { quoted: m })
-
-      await conn.relayMessage(m.chat, msg.message, { messageId: msg.key.id })
+    let misDiamantes = user.diamantes || user.diamond || 0
+    if (misDiamantes < 1) {
+      await conn.sendMessage(m.chat, { text: '🎵 「 HINATA PLAY 」 🎵\n\n💫 » No tienes 1 diamante\n\n> Usa #work para ganar' }, { quoted: m })
       return true
     }
 
-    if (id.startsWith('dl_audio_') || id.startsWith('dl_video_')) {
-      let who = m.sender
-      let user = global.db.data.users[who]
-      if (!user) {
-        global.db.data.users[who] = { diamantes: 0 }
-        user = global.db.data.users[who]
-      }
+    let parts = id.split('_')
+    let urlBase64 = parts[2]
+    let titleBase64 = parts[3]
+    let videoUrl = Buffer.from(urlBase64, 'base64').toString()
+    let titulo = Buffer.from(titleBase64, 'base64').toString()
 
-      if ((user.diamantes || 0) < 2) {
-        await conn.sendMessage(m.chat, { text: '❌ No tienes 2 diamantes. Usa #work para ganar' }, { quoted: m })
-        return true
-      }
+    if (user.diamantes !== undefined) {
+      user.diamantes = misDiamantes - 1
+    } else {
+      user.diamond = misDiamantes - 1
+    }
 
-      const parts = id.split('_')
-      const isAudio = parts[1] === 'audio'
-      const urlBase64 = parts[2]
-      const titleBase64 = parts[3] || ''
-      const videoUrl = Buffer.from(urlBase64, 'base64').toString()
-      const videoTitle = titleBase64 ? Buffer.from(titleBase64, 'base64').toString() : 'Desconocido'
+    await m.react('⏳')
+    await conn.sendMessage(m.chat, { text: '⏳ Descargando...\n💎 -1 diamante' }, { quoted: m })
 
-      user.diamantes -= 2
+    let downloadUrl = `https://api.delirius.store/download/ytmp3?url=${encodeURIComponent(videoUrl)}`
+    let res = await fetch(downloadUrl)
+    let json = await res.json()
 
-      await m.react('⏳')
-      await conn.sendMessage(m.chat, { text: '⏳ Descargando ' + (isAudio ? 'audio' : 'video') + '...\n💎 -2 diamantes' }, { quoted: m })
-
-      const apiUrl = isAudio
-        ? `https://api.delirius.store/download/ytmp3?url=${encodeURIComponent(videoUrl)}`
-        : `https://api-de-el-vigilante-8jnf.onrender.com/download/ytvideo?url=${encodeURIComponent(videoUrl)}`
-
-      const response = await fetch(apiUrl)
-      const result = await response.json()
-
-      if (!result.status || !result.result?.download_url) {
-        user.diamantes += 2
-        throw new Error('No se pudo descargar, diamantes devueltos')
-      }
-
-      const downloadUrl = result.result.download_url
-      const title = result.result.title || videoTitle
-
-      const tmpDir = path.join(process.cwd(), 'tmp')
-      if (!fs.existsSync(tmpDir)) fs.mkdirSync(tmpDir, { recursive: true })
-
-      const filePath = path.join(tmpDir, Date.now() + (isAudio ? '.mp3' : '.mp4'))
-      const fileRes = await fetch(downloadUrl)
-      const fileBuffer = await fileRes.buffer()
-      fs.writeFileSync(filePath, fileBuffer)
-
-      if (isAudio) {
-        await conn.sendMessage(m.chat, {
-          audio: fs.readFileSync(filePath),
-          mimetype: 'audio/mpeg',
-          fileName: title + '.mp3'
-        }, { quoted: m })
+    if (!json.status || !json.data?.download) {
+      if (user.diamantes !== undefined) {
+        user.diamantes = misDiamantes
       } else {
-        await conn.sendMessage(m.chat, {
-          video: fs.readFileSync(filePath),
-          mimetype: 'video/mp4',
-          fileName: title + '.mp4'
-        }, { quoted: m })
+        user.diamond = misDiamantes
       }
-
-      fs.unlinkSync(filePath)
-      await conn.sendMessage(m.chat, { text: '𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA BOT ㅤ֢ㅤׄㅤׅ\n\n❥ ✅ Descarga completada\n\n🎵 ' + title + '\n💎 Restantes: ' + user.diamantes + '\n\n⫏⫏ HINATA BOT ✿' }, { quoted: m })
-      await m.react('✅')
-      return true
+      throw new Error('No se pudo descargar, diamantes devueltos')
     }
 
-    return false
+    let total = user.diamantes !== undefined ? user.diamantes : (user.diamond || 0)
+
+    await conn.sendMessage(m.chat, {
+      audio: { url: json.data.download },
+      mimetype: 'audio/mpeg',
+      fileName: (json.data.title || titulo) + '.mp3'
+    }, { quoted: m })
+
+    await conn.sendMessage(m.chat, {
+      image: { url: json.data.image || 'https://files.catbox.moe/r60c8l.jpg' },
+      caption: '🎵 「 HINATA PLAY 」 🎵\n\n💫 » Descarga completada\n\n🎧 » ' + (json.data.title || titulo) + '\n👤 » ' + (json.data.author || '') + '\n💎 » Restantes: ' + total
+    }, { quoted: m })
+
+    await m.react('✅')
+    return true
 
   } catch (e) {
     console.log(e)
@@ -303,7 +191,7 @@ handler.before = async (m, { conn }) => {
 
 handler.help = ['play']
 handler.tags = ['downloader']
-handler.command = /^(play|mp3|mp4|ytaudio|ytvideo|ytmp3|ytmp4|musica|cancion|video)$/i
-handler.desc = 'Busca y descarga música/video de YouTube 💎2'
+handler.command = /^(play|yt|youtube|musica|cancion)$/i
+handler.desc = 'Busca y descarga música de YouTube 💎1'
 
 export default handler
