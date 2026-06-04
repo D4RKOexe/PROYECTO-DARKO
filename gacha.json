@@ -49,10 +49,122 @@
   },
   {
     "name": "Sai",
-    "rarity": "SR",
+    "rarity": "R",
     "attack": 60,
     "defense": 50,
     "health": 70,
     "image": "https://files.catbox.moe/rkv6ry.jpg"
-  }
+  },
+{
+  "name": "Elizabeth",
+    "rarity": "SR",
+    "attack": 98,
+    "defense": 46,
+    "health": 79,
+    "image": "https://files.catbox.moe/5k78pq.jpg"
+  }, 
+{
+  "name": "Capitan Meliodas",
+    "rarity": "SR",
+    "attack": 199,
+    "defense": 135,
+    "health": 130,
+    "image": "https://files.catbox.moe/mwp430.jpg"
+  },
+{
+  "name": "Merlin",
+    "rarity": "SR",
+    "attack": 192,
+    "defense": 160,
+    "health": 111,
+    "image": "https://files.catbox.moe/srjvdy.jpg"
+  },
+{
+"name": "Diana +",
+    "rarity": "SR",
+    "attack": 111,
+    "defense": 120,
+    "health": 101,
+    "image": "https://files.catbox.moe/m6956p.jpg"
+  },
+{
+"name": "Ban",
+    "rarity": "SR",
+    "attack": 120,
+    "defense": 60,
+    "health": 97,
+    "image": "https://files.catbox.moe/469hzw.jpg"
+  },
+{
+"name": "Escanor",
+    "rarity": "SR",
+    "attack": 212,
+    "defense": 190,
+    "health": 211,
+    "image": "https://files.catbox.moe/moiuh3.jpg"
+  },
+{
+"name": "King",
+    "rarity": "SR",
+    "attack": 200,
+    "defense": 150,
+    "health": 111,
+    "image": "https://files.catbox.moe/txmu65.jpg"
+  },
+{
+"name": "Gowter",
+    "rarity": "SR",
+    "attack": 215,
+    "defense": 130,
+    "health": 181,
+    "image": "https://files.catbox.moe/fw4tzu.jpg"
+  },
+{
+"name": "Goku Ultra",
+    "rarity": "SSR",
+    "attack": 412,
+    "defense": 290,
+    "health": 311,
+    "image": "https://files.catbox.moe/knq1kn.jpg"
+  },
+{
+"name": "Super Broly",
+    "rarity": "SSR",
+    "attack": 312,
+    "defense": 290,
+    "health": 211,
+    "image": "https://files.catbox.moe/qsjxr3.jpg"
+  },
+{
+"name": "Bills",
+    "rarity": "SSR",
+    "attack": 412,
+    "defense": 390,
+    "health": 211,
+    "image": "https://files.catbox.moe/ufs5u8.jpg"
+  },
+{
+"name": "Jiren",
+    "rarity": "SSR",
+    "attack": 412,
+    "defense": 390,
+    "health": 211,
+    "image": "https://files.catbox.moe/3b0q9b.jpg"
+  },
+{
+"name": "Begeta",
+    "rarity": "SSR",
+    "attack": 412,
+    "defense": 390,
+    "health": 211,
+    "image": "https://files.catbox.moe/4z3x45.jpg"
+  },
+{
+"name": "Goku Black",
+    "rarity": "SSR",
+    "attack": 512,
+    "defense": 490,
+    "health": 311,
+    "image": "https://files.catbox.moe/2yj3m0.jpg"
+  },
 ]
