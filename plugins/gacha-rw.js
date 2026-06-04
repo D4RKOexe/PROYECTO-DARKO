@@ -7,7 +7,7 @@ let handler = async (m, { conn }) => {
   let who = m.sender
   let user = global.db.data.users[who]
   if (!user) {
-    global.db.data.users[who] = { diamantes: 0, exp: 0, level: 0, inventory: [] }
+    global.db.data.users[who] = { diamantes: 0, diamond: 0, exp: 0, level: 0, inventory: [] }
     user = global.db.data.users[who]
   }
 
@@ -56,7 +56,14 @@ let handler = async (m, { conn }) => {
 
   let rarityEmojis = { 'SSR': '🌟', 'SR': '⭐', 'R': '✨' }
   let rarityGemas = { 'SSR': 10, 'SR': 5, 'R': 2 }
-  user.diamantes = (user.diamantes || 0) + (rarityGemas[rarity] || 0)
+
+  if (user.diamantes !== undefined) {
+    user.diamantes = (user.diamantes || 0) + (rarityGemas[rarity] || 0)
+  } else {
+    user.diamond = (user.diamond || 0) + (rarityGemas[rarity] || 0)
+  }
+
+  let total = user.diamantes !== undefined ? user.diamantes : (user.diamond || 0)
 
   let texto = '𖣔 「 HINATA RW 」 ˚ʚ♡ɞ˚\n\n'
   texto += '  💫 Personaje obtenido\n\n'
@@ -64,6 +71,7 @@ let handler = async (m, { conn }) => {
   texto += '  ' + rarityEmojis[rarity] + ' Rareza: ' + rarity + '\n'
   texto += '  ⚔️ ' + char.attack + ' | 🛡️ ' + char.defense + ' | ❤️ ' + char.health + '\n'
   texto += '  💎 +' + (rarityGemas[rarity] || 0) + ' diamantes\n'
+  texto += '  💰 Total: ' + total + ' 💎\n'
   texto += '  🎒 Guardado en inventario\n\n'
   texto += '> ⏳ 5 minutos | #rw'
 
