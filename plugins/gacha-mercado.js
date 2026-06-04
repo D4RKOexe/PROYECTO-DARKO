@@ -14,7 +14,7 @@ let handler = async (m, { conn, args }) => {
   if (!args[0]) {
     if (Object.keys(mercado).length === 0) {
       return conn.sendMessage(m.chat, {
-        text: '🏪 「 HINATA MERCADO 」 🏪\n\n💫 » No hay personajes en venta\n\n> #mercado vender <personaje> <precio>\n> #mercado comprar <id>\n> #mercado ver'
+        text: '🏪 「 HINATA MERCADO 」 🏪\n\n💫 » No hay personajes en venta\n\n> #mercado vender <personaje> <precio>\n> #mercado comprar <numero>\n> #mercado ver'
       }, { quoted: m })
     }
 
