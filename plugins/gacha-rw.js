@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 
-let cooldownsGacha = {}
+let cooldownsClaim = {}
 
 let handler = async (m, { conn }) => {
   let who = m.sender
@@ -12,14 +12,14 @@ let handler = async (m, { conn }) => {
   }
 
   let now = Date.now()
-  let cd = cooldownsGacha[who] || 0
+  let cd = cooldownsClaim[who] || 0
   let tiempoRestante = Math.ceil((cd - now) / 1000)
 
   if (now < cd) {
     let minutos = Math.floor(tiempoRestante / 60)
     let segundos = tiempoRestante % 60
     return conn.sendMessage(m.chat, {
-      text: '🔮 「 HINATA GACHA 」 🔮\n✦•┈๑⋅⋯ ⋯⋅๑┈•✦\n\n💫 » Espera ' + minutos + 'm ' + segundos + 's\n\n✦•┈๑⋅⋯ ⋯⋅๑┈•✦'
+      text: '𖣔 「 HINATA CLAIM 」 ˚ʚ♡ɞ˚\n\n💫 » Ya reclamaste\n⏳ » ' + minutos + 'm ' + segundos + 's\n\n> Vuelve pronto'
     }, { quoted: m })
   }
 
@@ -27,7 +27,7 @@ let handler = async (m, { conn }) => {
 
   if (!fs.existsSync(gachaPath)) {
     return conn.sendMessage(m.chat, {
-      text: '🔮 「 HINATA GACHA 」 🔮\n✦•┈๑⋅⋯ ⋯⋅๑┈•✦\n\n💫 » No hay personajes\n\n✦•┈๑⋅⋯ ⋯⋅๑┈•✦'
+      text: '𖣔 「 HINATA CLAIM 」 ˚ʚ♡ɞ˚\n\n💫 » No hay personajes\n\n> Agrega personajes a gacha.json'
     }, { quoted: m })
   }
 
@@ -52,17 +52,20 @@ let handler = async (m, { conn }) => {
   let char = pool[Math.floor(Math.random() * pool.length)]
 
   user.inventory.push(char.name)
-  cooldownsGacha[who] = now + 180000
+  cooldownsClaim[who] = now + 300000
 
   let rarityEmojis = { 'SSR': '🌟', 'SR': '⭐', 'R': '✨' }
+  let rarityGemas = { 'SSR': 10, 'SR': 5, 'R': 2 }
+  user.diamantes = (user.diamantes || 0) + (rarityGemas[rarity] || 0)
 
-  let texto = '🔮 「 HINATA GACHA 」 🔮\n✦•┈๑⋅⋯ ⋯⋅๑┈•✦\n\n'
-  texto += '  💫 Invocando...\n\n'
+  let texto = '𖣔 「 HINATA CLAIM 」 ˚ʚ♡ɞ˚\n\n'
+  texto += '  💫 Personaje obtenido\n\n'
   texto += '  ✦ ' + char.name + ' ✦\n'
   texto += '  ' + rarityEmojis[rarity] + ' Rareza: ' + rarity + '\n'
-  texto += '  ⚔️ ' + char.attack + ' | 🛡️ ' + char.defense + ' | ❤️ ' + char.health + '\n\n'
+  texto += '  ⚔️ ' + char.attack + ' | 🛡️ ' + char.defense + ' | ❤️ ' + char.health + '\n'
+  texto += '  💎 +' + (rarityGemas[rarity] || 0) + ' diamantes\n'
   texto += '  🎒 Guardado en inventario\n\n'
-  texto += '✦•┈๑⋅⋯ ⋯⋅๑┈•✦\n> ⏳ 3 minutos | #rw'
+  texto += '> ⏳ 5 minutos | #claim'
 
   await conn.sendMessage(m.chat, {
     image: { url: char.image },
@@ -70,9 +73,9 @@ let handler = async (m, { conn }) => {
   }, { quoted: m })
 }
 
-handler.help = ['rw']
+handler.help = ['claim']
 handler.tags = ['gacha']
-handler.command = /^(rw|roll|gacha)$/i
-handler.desc = 'Tira de la gacha'
+handler.command = /^(claim|reclamar)$/i
+handler.desc = 'Reclama personaje cada 5 min'
 
 export default handler
