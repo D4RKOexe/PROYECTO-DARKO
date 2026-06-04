@@ -81,7 +81,7 @@ let handler = async (m, { conn, usedPrefix: _p, command }) => {
       }
     }
 
-    let bannerFinal = tagSeleccionada ? bannerCategory[tagSeleccionada] : 'https://files.catbox.moe/r60c8l.jpg'
+    let bannerFinal = tagSeleccionada ? bannerCategory[tagSeleccionada] : 'https://files.catbox.moe/c14iz0.png'
 
     let textoMenu = defaultMenu.before
       .replace(/%totalreg/g, Object.keys(global.db.data.users).length)
