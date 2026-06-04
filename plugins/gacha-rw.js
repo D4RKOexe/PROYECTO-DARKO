@@ -1,49 +1,71 @@
 import fs from 'fs'
 import path from 'path'
 
-let lastRoll = {}
+let cooldownsRw = {}
 
 let handler = async (m, { conn }) => {
   let who = m.sender
   let user = global.db.data.users[who]
   if (!user) {
-    global.db.data.users[who] = { diamantes: 0, diamond: 0, inventory: [] }
+    global.db.data.users[who] = { diamantes: 0, diamond: 0, exp: 0, level: 0, inventory: [] }
     user = global.db.data.users[who]
   }
 
-  if (!lastRoll[who]) {
+  let now = Date.now()
+  let cd = cooldownsRw[who] || 0
+  let tiempoRestante = Math.ceil((cd - now) / 1000)
+
+  if (now < cd) {
+    let minutos = Math.floor(tiempoRestante / 60)
+    let segundos = tiempoRestante % 60
     return conn.sendMessage(m.chat, {
-      text: '𖣔 「 HINATA CLAIM 」 ˚ʚ♡ɞ˚\n\n💫 » No tienes personaje pendiente\n\n> Usa #rw primero'
+      text: '𖣔 「 HINATA RW 」 ˚ʚ♡ɞ˚\n\n💫 » Espera ' + minutos + 'm ' + segundos + 's\n\n> Usa #claim para reclamar tu último personaje'
     }, { quoted: m })
   }
 
-  let char = lastRoll[who]
+  let gachaPath = path.join(process.cwd(), 'gacha.json')
+
+  if (!fs.existsSync(gachaPath)) {
+    return conn.sendMessage(m.chat, {
+      text: '𖣔 「 HINATA RW 」 ˚ʚ♡ɞ˚\n\n💫 » No hay personajes'
+    }, { quoted: m })
+  }
+
+  let characters = JSON.parse(fs.readFileSync(gachaPath, 'utf8'))
 
   if (!user.inventory) user.inventory = []
 
-  let rarityGemas = { 'SSR': 10, 'SR': 5, 'R': 2 }
+  let probSSR = global.suerteGacha?.activa ? global.suerteGacha.probSSR : 0.02
+  let probSR = global.suerteGacha?.activa ? global.suerteGacha.probSR : 0.15
 
-  user.inventory.push(char.name)
+  let random = Math.random()
+  let rarity
 
-  if (user.diamantes !== undefined) {
-    user.diamantes = (user.diamantes || 0) + (rarityGemas[char.rarity] || 0)
+  if (random < probSSR) {
+    rarity = 'SSR'
+  } else if (random < probSSR + probSR) {
+    rarity = 'SR'
   } else {
-    user.diamond = (user.diamond || 0) + (rarityGemas[char.rarity] || 0)
+    rarity = 'R'
   }
 
-  let total = user.diamantes !== undefined ? user.diamantes : (user.diamond || 0)
+  let pool = characters.filter(c => c.rarity === rarity)
+  if (pool.length === 0) pool = characters
+
+  let char = pool[Math.floor(Math.random() * pool.length)]
+
+  if (!global.lastRoll) global.lastRoll = {}
+  global.lastRoll[who] = char
+  cooldownsRw[who] = now + 300000
+
   let rarityEmojis = { 'SSR': '🌟', 'SR': '⭐', 'R': '✨' }
 
-  let texto = '𖣔 「 HINATA CLAIM 」 ˚ʚ♡ɞ˚\n\n'
-  texto += '  💫 Personaje reclamado\n\n'
+  let texto = '𖣔 「 HINATA RW 」 ˚ʚ♡ɞ˚\n\n'
+  texto += '  💫 Personaje obtenido\n\n'
   texto += '  ✦ ' + char.name + ' ✦\n'
-  texto += '  ' + rarityEmojis[char.rarity] + ' Rareza: ' + char.rarity + '\n'
-  texto += '  ⚔️ ' + char.attack + ' | 🛡️ ' + char.defense + ' | ❤️ ' + char.health + '\n'
-  texto += '  💎 +' + (rarityGemas[char.rarity] || 0) + ' diamantes\n'
-  texto += '  💰 Total: ' + total + ' 💎\n'
-  texto += '  🎒 Guardado en inventario'
-
-  delete lastRoll[who]
+  texto += '  ' + rarityEmojis[rarity] + ' Rareza: ' + rarity + '\n'
+  texto += '  ⚔️ ' + char.attack + ' | 🛡️ ' + char.defense + ' | ❤️ ' + char.health + '\n\n'
+  texto += '> Usa #claim para guardarlo\n> ⏳ 5 minutos | #rw'
 
   await conn.sendMessage(m.chat, {
     image: { url: char.image },
@@ -51,11 +73,9 @@ let handler = async (m, { conn }) => {
   }, { quoted: m })
 }
 
-handler.help = ['claim']
+handler.help = ['rw']
 handler.tags = ['gacha']
-handler.command = /^(claim|reclamar)$/i
-handler.desc = 'Reclama tu último personaje de #rw'
-
-export { lastRoll }
+handler.command = /^(rw|roll|gacha)$/i
+handler.desc = 'Tira de la gacha'
 
 export default handler
