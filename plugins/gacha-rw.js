@@ -35,15 +35,18 @@ let handler = async (m, { conn }) => {
 
   if (!user.inventory) user.inventory = []
 
+  let probSSR = global.suerteGacha?.activa ? global.suerteGacha.probSSR : 0.02
+  let probSR = global.suerteGacha?.activa ? global.suerteGacha.probSR : 0.15
+
   let random = Math.random()
   let rarity
 
-  if (random < 0.02) {
+  if (random < probSSR) {
     rarity = 'SSR'
-  } else if (random < 0.15) {
+  } else if (random < probSSR + probSR) {
     rarity = 'SR'
   } else {
-    rarity = 'SR'
+    rarity = 'R'
   }
 
   let pool = characters.filter(c => c.rarity === rarity)
@@ -84,6 +87,6 @@ let handler = async (m, { conn }) => {
 handler.help = ['rw']
 handler.tags = ['gacha']
 handler.command = /^(rw|roll|gacha)$/i
-handler.desc = 'Tira de la gacha cada 5 min'
+handler.desc = 'Tira de la gacha'
 
 export default handler
