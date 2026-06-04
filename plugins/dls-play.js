@@ -71,7 +71,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
 
   try {
     if (!isDirectLink) {
-      const searchUrl = `https://api-de-el-vigilante-8jnf.onrender.com/search/youtube?q=${encodeURIComponent(query)}`
+      const searchUrl = `https://api-gohan-v1.onrender.com/search/youtube?q=${encodeURIComponent(query)}`
       const searchRes = await fetch(searchUrl)
       const searchData = await searchRes.json()
 
