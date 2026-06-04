@@ -68,7 +68,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
     await conn.sendMessage(m.chat, { text: '⏳ Descargando video...\n💎 -2 diamantes' }, { quoted: m })
 
     try {
-      const downloadUrl = `https://api-de-el-vigilante-8jnf.onrender.com/download/tiktok?url=${encodeURIComponent(query)}`
+      const downloadUrl = `https://api-gohan-v1.onrender.com/search/tiktok?q=${encodeURIComponent(query)}`
       const res = await fetch(downloadUrl)
       const json = await res.json()
 
