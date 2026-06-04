@@ -24,7 +24,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
         imageMessage: media.imageMessage
       },
       body: {
-        text: '🟢 「 HINATA SPOTIFY 」 🟢\n\n💫 » Busca música en Spotify\n\n> ' + usedPrefix + command + ' <nombre>\n> Ejemplo: ' + usedPrefix + command + ' Aventura Amor de Madre\n> 💎 Cuesta 1 diamante por descarga'
+        text: '🟢 「 HINATA SPOTIFY 」 🟢\n\n💫 » Busca música en Spotify\n\n> ' + usedPrefix + command + ' <nombre>\n> Ejemplo: ' + usedPrefix + command + ' Twice\n> 💎 Cuesta 1 diamante por descarga'
       },
       footer: { text: '⫏⫏ HINATA BOT ✿' },
       nativeFlowMessage: {
@@ -37,8 +37,8 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
               rows: [{
                 header: '🎧 MÚSICA',
                 title: 'Buscar canción',
-                description: '💎 1 diamante | Ejemplo: Aventura',
-                id: 'spot '
+                description: '💎 1 diamante | Ejemplo: Twice',
+                id: 'sp '
               }]
             }]
           })
@@ -54,43 +54,31 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
     return
   }
 
-  if ((user.diamantes || user.diamond || 0) < 1) {
-    return conn.sendMessage(m.chat, {
-      text: '🟢 「 HINATA SPOTIFY 」 🟢\n\n💫 » No tienes suficientes diamantes\n\n💎 Necesitas: 1 diamante\n💰 Tienes: ' + (user.diamantes || user.diamond || 0) + ' diamantes\n\n> Usa #work para ganar'
-    }, { quoted: m })
-  }
-
   await m.react('🔍')
 
   try {
-    let searchUrl = `https://api.yupra.my.id/api/search/spotify?q=${encodeURIComponent(text)}`
+    let searchUrl = `https://api.delirius.store/search/spotify?q=${encodeURIComponent(text)}&limit=10`
     let searchRes = await fetch(searchUrl)
     let searchData = await searchRes.json()
 
-    if (!searchData.status || !searchData.result?.length) {
+    if (!searchData.status || !searchData.data?.length) {
       throw new Error('No se encontraron resultados')
     }
 
-    let resultados = searchData.result.slice(0, 10)
-    let primeraImagen = resultados[0].album?.images?.[0]?.url || ''
+    let resultados = searchData.data.slice(0, 10)
+    let primeraImagen = resultados[0].image || ''
 
     let media = null
     if (primeraImagen) {
       media = await prepareWAMessageMedia({ image: { url: primeraImagen } }, { upload: conn.waUploadToServer })
     }
 
-    let rows = resultados.map((track, i) => {
-      let artistas = track.artists?.map(a => a.name).join(', ') || 'Desconocido'
-      let duracion = Math.floor((track.duration_ms || 0) / 1000)
-      let min = Math.floor(duracion / 60)
-      let seg = duracion % 60
-      return {
-        header: '🎵 ' + artistas,
-        title: track.name.substring(0, 35),
-        description: '⏱️ ' + min + ':' + seg.toString().padStart(2, '0'),
-        id: 'spot_' + i + '_' + Buffer.from(track.url).toString('base64') + '_' + Buffer.from(track.name).toString('base64')
-      }
-    })
+    let rows = resultados.map((track, i) => ({
+      header: '🎵 ' + (track.artist || 'Desconocido'),
+      title: track.title.substring(0, 35),
+      description: '💿 ' + (track.album || '') + ' | ⏱️ ' + (track.duration || '?'),
+      id: 'spotdl_' + i + '_' + Buffer.from(track.url).toString('base64') + '_' + Buffer.from(track.title).toString('base64')
+    }))
 
     const interactiveMessage = proto.Message.InteractiveMessage.create({
       header: {
@@ -134,7 +122,7 @@ handler.before = async (m, { conn }) => {
   try {
     const data = JSON.parse(nativeFlow.paramsJson || '{}')
     const id = data.id || data.selectedId || data.selectedRowId || null
-    if (!id || !id.startsWith('spot_')) return false
+    if (!id || !id.startsWith('spotdl_')) return false
 
     let who = m.sender
     let user = global.db.data.users[who]
@@ -164,11 +152,11 @@ handler.before = async (m, { conn }) => {
     await m.react('⏳')
     await conn.sendMessage(m.chat, { text: '⏳ Descargando...\n💎 -1 diamante' }, { quoted: m })
 
-    let downloadUrl = `https://api.yupra.my.id/api/downloader/spotify?url=${encodeURIComponent(spotifyUrl)}`
+    let downloadUrl = `https://api.delirius.store/download/spotifydl?url=${encodeURIComponent(spotifyUrl)}`
     let res = await fetch(downloadUrl)
     let json = await res.json()
 
-    if (!json.status || !json.result?.download?.url) {
+    if (!json.status || !json.data?.download) {
       if (user.diamantes !== undefined) {
         user.diamantes = misDiamantes
       } else {
@@ -180,14 +168,14 @@ handler.before = async (m, { conn }) => {
     let total = user.diamantes !== undefined ? user.diamantes : (user.diamond || 0)
 
     await conn.sendMessage(m.chat, {
-      audio: { url: json.result.download.url },
+      audio: { url: json.data.download },
       mimetype: 'audio/mpeg',
-      fileName: (json.result.title || titulo) + '.mp3'
+      fileName: (json.data.title || titulo) + '.mp3'
     }, { quoted: m })
 
     await conn.sendMessage(m.chat, {
-      image: { url: json.result.image || 'https://files.catbox.moe/r60c8l.jpg' },
-      caption: '🟢 「 HINATA SPOTIFY 」 🟢\n\n💫 » Descarga completada\n\n🎵 » ' + (json.result.title || titulo) + '\n👤 » ' + (json.result.artist || '') + '\n💎 » Restantes: ' + total
+      image: { url: json.data.image || 'https://files.catbox.moe/r60c8l.jpg' },
+      caption: '🟢 「 HINATA SPOTIFY 」 🟢\n\n💫 » Descarga completada\n\n🎧 » ' + (json.data.title || titulo) + '\n👤 » ' + (json.data.author || '') + '\n💎 » Restantes: ' + total
     }, { quoted: m })
 
     await m.react('✅')
