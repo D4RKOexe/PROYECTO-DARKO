@@ -35,11 +35,13 @@ const defaultMenu = {
  ✦%totalreg ᴜꜱᴇʀꜱ ✦ %totalcmd ᴄᴍᴅꜱ ✦
 
 > ⏱️ %uptime activa
+> 👤 Solicitado por @%user
 
 %readmore
 `,
-  header: '\n𖣔 %category ˚ʚ♡ɞ˚\n',
-  body: '❧ %cmd → %desc',
+  header: '\n𖣔 %category ˚ʚ♡ɞ˚ (%count cmd)\n',
+  body: '❧ %cmd',
+  desc: '\n> ↆ %desc',
   footer: '',
   after: `
 
@@ -50,10 +52,11 @@ const defaultMenu = {
 
 let handler = async (m, { conn, usedPrefix: _p, command }) => {
   try {
-    let user = global.db.data.users[m.sender]
+    let who = m.sender
+    let user = global.db.data.users[who]
     if (!user) {
       user = { exp: 0, level: 0 }
-      global.db.data.users[m.sender] = user
+      global.db.data.users[who] = user
     }
 
     const help = Object.values(global.plugins)
@@ -82,6 +85,7 @@ let handler = async (m, { conn, usedPrefix: _p, command }) => {
       .replace(/%totalreg/g, Object.keys(global.db.data.users).length)
       .replace(/%totalcmd/g, Object.keys(global.plugins).length)
       .replace(/%uptime/g, Math.floor(process.uptime() / 60) + 'm ' + Math.floor(process.uptime() % 60) + 's')
+      .replace(/%user/g, who.split('@')[0])
 
     if (tagSeleccionada) {
       textoMenu = textoMenu.replace('𝕳𝖎𝖓𝖆𝖙𝖆 𝕭𝖔𝖙', '𝕳𝖎𝖓𝖆𝖙𝖆 𝕭𝖔𝖙 ✦ ' + tags[tagSeleccionada].replace(/[⭐👥⚔️🎮🎰🤖👑📥ℹ️]/g, '').trim())
@@ -90,16 +94,17 @@ let handler = async (m, { conn, usedPrefix: _p, command }) => {
     for (let tag of Object.keys(tags)) {
       if (tagSeleccionada && tag !== tagSeleccionada) continue
 
-      const cmds = help
-        .filter(menu => menu.tags?.includes(tag))
+      const cmdsFiltrados = help.filter(menu => menu.tags?.includes(tag))
+      
+      const cmds = cmdsFiltrados
         .map(menu => menu.help.map(h => 
-          defaultMenu.body
-            .replace(/%cmd/g, menu.prefix ? h : `${_p}${h}`)
-            .replace(/%desc/g, menu.desc || '')
+          defaultMenu.body.replace(/%cmd/g, menu.prefix ? h : `${_p}${h}`) + 
+          (menu.desc ? defaultMenu.desc.replace(/%desc/g, menu.desc) : '')
         ).join('\n')).join('\n')
 
       if (cmds) {
-        textoMenu += defaultMenu.header.replace(/%category/g, tags[tag])
+        let count = cmdsFiltrados.length
+        textoMenu += defaultMenu.header.replace(/%category/g, tags[tag]).replace(/%count/g, count)
         textoMenu += cmds + '\n'
       }
     }
@@ -114,7 +119,8 @@ let handler = async (m, { conn, usedPrefix: _p, command }) => {
 
     await conn.sendMessage(m.chat, {
       image: { url: bannerFinal },
-      caption: texto.trim()
+      caption: texto.trim(),
+      mentions: [who]
     }, { quoted: m })
 
   } catch (e) {
@@ -123,7 +129,7 @@ let handler = async (m, { conn, usedPrefix: _p, command }) => {
   }
 }
 
-handler.help = ['menu', 'menú', 'help']
+handler.help = ['menu']
 handler.tags = ['main']
 handler.command = /^(menu|menú|help)(rpg|group|game|gacha|serbot|owner|downloader|info|main)?$/i
 handler.register = false
