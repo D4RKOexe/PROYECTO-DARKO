@@ -45,7 +45,7 @@ const handler = async (m, { conn, command, args, isAdmin, isOwner }) => {
   }
 }
 
-handler.command = ['on', 'off']
+handler.command = ['onn', 'offf']
 handler.group = true
 handler.register = false
 handler.tags = ['group']
