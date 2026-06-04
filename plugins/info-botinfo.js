@@ -14,12 +14,22 @@ let handler = async (m, { conn }) => {
   let sistema = os.platform()
   let node = process.version
 
+  let disk
+  try {
+    let diskInfo = execSync('df -h / | tail -1').toString()
+    let diskParts = diskInfo.split(/\s+/)
+    disk = diskParts[2] + ' / ' + diskParts[1] + ' (' + diskParts[4] + ')'
+  } catch {
+    disk = 'N/A'
+  }
+
   let texto = '🤖 「 HINATA BOTINFO 」 🤖\n\n'
   texto += '👤 » *Usuarios:* ' + totalUsers + '\n'
   texto += '👥 » *Grupos:* ' + totalGroups + '\n'
   texto += '⚡ » *Comandos:* ' + totalCmds + '\n'
   texto += '⏱️ » *Activa:* ' + dias + 'd ' + horas + 'h ' + minutos + 'm\n'
   texto += '💾 » *RAM:* ' + ram + ' MB\n'
+  texto += '💿 » *Disco:* ' + disk + '\n'
   texto += '🖥️ » *CPU:* ' + cpu + '\n'
   texto += '💻 » *Sistema:* ' + sistema + '\n'
   texto += '📦 » *Node:* ' + node + '\n\n'
@@ -30,7 +40,7 @@ let handler = async (m, { conn }) => {
 
 handler.help = ['botinfo']
 handler.tags = ['info']
-handler.command = /^(botinfo|stats|estado|info)$/i
+handler.command = /^(botinfo|stats|estado)$/i
 handler.desc = 'Estadísticas de la bot'
 
 export default handler
