@@ -14,7 +14,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
   }
 
   if (!text) {
-    let media = await prepareWAMessageMedia({ image: { url: 'https://files.catbox.moe/r60c8l.jpg' } }, { upload: conn.waUploadToServer })
+    let media = await prepareWAMessageMedia({ image: { url: 'https://files.catbox.moe/j43f53.png' } }, { upload: conn.waUploadToServer })
 
     const interactiveMessage = proto.Message.InteractiveMessage.create({
       header: {
