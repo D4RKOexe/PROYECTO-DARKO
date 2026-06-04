@@ -18,15 +18,15 @@ const tags = {
 
 const bannerCategory = {
   main: 'https://files.catbox.moe/r60c8l.jpg',
-  group: 'https://files.catbox.moe/qyjtab.jpeg',
-  rpg: 'https://files.catbox.moe/zthq3s.jpeg',
-  game: 'https://files.catbox.moe/ug1ecw.jpeg',
-  gacha: 'https://files.catbox.moe/j3z3eo.jpeg',
+  group: 'https://files.catbox.moe/3tlaq0.png',
+  rpg: 'https://files.catbox.moe/cyqgku.png',
+  game: 'https://files.catbox.moe/1erk1n.png',
+  gacha: 'https://files.catbox.moe/rlnc3s.png',
   serbot: 'https://files.catbox.moe/r60c8l.jpg',
-  owner: 'https://files.catbox.moe/r60c8l.jpg',
-  downloader: 'https://files.catbox.moe/xjn6am.jpeg',
-  info: 'https://files.catbox.moe/ap5nos.jpeg',
-  diversion: 'https://files.catbox.moe/r60c8l.jpg'
+  owner: 'https://files.catbox.moe/52nm0t.png',
+  downloader: 'https://files.catbox.moe/ow6st7.png',
+  info: 'https://files.catbox.moe/42tsa2.png',
+  diversion: 'https://files.catbox.moe/2t7d69.png'
 }
 
 const defaultMenu = {
