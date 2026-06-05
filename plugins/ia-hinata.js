@@ -1,6 +1,8 @@
 // plugins/index/ia-mitsuri.js
 
-const GROQ_KEY = process.env.GROQ_API_KEY
+// ⚠️ PON TU KEY AQUÍ DIRECTAMENTE:
+const GROQ_KEY = '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'
+
 const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions'
 
 const SYSTEM_PROMPT = `
@@ -65,16 +67,12 @@ async function preguntarMitsuri(pregunta, chatId) {
   return respuesta
 }
 
-// ─── handler principal (.mitsuri / .ia) ──────────────────────────────────────
+// ─── handler principal (.mitsuri / .ia / .bot) ────────────────────────────────
 let handler = async (m, { conn, text }) => {
   const pregunta = text?.trim()
 
   if (!pregunta) {
     return m.reply('🌸 ¡Kyaa~ hola! Soy Mitsuri, el Pilar del Amor 💕\n¿En qué te puedo ayudar hoy? ¡Pregúntame lo que sea! ✨')
-  }
-
-  if (!GROQ_KEY) {
-    return m.reply('❌ No hay clave GROQ configurada.\n> Agrega GROQ_API_KEY en tu .env 🌸')
   }
 
   try {
@@ -90,37 +88,33 @@ let handler = async (m, { conn, text }) => {
 }
 
 // ─── handler.before ───────────────────────────────────────────────────────────
-// Se activa si:
-//   1) Alguien responde (quoted) a un mensaje del bot  →  privado Y grupos
-//   2) Alguien @menciona al bot                        →  solo grupos
+// Activa Mitsuri cuando:
+//   1) Responden a un mensaje del bot  (privado Y grupos)
+//   2) Mencionan al bot con @          (solo grupos)
 handler.before = async function (m, { conn }) {
-  if (!m.text)   return false
-  if (m.fromMe)  return false
-  if (!GROQ_KEY) return false
+  if (!m.text)  return false
+  if (m.fromMe) return false
 
+  // Número limpio del bot: "521234567890"
   const botNum = (conn.user?.id || conn.user?.jid || '').split('@')[0].split(':')[0]
 
-  // ── TRIGGER 1: respuesta a un mensaje del bot ────────────────────────────
-  // smsg() expone m.quoted con m.quoted.sender (JID de quien envió el citado)
-  const quotedSender = m.quoted?.sender || m.quoted?.key?.participant || null
-  const isReplyToBot = !!quotedSender &&
-    quotedSender.split('@')[0].split(':')[0] === botNum
+  // ── TRIGGER 1: alguien respondió un mensaje del bot ──────────────────────
+  // En simple.js: m.quoted.sender = contextInfo.participant (el JID de quien envió el citado)
+  // Si fromMe es true en el quoted, significa que el bot lo envió → es respuesta al bot
+  const isReplyToBot = !!(m.quoted && (
+    m.quoted.fromMe === true ||
+    (m.quoted.sender && m.quoted.sender.split('@')[0].split(':')[0] === botNum)
+  ))
 
   // ── TRIGGER 2: @mención al bot (solo grupos) ─────────────────────────────
   let isMention = false
-  if (m.isGroup) {
-    const mtype = m.mtype
-    const contextInfo =
-      m.message?.[mtype]?.contextInfo ||
-      m.message?.extendedTextMessage?.contextInfo ||
-      null
-    const menciones = contextInfo?.mentionedJid || m.mentionedJid || []
-
+  if (!isReplyToBot && m.isGroup) {
+    // mentionedJid viene de msg.contextInfo.mentionedJid (ya serializado en simple.js)
+    const menciones = m.mentionedJid || []
     if (menciones.length) {
-      // intento 1: comparar número directamente
       isMention = menciones.some(jid => jid.split('@')[0].split(':')[0] === botNum)
 
-      // intento 2: fallback por LID en participantes del grupo
+      // Fallback por LID (dispositivos nuevos de WhatsApp)
       if (!isMention) {
         try {
           const meta = await conn.groupMetadata(m.chat)
@@ -137,10 +131,9 @@ handler.before = async function (m, { conn }) {
     }
   }
 
-  // Si ningún trigger aplica, salir
   if (!isReplyToBot && !isMention) return false
 
-  // Limpiar @menciones del texto y verificar que haya contenido
+  // Limpiar el texto de @menciones y verificar que haya contenido real
   const pregunta = m.text.replace(/@\d+/g, '').trim()
   if (!pregunta) return false
 
@@ -154,10 +147,10 @@ handler.before = async function (m, { conn }) {
     await conn.sendPresenceUpdate('paused', m.chat).catch(() => {})
   }
 
-  return false // false para que otros plugins sigan ejecutándose
+  return false
 }
 
-handler.all = async function (m) {} // vacío, la lógica va en before
+handler.all  = async function (m) {}
 
 handler.help    = ['mitsuri', 'ia']
 handler.tags    = ['ia']
