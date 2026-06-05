@@ -6,7 +6,7 @@ import {
 } from '@whiskeysockets/baileys'
 
 const VIDEO_QUALITY = '720p'
-const DELIRIUS_API = 'https://api-gohan-v1.onrender.com'
+const GOHAN_API = 'https://api-gohan-v1.onrender.com'
 
 const _processing = new Set()
 
@@ -34,7 +34,7 @@ function devolverDiamante(user, anterior) {
 }
 
 async function searchYouTube(query) {
-  const res = await fetch(`${DELIRIUS_API}/search/youtube?q=${encodeURIComponent(query)}`)
+  const res = await fetch(`${GOHAN_API}/search/youtube?q=${encodeURIComponent(query)}`)
   const data = await res.json()
   if (!data.status || !data.data?.length) throw new Error('No se encontraron resultados.')
   const video = data.data[0]
@@ -47,7 +47,7 @@ async function searchYouTube(query) {
 
 
 async function sendVideo(conn, m, videoUrl, title) {
-  const res = await fetch(`${DELIRIUS_API}/download/ytvideo?url=${encodeURIComponent(videoUrl)}`)
+  const res = await fetch(`${GOHAN_API}/download/ytvideo?url=${encodeURIComponent(videoUrl)}`)
   const json = await res.json()
   if (!json.status || !json.data?.download) throw new Error('No se pudo obtener el video.')
 
@@ -71,7 +71,7 @@ async function sendVideo(conn, m, videoUrl, title) {
 }
 
 async function sendAudio(conn, m, videoUrl, title) {
-  const res = await fetch(`${DELIRIUS_API}/download/ytmp3?url=${encodeURIComponent(videoUrl)}`)
+  const res = await fetch(`${GOHAN_API}/download/ytaudio?url=${encodeURIComponent(videoUrl)}`)
   const json = await res.json()
   if (!json.status || !json.data?.download) throw new Error('No se pudo obtener el audio.')
 
