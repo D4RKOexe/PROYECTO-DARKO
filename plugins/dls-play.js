@@ -1,5 +1,3 @@
-// plugins/index/youtube.js
-
 import fetch from 'node-fetch'
 import {
   generateWAMessageFromContent,
@@ -10,10 +8,8 @@ import {
 const VIDEO_QUALITY = '720p'
 const DELIRIUS_API = 'https://api.delirius.store'
 
-// ─── lock anti-duplicados ─────────────────────────────────────────────────────
 const _processing = new Set()
 
-// ─── utilidades ──────────────────────────────────────────────────────────────
 
 function safeFileName(name) {
   return String(name || 'media').replace(/[\\/:*?"<>|]/g, '').replace(/\s+/g, ' ').trim().slice(0, 80) || 'media'
@@ -24,7 +20,6 @@ function extractYouTubeUrl(text) {
 }
 function isHttpUrl(v) { return /^https?:\/\//i.test(String(v || '')) }
 
-// ─── helpers diamantes ────────────────────────────────────────────────────────
 
 function getDiamantes(user) {
   return user?.diamantes ?? user?.diamond ?? 0
@@ -38,8 +33,6 @@ function devolverDiamante(user, anterior) {
   else user.diamond = anterior
 }
 
-// ─── youtube search ───────────────────────────────────────────────────────────
-
 async function searchYouTube(query) {
   const res = await fetch(`${DELIRIUS_API}/search/ytsearch?q=${encodeURIComponent(query)}`)
   const data = await res.json()
@@ -52,7 +45,6 @@ async function searchYouTube(query) {
   }
 }
 
-// ─── descarga video ───────────────────────────────────────────────────────────
 
 async function sendVideo(conn, m, videoUrl, title) {
   const res = await fetch(`${DELIRIUS_API}/download/ytmp4?url=${encodeURIComponent(videoUrl)}`)
@@ -78,8 +70,6 @@ async function sendVideo(conn, m, videoUrl, title) {
   return finalTitle
 }
 
-// ─── descarga audio ───────────────────────────────────────────────────────────
-
 async function sendAudio(conn, m, videoUrl, title) {
   const res = await fetch(`${DELIRIUS_API}/download/ytmp3?url=${encodeURIComponent(videoUrl)}`)
   const json = await res.json()
@@ -101,7 +91,6 @@ async function sendAudio(conn, m, videoUrl, title) {
     }, { quoted: m })
   }
 
-  // Enviar imagen con info
   if (json.data.image) {
     await conn.sendMessage(m.chat, {
       image: { url: json.data.image },
@@ -111,8 +100,6 @@ async function sendAudio(conn, m, videoUrl, title) {
 
   return finalTitle
 }
-
-// ─── handler principal ────────────────────────────────────────────────────────
 
 let handler = async (m, { conn, text, usedPrefix, command }) => {
   // anti-duplicados
@@ -129,7 +116,6 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
 
   const input = text?.trim()
 
-  // Sin texto → menú inicial
   if (!input) {
     let media = null
     try {
@@ -175,12 +161,10 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
     return
   }
 
-  // Con texto → validar URL
   if (isHttpUrl(input) && !extractYouTubeUrl(input)) {
     return conn.sendMessage(m.chat, { text: '❌ Envía un link válido de YouTube.' }, { quoted: m })
   }
 
-  // Verificar diamantes
   const diamantes = getDiamantes(user)
   if (diamantes < 1) {
     return conn.sendMessage(m.chat, {
@@ -208,7 +192,6 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
     return conn.sendMessage(m.chat, { text: `❌ ${e.message}` }, { quoted: m })
   }
 
-  // Miniatura
   let media = null
   if (thumbnail) {
     try {
@@ -219,8 +202,6 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
     } catch {}
   }
 
-  // FIX: usar separador que NO aparece en base64 (base64 solo usa A-Z a-z 0-9 + / =)
-  // Usamos "~" como separador seguro
   const urlB64   = Buffer.from(videoUrl).toString('base64')
   const titleB64 = Buffer.from(title).toString('base64')
 
@@ -260,15 +241,12 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
   await m.react('✅')
 }
 
-// ─── handler.before ───────────────────────────────────────────────────────────
-
 handler.before = async (m, { conn }) => {
   if (m.isBaileys) return false
 
   const nativeFlow = m.message?.interactiveResponseMessage?.nativeFlowResponseMessage
   if (!nativeFlow) return false
 
-  // anti-duplicados
   const msgKey = `before_${m.id || m.key?.id}`
   if (_processing.has(msgKey)) return true
   _processing.add(msgKey)
@@ -282,7 +260,6 @@ handler.before = async (m, { conn }) => {
 
   if (!id) return false
 
-  // Menú sin query
   if (id === 'ytchoose|audio' || id === 'ytchoose|video') {
     const tipo = id === 'ytchoose|audio' ? '🎵 audio' : '🎬 video'
     await conn.sendMessage(m.chat, {
@@ -293,9 +270,8 @@ handler.before = async (m, { conn }) => {
 
   if (!id.startsWith('ytdl~')) return false
 
-  // FIX: parseo con split usando "~" como separador seguro
   const parts = id.split('~')
-  // parts[0] = 'ytdl', parts[1] = tipo, parts[2] = urlB64, parts[3] = titleB64
+
   if (parts.length < 4) {
     await conn.sendMessage(m.chat, { text: '❌ Error al procesar la selección.' }, { quoted: m })
     return true
@@ -314,14 +290,12 @@ handler.before = async (m, { conn }) => {
     return true
   }
 
-  // inicializar usuario
   let user = global.db.data.users[m.sender]
   if (!user) {
     global.db.data.users[m.sender] = { diamantes: 0, diamond: 0 }
     user = global.db.data.users[m.sender]
   }
 
-  // verificar diamantes
   const diamantes = getDiamantes(user)
   if (diamantes < 1) {
     await conn.sendMessage(m.chat, {
@@ -330,7 +304,6 @@ handler.before = async (m, { conn }) => {
     return true
   }
 
-  // descontar diamante
   restarDiamante(user)
   const restantes = getDiamantes(user)
 
@@ -356,7 +329,6 @@ handler.before = async (m, { conn }) => {
     await m.react('✅')
 
   } catch (e) {
-    // devolver diamante si falló
     devolverDiamante(user, diamantes)
     console.error('[YT ERROR]', e.message)
     await m.react('❌')
