@@ -1,5 +1,5 @@
 
-const GROQ_KEY = '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'
+const GROQ_KEY = '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''
 
 const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions'
 
@@ -83,52 +83,71 @@ let handler = async (m, { conn, text }) => {
   }
 }
 
-// ─── handler.all ──────────────────────────────────────────────────────────────
-// Se ejecuta ANTES de if (m.isBaileys) en el handler.js
-// Por eso puede capturar respuestas al bot y @menciones sin problemas
-handler.all = async function (m, { conn }) {
-  console.log('[MITSURI]', {
-    text: m.text?.slice(0,30),
-    fromMe: m.fromMe,
-    isBaileys: m.isBaileys,
-    quoted: !!m.quoted,
-    quotedFromMe: m.quoted?.fromMe,
-    mentionedJid: m.mentionedJid
-  })
-  // ... resto del código
-  if (!m.text)   return
-  if (m.fromMe)  return
-  if (!GROQ_KEY) return
+// LID del bot — se guarda la primera vez que se detecta
+let botLidCache = null
 
-  const botNum = (conn?.user?.id || conn?.user?.jid || this?.user?.id || '').split('@')[0].split(':')[0]
-  if (!botNum) return
+handler.all = async function (m, { conn }) {
+  if (!m.text)  return
+  if (m.fromMe) return
+
+  const connRef = conn || this
+
+  // ── Obtener identidad del bot (número normal y LID) ───────────────────────
+  const botJid  = connRef?.user?.id || connRef?.user?.jid || ''
+  const botNum  = botJid.split('@')[0].split(':')[0]  // número limpio
+
+  // El LID del bot lo obtenemos de los participantes del grupo la primera vez
+  // y lo cacheamos para no hacer groupMetadata en cada mensaje
+  if (!botLidCache && m.isGroup) {
+    try {
+      const meta = await connRef.groupMetadata(m.chat)
+      const me = meta.participants.find(p => {
+        const pid = p.id.split('@')[0].split(':')[0]
+        const ppn = (p.phoneNumber || '').replace(/\D/g, '')
+        return pid === botNum || ppn === botNum
+      })
+      if (me?.id) botLidCache = me.id  // ej: "77623648624677@lid"
+    } catch {}
+  }
 
   // ── TRIGGER 1: respondieron un mensaje del bot ────────────────────────────
-  // m.quoted.fromMe = true cuando el mensaje citado lo envió el bot
   const isReplyToBot = !!(m.quoted && (
     m.quoted.fromMe === true ||
-    (m.quoted.sender && m.quoted.sender.split('@')[0].split(':')[0] === botNum)
+    (m.quoted.sender && (
+      m.quoted.sender.split('@')[0].split(':')[0] === botNum ||
+      (botLidCache && m.quoted.sender === botLidCache)
+    ))
   ))
 
-  // ── TRIGGER 2: @mención al bot (grupos y privado) ─────────────────────────
+  // ── TRIGGER 2: @mención al bot ────────────────────────────────────────────
   let isMention = false
   if (!isReplyToBot) {
     const menciones = m.mentionedJid || []
     if (menciones.length) {
-      isMention = menciones.some(jid => jid.split('@')[0].split(':')[0] === botNum)
+      isMention = menciones.some(jid => {
+        const jidNum = jid.split('@')[0].split(':')[0]
+        // Comparar contra número normal
+        if (jidNum === botNum) return true
+        // Comparar contra LID cacheado (ej: "77623648624677@lid")
+        if (botLidCache && jid === botLidCache) return true
+        // Comparar solo el número del LID contra el número del bot
+        if (jid.endsWith('@lid') && jidNum === botNum) return true
+        return false
+      })
 
-      // Fallback LID para dispositivos nuevos de WhatsApp
-      if (!isMention && m.isGroup) {
+      // Último recurso: si alguna mención es @lid y aún no tenemos cache,
+      // buscar en participantes ahora
+      if (!isMention && m.isGroup && menciones.some(j => j.endsWith('@lid'))) {
         try {
-          const connRef = conn || this
           const meta = await connRef.groupMetadata(m.chat)
-          const botParticipant = meta.participants.find(p => {
+          const me = meta.participants.find(p => {
             const pid = p.id.split('@')[0].split(':')[0]
             const ppn = (p.phoneNumber || '').replace(/\D/g, '')
             return pid === botNum || ppn === botNum
           })
-          if (botParticipant?.id) {
-            isMention = menciones.some(jid => jid === botParticipant.id)
+          if (me?.id) {
+            botLidCache = me.id
+            isMention = menciones.some(jid => jid === me.id)
           }
         } catch {}
       }
@@ -141,19 +160,17 @@ handler.all = async function (m, { conn }) {
   if (!pregunta) return
 
   try {
-    const connRef = conn || this
     await connRef.sendPresenceUpdate('composing', m.chat)
     const respuesta = await preguntarMitsuri(pregunta, m.chat)
     await connRef.sendPresenceUpdate('paused', m.chat)
     await m.reply(respuesta)
   } catch (e) {
     console.error('[MITSURI ALL ERROR]', e.message)
-    const connRef = conn || this
     await connRef.sendPresenceUpdate('paused', m.chat).catch(() => {})
   }
 }
 
-handler.before = async function () {}  // vacío, la lógica está en all
+handler.before = async function () {}
 
 handler.help    = ['mitsuri', 'ia']
 handler.tags    = ['ia']
