@@ -1,6 +1,4 @@
-// plugins/index/ia-mitsuri.js
 
-// ⚠️ PON TU KEY AQUÍ DIRECTAMENTE:
 const GROQ_KEY = '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'
 
 const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions'
@@ -70,11 +68,9 @@ async function preguntarMitsuri(pregunta, chatId) {
 // ─── handler principal (.mitsuri / .ia / .bot) ────────────────────────────────
 let handler = async (m, { conn, text }) => {
   const pregunta = text?.trim()
-
   if (!pregunta) {
     return m.reply('🌸 ¡Kyaa~ hola! Soy Mitsuri, el Pilar del Amor 💕\n¿En qué te puedo ayudar hoy? ¡Pregúntame lo que sea! ✨')
   }
-
   try {
     await conn.sendPresenceUpdate('composing', m.chat)
     const respuesta = await preguntarMitsuri(pregunta, m.chat)
@@ -87,37 +83,37 @@ let handler = async (m, { conn, text }) => {
   }
 }
 
-// ─── handler.before ───────────────────────────────────────────────────────────
-// Activa Mitsuri cuando:
-//   1) Responden a un mensaje del bot  (privado Y grupos)
-//   2) Mencionan al bot con @          (solo grupos)
-handler.before = async function (m, { conn }) {
-  if (!m.text)  return false
-  if (m.fromMe) return false
+// ─── handler.all ──────────────────────────────────────────────────────────────
+// Se ejecuta ANTES de if (m.isBaileys) en el handler.js
+// Por eso puede capturar respuestas al bot y @menciones sin problemas
+handler.all = async function (m, { conn }) {
+  // Filtros básicos
+  if (!m.text)   return
+  if (m.fromMe)  return
+  if (!GROQ_KEY) return
 
-  // Número limpio del bot: "521234567890"
-  const botNum = (conn.user?.id || conn.user?.jid || '').split('@')[0].split(':')[0]
+  const botNum = (conn?.user?.id || conn?.user?.jid || this?.user?.id || '').split('@')[0].split(':')[0]
+  if (!botNum) return
 
-  // ── TRIGGER 1: alguien respondió un mensaje del bot ──────────────────────
-  // En simple.js: m.quoted.sender = contextInfo.participant (el JID de quien envió el citado)
-  // Si fromMe es true en el quoted, significa que el bot lo envió → es respuesta al bot
+  // ── TRIGGER 1: respondieron un mensaje del bot ────────────────────────────
+  // m.quoted.fromMe = true cuando el mensaje citado lo envió el bot
   const isReplyToBot = !!(m.quoted && (
     m.quoted.fromMe === true ||
     (m.quoted.sender && m.quoted.sender.split('@')[0].split(':')[0] === botNum)
   ))
 
-  // ── TRIGGER 2: @mención al bot (solo grupos) ─────────────────────────────
+  // ── TRIGGER 2: @mención al bot (grupos y privado) ─────────────────────────
   let isMention = false
-  if (!isReplyToBot && m.isGroup) {
-    // mentionedJid viene de msg.contextInfo.mentionedJid (ya serializado en simple.js)
+  if (!isReplyToBot) {
     const menciones = m.mentionedJid || []
     if (menciones.length) {
       isMention = menciones.some(jid => jid.split('@')[0].split(':')[0] === botNum)
 
-      // Fallback por LID (dispositivos nuevos de WhatsApp)
-      if (!isMention) {
+      // Fallback LID para dispositivos nuevos de WhatsApp
+      if (!isMention && m.isGroup) {
         try {
-          const meta = await conn.groupMetadata(m.chat)
+          const connRef = conn || this
+          const meta = await connRef.groupMetadata(m.chat)
           const botParticipant = meta.participants.find(p => {
             const pid = p.id.split('@')[0].split(':')[0]
             const ppn = (p.phoneNumber || '').replace(/\D/g, '')
@@ -131,26 +127,25 @@ handler.before = async function (m, { conn }) {
     }
   }
 
-  if (!isReplyToBot && !isMention) return false
+  if (!isReplyToBot && !isMention) return
 
-  // Limpiar el texto de @menciones y verificar que haya contenido real
   const pregunta = m.text.replace(/@\d+/g, '').trim()
-  if (!pregunta) return false
+  if (!pregunta) return
 
   try {
-    await conn.sendPresenceUpdate('composing', m.chat)
+    const connRef = conn || this
+    await connRef.sendPresenceUpdate('composing', m.chat)
     const respuesta = await preguntarMitsuri(pregunta, m.chat)
-    await conn.sendPresenceUpdate('paused', m.chat)
+    await connRef.sendPresenceUpdate('paused', m.chat)
     await m.reply(respuesta)
   } catch (e) {
-    console.error('[MITSURI BEFORE ERROR]', e.message)
-    await conn.sendPresenceUpdate('paused', m.chat).catch(() => {})
+    console.error('[MITSURI ALL ERROR]', e.message)
+    const connRef = conn || this
+    await connRef.sendPresenceUpdate('paused', m.chat).catch(() => {})
   }
-
-  return false
 }
 
-handler.all  = async function (m) {}
+handler.before = async function () {}  // vacío, la lógica está en all
 
 handler.help    = ['mitsuri', 'ia']
 handler.tags    = ['ia']
