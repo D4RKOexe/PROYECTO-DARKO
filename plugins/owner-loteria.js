@@ -1,4 +1,5 @@
-import { loteria } from './rpg-loteria.js'
+import fs from 'fs'
+import path from 'path'
 
 let handler = async (m, { conn }) => {
   let who = m.sender
@@ -6,6 +7,15 @@ let handler = async (m, { conn }) => {
 
   if (!owners.includes(who)) {
     return conn.sendMessage(m.chat, { text: '🎫 」\n\n💫 » Solo creadores' }, { quoted: m })
+  }
+
+  let lotoPath = path.join(process.cwd(), 'loteria.json')
+  let loteria
+
+  if (fs.existsSync(lotoPath)) {
+    loteria = JSON.parse(fs.readFileSync(lotoPath, 'utf8'))
+  } else {
+    return conn.sendMessage(m.chat, { text: '🎫 」\n\n💫 » No hay lotería activa' }, { quoted: m })
   }
 
   if (!loteria.activa) {
@@ -47,6 +57,7 @@ let handler = async (m, { conn }) => {
   texto += '> ¡Felicidades!'
 
   loteria.activa = false
+  fs.writeFileSync(lotoPath, JSON.stringify(loteria, null, 2))
 
   await conn.sendMessage(m.chat, { text: texto, mentions: [ganador] }, { quoted: m })
 }
