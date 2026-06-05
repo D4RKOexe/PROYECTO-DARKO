@@ -12,7 +12,7 @@ let handler = async (m, { conn }) => {
   }
 
   let name = await conn.getName(who)
-  let pp = await conn.profilePictureUrl(who, 'image').catch(() => 'https://files.catbox.moe/zthq3s.jpeg')
+  let pp = await conn.profilePictureUrl(who, 'image').catch(() => 'https://i.ibb.co/cSCf8VWv/perfil.png')
 
   let texto = '⚔️ 「 HINATA PERFIL 」 ⚔️\n▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔\n\n'
   texto += '👤 » *' + name + '*\n'
