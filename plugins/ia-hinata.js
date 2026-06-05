@@ -65,7 +65,6 @@ async function preguntarMitsuri(pregunta, chatId) {
   return respuesta
 }
 
-// ─── handler principal (.mitsuri / .ia / .bot) ────────────────────────────────
 let handler = async (m, { conn, text }) => {
   const pregunta = text?.trim()
   if (!pregunta) {
@@ -83,7 +82,6 @@ let handler = async (m, { conn, text }) => {
   }
 }
 
-// LID del bot — se guarda la primera vez que se detecta
 let botLidCache = null
 
 handler.all = async function (m, { conn }) {
@@ -91,13 +89,9 @@ handler.all = async function (m, { conn }) {
   if (m.fromMe) return
 
   const connRef = conn || this
-
-  // ── Obtener identidad del bot (número normal y LID) ───────────────────────
   const botJid  = connRef?.user?.id || connRef?.user?.jid || ''
-  const botNum  = botJid.split('@')[0].split(':')[0]  // número limpio
+  const botNum  = botJid.split('@')[0].split(':')[0]
 
-  // El LID del bot lo obtenemos de los participantes del grupo la primera vez
-  // y lo cacheamos para no hacer groupMetadata en cada mensaje
   if (!botLidCache && m.isGroup) {
     try {
       const meta = await connRef.groupMetadata(m.chat)
@@ -106,11 +100,10 @@ handler.all = async function (m, { conn }) {
         const ppn = (p.phoneNumber || '').replace(/\D/g, '')
         return pid === botNum || ppn === botNum
       })
-      if (me?.id) botLidCache = me.id  // ej: "77623648624677@lid"
+      if (me?.id) botLidCache = me.id
     } catch {}
   }
 
-  // ── TRIGGER 1: respondieron un mensaje del bot ────────────────────────────
   const isReplyToBot = !!(m.quoted && (
     m.quoted.fromMe === true ||
     (m.quoted.sender && (
@@ -119,24 +112,18 @@ handler.all = async function (m, { conn }) {
     ))
   ))
 
-  // ── TRIGGER 2: @mención al bot ────────────────────────────────────────────
   let isMention = false
   if (!isReplyToBot) {
     const menciones = m.mentionedJid || []
     if (menciones.length) {
       isMention = menciones.some(jid => {
         const jidNum = jid.split('@')[0].split(':')[0]
-        // Comparar contra número normal
         if (jidNum === botNum) return true
-        // Comparar contra LID cacheado (ej: "77623648624677@lid")
         if (botLidCache && jid === botLidCache) return true
-        // Comparar solo el número del LID contra el número del bot
         if (jid.endsWith('@lid') && jidNum === botNum) return true
         return false
       })
 
-      // Último recurso: si alguna mención es @lid y aún no tenemos cache,
-      // buscar en participantes ahora
       if (!isMention && m.isGroup && menciones.some(j => j.endsWith('@lid'))) {
         try {
           const meta = await connRef.groupMetadata(m.chat)
