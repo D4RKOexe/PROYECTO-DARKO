@@ -566,7 +566,7 @@ global.dfail = (type, m, conn, usedPrefix, command) => {
     }[type];
 
     if (msg)
-        return conn.reply(m.chat, msg, m, { contextInfo: rcanal }).then(() => conn.sendMessage(m.chat, { react: { text: '✖️', key: m.key } }))
+         return conn.reply(m.chat, msg, m).then(() => conn.sendMessage(m.chat, { react: { text: '✖️', key: m.key } }))
 
     let file = global.__filename(import.meta.url, true)
     watchFile(file, async () => {
