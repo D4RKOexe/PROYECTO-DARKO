@@ -137,9 +137,9 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
   }
 }
 
-handler.help = ['ytvideo', 'mp4']
+handler.help = ['play2']
 handler.tags = ['downloader']
-handler.command = /^(ytvideo|mp4|playvideo)$/i
+handler.command = /^(play2|mp4|playvideo)$/i
 handler.desc = 'Descarga videos de YouTube'
 
 export default handler
