@@ -16,7 +16,7 @@ const handler = async (m, { conn }) => {
   if (!subBots.includes(who)) return conn.reply(m.chat, `ꕥ *El usuario indicado no es un Bot activo del sistema.*`, m)
 
   if (chat.primaryBot === who) {
-    return conn.reply(m.chat, `➜ @${who.split`@`[0]} *ya está configurado como el Bot Principal aquí.*`, m, { mentions: [who] });
+    return conn.reply(m.chat, `➜ @${who.split`@`[0]} *ya está configurada como la Bot Principal aquí.*`, m, { mentions: [who] });
   }
 
   try {
