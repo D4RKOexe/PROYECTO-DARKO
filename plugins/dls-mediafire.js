@@ -2,8 +2,9 @@ import fetch from 'node-fetch'
 import * as cheerio from 'cheerio'
 import { tmpdir } from 'os'
 import { join } from 'path'
-import { createWriteStream, unlinkSync, readFileSync, statSync } from 'fs'
+import { createWriteStream, unlinkSync, statSync } from 'fs'
 import { pipeline } from 'stream/promises'
+import { pathToFileURL } from 'url'
 
 const getMimeFromFilename = (filename) => {
   const ext = filename.split('.').pop()?.toLowerCase()
@@ -103,22 +104,21 @@ let handler = async (m, { conn, text }) => {
 
     await conn.sendMessage(m.chat, { text: texto }, { quoted: m })
 
-    const headers = {
+    const dlHeaders = {
       'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
       'Referer': 'https://www.mediafire.com/',
     }
 
-    const fileRes = await fetch(link, { headers, redirect: 'follow', timeout: 300000 })
+    const fileRes = await fetch(link, { headers: dlHeaders, redirect: 'follow', timeout: 300000 })
     if (!fileRes.ok) throw new Error(`HTTP ${fileRes.status}`)
 
     const ct = fileRes.headers.get('content-type')
     if (ct?.includes('text/html')) throw new Error('Mediafire bloqueó la descarga')
 
-    // Stream a disco
+    // Stream directo a disco sin tocar RAM
     const writer = createWriteStream(tmpPath)
     await pipeline(fileRes.body, writer)
 
-    // Verificar que el archivo existe y tiene tamaño
     const stat = statSync(tmpPath)
     console.log(`[MF] Guardado en disco: ${stat.size} bytes`)
     if (stat.size < 1024) throw new Error('Archivo descargado muy pequeño')
@@ -127,11 +127,10 @@ let handler = async (m, { conn, text }) => {
       text: '📥 「 HINATA MEDIAFIRE 」 📥\n\n💫 » Enviando a WhatsApp...'
     }, { quoted: m })
 
-    // Leer del disco y enviar como buffer
-    const fileBuffer = readFileSync(tmpPath)
-
+    // Enviar con ruta local — Baileys lo lee en chunks internamente
+    const fileUrl = pathToFileURL(tmpPath).href
     await conn.sendMessage(m.chat, {
-      document: fileBuffer,
+      document: { url: fileUrl },
       fileName: filename,
       mimetype: mimetype
     }, { quoted: m })
