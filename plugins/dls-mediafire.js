@@ -2,7 +2,7 @@ import fetch from 'node-fetch'
 import * as cheerio from 'cheerio'
 import { tmpdir } from 'os'
 import { join } from 'path'
-import { createWriteStream, unlinkSync, readFileSync } from 'fs'
+import { createWriteStream, unlinkSync } from 'fs'
 import { pipeline } from 'stream/promises'
 
 const getMimeFromFilename = (filename) => {
@@ -107,7 +107,7 @@ let handler = async (m, { conn, text }) => {
     const ct = fileRes.headers.get('content-type')
     if (ct?.includes('text/html')) throw new Error('Mediafire bloqueó la descarga')
 
-    // ── Guardar en disco en vez de RAM ──
+    // Guardar en disco en streaming
     tmpPath = join(tmpdir(), `mf_${Date.now()}_${filename}`)
     const writer = createWriteStream(tmpPath)
     await pipeline(fileRes.body, writer)
@@ -116,12 +116,9 @@ let handler = async (m, { conn, text }) => {
       text: '📥 「 HINATA MEDIAFIRE 」 📥\n\n💫 » Enviando a WhatsApp...'
     }, { quoted: m })
 
-    // Leer del disco y enviar
-    const fileBuffer = readFileSync(tmpPath)
-    if (fileBuffer.length < 1024) throw new Error('Archivo muy pequeño, link inválido')
-
+    // Enviar leyendo desde disco sin cargar en RAM
     await conn.sendMessage(m.chat, {
-      document: fileBuffer,
+      document: { url: 'file://' + tmpPath },
       fileName: filename,
       mimetype: mimetype
     }, { quoted: m })
@@ -135,7 +132,6 @@ let handler = async (m, { conn, text }) => {
       text: '📥 「 HINATA MEDIAFIRE 」 📥\n\n💫 » Error al descargar\n\n> ' + e.message
     }, { quoted: m })
   } finally {
-    // Borrar el archivo temporal siempre
     if (tmpPath) {
       try { unlinkSync(tmpPath) } catch {}
     }
