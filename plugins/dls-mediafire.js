@@ -1,5 +1,9 @@
 import fetch from 'node-fetch'
 import * as cheerio from 'cheerio'
+import { tmpdir } from 'os'
+import { join } from 'path'
+import { createWriteStream, unlinkSync, readFileSync } from 'fs'
+import { pipeline } from 'stream/promises'
 
 const getMimeFromFilename = (filename) => {
   const ext = filename.split('.').pop()?.toLowerCase()
@@ -50,7 +54,7 @@ const scrapeMediafire = async (pageUrl) => {
     if (match) directLink = match[0]
   }
 
-  if (!directLink) throw new Error('No se encontró link de descarga (archivo eliminado o captcha)')
+  if (!directLink) throw new Error('No se encontró link (archivo eliminado o captcha)')
 
   directLink = directLink.replace(/&amp;/g, '&').trim()
 
@@ -77,6 +81,8 @@ let handler = async (m, { conn, text }) => {
 
   await m.react('⏳')
 
+  let tmpPath = null
+
   try {
     const { link, filename, sizeText } = await scrapeMediafire(text)
     const ext = filename.split('.').pop() || '?'
@@ -86,7 +92,7 @@ let handler = async (m, { conn, text }) => {
     texto += '📁 » *' + filename + '*\n'
     texto += '📦 » Tamaño: ' + sizeText + '\n'
     texto += '📄 » Formato: .' + ext + '\n\n'
-    texto += '> Enviando archivo...'
+    texto += '> Descargando al servidor...'
 
     await conn.sendMessage(m.chat, { text: texto }, { quoted: m })
 
@@ -101,7 +107,17 @@ let handler = async (m, { conn, text }) => {
     const ct = fileRes.headers.get('content-type')
     if (ct?.includes('text/html')) throw new Error('Mediafire bloqueó la descarga')
 
-    const fileBuffer = Buffer.from(await fileRes.arrayBuffer())
+    // ── Guardar en disco en vez de RAM ──
+    tmpPath = join(tmpdir(), `mf_${Date.now()}_${filename}`)
+    const writer = createWriteStream(tmpPath)
+    await pipeline(fileRes.body, writer)
+
+    await conn.sendMessage(m.chat, {
+      text: '📥 「 HINATA MEDIAFIRE 」 📥\n\n💫 » Enviando a WhatsApp...'
+    }, { quoted: m })
+
+    // Leer del disco y enviar
+    const fileBuffer = readFileSync(tmpPath)
     if (fileBuffer.length < 1024) throw new Error('Archivo muy pequeño, link inválido')
 
     await conn.sendMessage(m.chat, {
@@ -118,6 +134,11 @@ let handler = async (m, { conn, text }) => {
     conn.sendMessage(m.chat, {
       text: '📥 「 HINATA MEDIAFIRE 」 📥\n\n💫 » Error al descargar\n\n> ' + e.message
     }, { quoted: m })
+  } finally {
+    // Borrar el archivo temporal siempre
+    if (tmpPath) {
+      try { unlinkSync(tmpPath) } catch {}
+    }
   }
 }
 
