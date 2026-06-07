@@ -31,7 +31,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
 
     await m.react('⏳')
 
-    for (const url of stickers) {
+    for (const url of stickers.slice(0, 10)) {
       try {
         await conn.sendMessage(m.chat, {
           sticker: { url }
@@ -49,9 +49,9 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
   }
 }
 
-handler.help = ['stickerpack']
+handler.help = ['spack']
 handler.tags = ['downloader']
-handler.command = /^(stickerly|stickerpack|spack)$/i
+handler.command = /^spack$/i
 handler.desc = 'Descarga packs de stickers de getstickerpack'
 
 export default handler
