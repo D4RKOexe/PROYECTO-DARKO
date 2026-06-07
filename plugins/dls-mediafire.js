@@ -4,14 +4,12 @@ import path from 'path'
 import os from 'os'
 import { pipeline } from 'stream/promises'
 
-// ─── CONFIG ───────────────────────────────────────────────
 const API_BASE     = process.env.DV_API_URL || 'https://dv-yer-api.online'
 const API_KEY      = process.env.DV_API_KEY || ''
 const MAX_BYTES    = 1024 * 1024 * 1024   // 1 GB
 const REQ_TIMEOUT  = 120_000
 const TMP_DIR      = path.join(os.tmpdir(), 'hinata-mediafire')
 
-// ─── HELPERS ──────────────────────────────────────────────
 function ensureTmpDir() {
   try { fs.mkdirSync(TMP_DIR, { recursive: true }) } catch {}
 }
@@ -72,7 +70,6 @@ function buildParams(extra = {}) {
   return params.toString()
 }
 
-// ─── API ──────────────────────────────────────────────────
 async function getMediafireMeta(fileUrl) {
   const url = `${API_BASE}/mediafire?${buildParams({ mode: 'link', url: fileUrl })}`
   const res  = await fetch(url, { timeout: 45_000 })
@@ -131,7 +128,6 @@ async function downloadFromStream(streamUrl, outputPath) {
   return size
 }
 
-// ─── HANDLER ──────────────────────────────────────────────
 let handler = async (m, { conn, text }) => {
   if (!text || !text.includes('mediafire.com')) {
     return conn.sendMessage(m.chat, {
@@ -146,14 +142,12 @@ let handler = async (m, { conn, text }) => {
   try {
     ensureTmpDir()
 
-    // 1. Obtener metadata
     const info = await getMediafireMeta(text.trim())
 
     if (!info.streamUrl) throw new Error('La API no devolvió URL de descarga')
 
     tempPath = path.join(TMP_DIR, `${Date.now()}-${normalizeFileName(info.fileName)}`)
 
-    // 2. Notificar
     await conn.sendMessage(m.chat, {
       text: [
         '📥 「 HINATA MEDIAFIRE 」 📥',
@@ -166,15 +160,12 @@ let handler = async (m, { conn, text }) => {
       ].join('\n')
     }, { quoted: m })
 
-    // 3. Descargar con stream a disco
     const size = await downloadFromStream(info.streamUrl, tempPath)
 
-    // 4. Notificar envío
     await conn.sendMessage(m.chat, {
       text: '📥 「 HINATA MEDIAFIRE 」 📥\n\n💫 » Enviando a WhatsApp...'
     }, { quoted: m })
 
-    // 5. Enviar con stream desde disco (sin cargar en RAM)
     const fileName = normalizeFileName(info.fileName)
     await conn.sendMessage(m.chat, {
       document: { stream: fs.createReadStream(tempPath) },
