@@ -1,10 +1,7 @@
 import fetch from 'node-fetch'
 import * as cheerio from 'cheerio'
-import { tmpdir } from 'os'
-import { join } from 'path'
 import { createWriteStream, unlinkSync, statSync } from 'fs'
 import { pipeline } from 'stream/promises'
-import { pathToFileURL } from 'url'
 
 const getMimeFromFilename = (filename) => {
   const ext = filename.split('.').pop()?.toLowerCase()
@@ -94,7 +91,8 @@ let handler = async (m, { conn, text }) => {
     const ext = filename.split('.').pop() || '?'
     const mimetype = getMimeFromFilename(filename)
 
-    tmpPath = join(tmpdir(), `mf_${Date.now()}.tmp`)
+    // Ruta fija al tmp del contenedor
+    tmpPath = `/home/container/tmp/mf_${Date.now()}.tmp`
 
     let texto = '📥 「 HINATA MEDIAFIRE 」 📥\n\n'
     texto += '📁 » *' + filename + '*\n'
@@ -120,17 +118,16 @@ let handler = async (m, { conn, text }) => {
     await pipeline(fileRes.body, writer)
 
     const stat = statSync(tmpPath)
-    console.log(`[MF] Guardado en disco: ${stat.size} bytes`)
+    console.log(`[MF] Guardado: ${tmpPath} | ${stat.size} bytes`)
     if (stat.size < 1024) throw new Error('Archivo descargado muy pequeño')
 
     await conn.sendMessage(m.chat, {
       text: '📥 「 HINATA MEDIAFIRE 」 📥\n\n💫 » Enviando a WhatsApp...'
     }, { quoted: m })
 
-    // Enviar con ruta local — Baileys lo lee en chunks internamente
-    const fileUrl = pathToFileURL(tmpPath).href
+    // Enviar desde disco con file:// — sin cargar en RAM
     await conn.sendMessage(m.chat, {
-      document: { url: fileUrl },
+      document: { url: 'file://' + tmpPath },
       fileName: filename,
       mimetype: mimetype
     }, { quoted: m })
@@ -144,6 +141,7 @@ let handler = async (m, { conn, text }) => {
       text: '📥 「 HINATA MEDIAFIRE 」 📥\n\n💫 » Error al descargar\n\n> ' + e.message
     }, { quoted: m })
   } finally {
+    // Borrar siempre el temporal
     if (tmpPath) {
       try { unlinkSync(tmpPath) } catch {}
     }
