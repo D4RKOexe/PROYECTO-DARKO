@@ -90,6 +90,6 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
 handler.help = ['tiktok2']
 handler.tags = ['downloader']
 handler.command = /^tiktok2$/i
-handler.desc = 'Descarga videos de TikTok por link o nombre'
+handler.desc = 'Descarga videos de TikTok por link'
 
 export default handler
