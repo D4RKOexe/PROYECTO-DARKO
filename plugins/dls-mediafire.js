@@ -1,6 +1,6 @@
 import fetch from 'node-fetch'
 import * as cheerio from 'cheerio'
-import { createWriteStream, unlinkSync, statSync } from 'fs'
+import { createWriteStream, unlinkSync, statSync, readFileSync, mkdirSync } from 'fs'
 import { pipeline } from 'stream/promises'
 
 const getMimeFromFilename = (filename) => {
@@ -87,11 +87,13 @@ let handler = async (m, { conn, text }) => {
   let tmpPath = null
 
   try {
+    // ✅ Crear directorio si no existe
+    mkdirSync('/home/container/tmp', { recursive: true })
+
     const { link, filename, sizeText } = await scrapeMediafire(text)
     const ext = filename.split('.').pop() || '?'
     const mimetype = getMimeFromFilename(filename)
 
-    // Ruta fija al tmp del contenedor
     tmpPath = `/home/container/tmp/mf_${Date.now()}.tmp`
 
     let texto = '📥 「 HINATA MEDIAFIRE 」 📥\n\n'
@@ -113,7 +115,7 @@ let handler = async (m, { conn, text }) => {
     const ct = fileRes.headers.get('content-type')
     if (ct?.includes('text/html')) throw new Error('Mediafire bloqueó la descarga')
 
-    // Stream directo a disco sin tocar RAM
+    // Stream directo a disco
     const writer = createWriteStream(tmpPath)
     await pipeline(fileRes.body, writer)
 
@@ -125,9 +127,11 @@ let handler = async (m, { conn, text }) => {
       text: '📥 「 HINATA MEDIAFIRE 」 📥\n\n💫 » Enviando a WhatsApp...'
     }, { quoted: m })
 
-    // Enviar desde disco con file:// — sin cargar en RAM
+    // ✅ Leer el archivo como buffer y enviarlo (NO usar file://)
+    const fileBuffer = readFileSync(tmpPath)
+
     await conn.sendMessage(m.chat, {
-      document: { url: 'file://' + tmpPath },
+      document: fileBuffer,
       fileName: filename,
       mimetype: mimetype
     }, { quoted: m })
