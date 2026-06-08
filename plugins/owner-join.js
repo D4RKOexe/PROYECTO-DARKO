@@ -1,4 +1,4 @@
-let linkRegex = /chat.whatsapp.com\/([0-9A-Za-z]{20,24})( [0-9]{1,3})?/i
+let linkRegex = /chat\.whatsapp\.com\/([0-9A-Za-z]{20,24})/i
 
 let handler = async (m, { conn, text }) => {
   let who = m.sender
@@ -6,7 +6,7 @@ let handler = async (m, { conn, text }) => {
 
   if (!owners.includes(who)) {
     return conn.sendMessage(m.chat, {
-      text: '🔗 「 HINATA JOIN 」 🔗\n\n💫 » Solo los creadores bb'
+      text: '🔗 「 HINATA JOIN 」 🔗\n\n💫 » Solo los creadores pueden usar este comando bb'
     }, { quoted: m })
   }
 
@@ -17,19 +17,23 @@ let handler = async (m, { conn, text }) => {
   }
 
   try {
-    let [_, code] = text.match(linkRegex) || []
+    let match = text.match(linkRegex)
+    let code = match ? match[1] : null  // ← índice [1], no [0]
+
     if (!code) {
       return conn.sendMessage(m.chat, {
-        text: '🔗 「 HINATA JOIN 」 🔗\n\n🐢 » Enlace inválido bb'
+        text: '🔗 「 HINATA JOIN 」 🔗\n\n🐢 » Enlace inválido bb\n\nEjemplo: https://chat.whatsapp.com/XXXXXXXXXXXXXXXXX'
       }, { quoted: m })
     }
+
     await conn.groupAcceptInvite(code)
     await conn.sendMessage(m.chat, {
-      text: '🔗 「 HINATA JOIN 」 🔗\n\n🍭 » La bot se unió correctamente al Grupo bb'
+      text: '🔗 「 HINATA JOIN 」 🔗\n\n🍭 » El jefe ordenó y la bot obedeció — me uní al grupo bb ✅'
     }, { quoted: m })
-  } catch {
+
+  } catch (e) {
     await conn.sendMessage(m.chat, {
-      text: '🔗 「 HINATA JOIN 」 🔗\n\n✘ » Ocurrió un error bb'
+      text: `🔗 「 HINATA JOIN 」 🔗\n\n✘ » Error al unirse bb\n\n_${e.message || e}_`
     }, { quoted: m })
   }
 }
