@@ -16,7 +16,7 @@ const defaultMenu = {
 > 👥 𝙐𝙨𝙪𝙖𝙧𝙞𝙤𝙨 » %totalreg
 
 > Repositorio oficial del bot 
-https://github.com/thecarlos19/black-clover-MD
+https://github.com/ElvigilanteDv/Hinata-bot
 
 %readmore
 `.trim(),
