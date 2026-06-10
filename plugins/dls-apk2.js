@@ -61,7 +61,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
       } catch {}
     }
 
-    const caption = `𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA BOT ㅤ֢ㅤׄㅤׅ\n\n❀ Nombre: *${name}*\n❀ Paquete: *${id}*\n❀ Actualización: *${lastup}*\n❀ Tamaño: *${size}*\n\n> Scraper por *GOTENKS V1*`
+    const caption = `𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA BOT ㅤ֢ㅤׄㅤׅ\n\n❀ Nombre: *${name}*\n❀ Paquete: *${id}*\n❀ Actualización: *${lastup}*\n❀ Tamaño: *${size}*\n\n> Scraper por *DvelvigilanteOFC*`
 
     await conn.sendMessage(m.chat, {
       document: { url: downloadUrl },
