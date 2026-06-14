@@ -2,37 +2,58 @@ import { exec } from 'child_process'
 
 const handler = async (m, { conn }) => {
   let who = m.sender
-  let name = await conn.getName(who)
 
-  await conn.sendMessage(m.chat, { text: '⏳ Buscando actualizaciones para HINATA BOT...' }, { quoted: m })
+  let textoEspera = '࿇ ══━━━✥◈✥━━━══ ࿇\n'
+  textoEspera += '   𝕳𝖎𝖓𝖆𝖙𝖆 𝖀𝖕𝖉𝖆𝖙𝖊\n'
+  textoEspera += '࿇ ══━━━✥◈✥━━━══ ࿇\n\n'
+  textoEspera += '𖣔 ʙᴜsᴄᴀɴᴅᴏ ᴀᴄᴛᴜᴀʟɪᴢᴀᴄɪᴏɴᴇs ˚ʚ♡ɞ˚\n'
+  textoEspera += '❧ Espera un momento...\n\n'
+  textoEspera += '࿇ ══━━━✥◈✥━━━══ ࿇'
+
+  await conn.sendMessage(m.chat, { text: textoEspera }, { quoted: m })
 
   exec('git pull', async (err, stdout, stderr) => {
     if (err) {
       let error = err.message
+      let motivo = 'Error inesperado'
+      let solucion = error
+
       if (error.includes('not a git repository')) {
-        await conn.sendMessage(m.chat, { text: '❌ No es un repositorio git\n\n> Clona el bot con git clone' }, { quoted: m })
-        return
+        motivo = 'No es un repositorio git'
+        solucion = 'Clona el bot con git clone'
+      } else if (error.includes('Could not resolve host')) {
+        motivo = 'Sin conexión a internet'
+        solucion = 'Verifica tu conexión'
+      } else if (error.includes('Merge conflict')) {
+        motivo = 'Conflicto de fusión detectado'
+        solucion = 'Usa #exec git stash && git pull --force'
+      } else if (error.includes('Please commit')) {
+        motivo = 'Tienes cambios locales sin guardar'
+        solucion = 'Usa #exec git stash && git pull'
       }
-      if (error.includes('Could not resolve host')) {
-        await conn.sendMessage(m.chat, { text: '❌ Sin conexión a internet\n\n> Verifica tu conexión' }, { quoted: m })
-        return
-      }
-      if (error.includes('Merge conflict')) {
-        await conn.sendMessage(m.chat, { text: '⚠️ Conflicto de fusión detectado\n\n> Usa #exec git stash && git pull --force' }, { quoted: m })
-        return
-      }
-      if (error.includes('Please commit')) {
-        await conn.sendMessage(m.chat, { text: '⚠️ Tienes cambios locales sin guardar\n\n> Usa #exec git stash && git pull' }, { quoted: m })
-        return
-      }
-      await conn.sendMessage(m.chat, { text: '❌ Error inesperado:\n' + error }, { quoted: m })
+
+      let textoError = '࿇ ══━━━✥◈✥━━━══ ࿇\n'
+      textoError += '   𝕳𝖎𝖓𝖆𝖙𝖆 𝖀𝖕𝖉𝖆𝖙𝖊\n'
+      textoError += '࿇ ══━━━✥◈✥━━━══ ࿇\n\n'
+      textoError += '𖣔 ᴇʀʀᴏʀ ˚ʚ♡ɞ˚\n'
+      textoError += '❧ ' + motivo + '\n'
+      textoError += '> ' + solucion + '\n\n'
+      textoError += '࿇ ══━━━✥◈✥━━━══ ࿇'
+
+      await conn.sendMessage(m.chat, { text: textoError }, { quoted: m })
       return
     }
 
     if (stdout.includes('Already up to date')) {
+      let textoAlDia = '𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA BOT ㅤ֢ㅤׄㅤׅ\n\n'
+      textoAlDia += '𖣔 ᴇsᴛᴀᴅᴏ ˚ʚ♡ɞ˚\n'
+      textoAlDia += '❧ Hinata ya está en su mejor versión\n'
+      textoAlDia += '❧ No hay actualizaciones pendientes\n\n'
+      textoAlDia += '> Solicitado por @' + who.split('@')[0]
+
       await conn.sendMessage(m.chat, {
-        image: { url: 'https://files.catbox.moe/5tegkb.png' },
-        caption: '𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA BOT ㅤ֢ㅤׄㅤׅ\n\n✨ Hinata ya está en su mejor versión\n🌸 No hay actualizaciones pendientes\n\n> Solicitado por @' + who.split('@')[0],
+        image: { url: 'https://files.catbox.moe/b7a14a.png' },
+        caption: textoAlDia,
         mentions: [who]
       }, { quoted: m })
       return
@@ -45,26 +66,34 @@ const handler = async (m, { conn }) => {
     let filesEliminados = eliminados.map(c => c.split(' ').pop())
 
     let texto = '𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA BOT ACTUALIZADA ㅤ֢ㅤׄㅤׅ\n\n'
-    texto += '🌸 Hinata se ha renovado\n\n'
+
+    texto += '𖣔 ʀᴇsᴜᴍᴇɴ ˚ʚ♡ɞ˚\n'
+    texto += '❧ Hinata se ha renovado\n\n'
 
     if (filesCreados.length > 0) {
-      texto += '✨ *Nuevos archivos:*\n'
-      for (let file of filesCreados) {
-        texto += '  ❀ ' + file + '\n'
+      texto += '𖣔 ɴᴜᴇᴠᴏs ᴀʀᴄʜɪᴠᴏs ˚ʚ♡ɞ˚\n'
+      for (let file of filesCreados.slice(0, 15)) {
+        texto += '❧ ' + file + '\n'
+      }
+      if (filesCreados.length > 15) {
+        texto += '> y ' + (filesCreados.length - 15) + ' archivo(s) más\n'
       }
       texto += '\n'
     }
 
     let changedMatch = stdout.match(/(\d+) files? changed/)
     if (changedMatch) {
-      texto += '📝 *Archivos modificados:*\n'
-      texto += '  ❀ ' + changedMatch[1] + ' archivo(s)\n\n'
+      texto += '𖣔 ᴀʀᴄʜɪᴠᴏs ᴍᴏᴅɪғɪᴄᴀᴅᴏs ˚ʚ♡ɞ˚\n'
+      texto += '❧ ' + changedMatch[1] + ' archivo(s)\n\n'
     }
 
     if (filesEliminados.length > 0) {
-      texto += '🗑️ *Archivos eliminados:*\n'
-      for (let file of filesEliminados) {
-        texto += '  ❀ ' + file + '\n'
+      texto += '𖣔 ᴀʀᴄʜɪᴠᴏs ᴇʟɪᴍɪɴᴀᴅᴏs ˚ʚ♡ɞ˚\n'
+      for (let file of filesEliminados.slice(0, 15)) {
+        texto += '❧ ' + file + '\n'
+      }
+      if (filesEliminados.length > 15) {
+        texto += '> y ' + (filesEliminados.length - 15) + ' archivo(s) más\n'
       }
       texto += '\n'
     }
@@ -72,18 +101,23 @@ const handler = async (m, { conn }) => {
     let summary = stdout.match(/\d+ files? changed, \d+ insertions?\(\+\), \d+ deletions?\(-\)/)
     if (summary) {
       let nums = summary[0].match(/\d+/g)
-      texto += '📊 *Resumen:*\n'
-      texto += '  ❀ ' + nums[1] + ' línea(s) agregada(s)\n'
-      texto += '  ❀ -' + nums[2] + ' línea(s) eliminada(s)\n\n'
+      texto += '𖣔 ᴄᴀᴍʙɪᴏs ᴅᴇ ᴄóᴅɪɢᴏ ˚ʚ♡ɞ˚\n'
+      texto += '❧ +' + nums[1] + ' línea(s) agregada(s)\n'
+      texto += '❧ -' + nums[2] + ' línea(s) eliminada(s)\n\n'
     }
 
     texto += '> Actualizado por @' + who.split('@')[0]
 
     await conn.sendMessage(m.chat, {
-      image: { url: 'https://files.catbox.moe/5tegkb.png' },
+      image: { url: 'https://files.catbox.moe/b7a14a.png' },
       caption: texto,
       mentions: [who]
     }, { quoted: m })
+
+    setTimeout(() => {
+      console.log('[UPDATE] Reiniciando proceso para aplicar cambios...')
+      process.exit(0)
+    }, 3000)
   })
 }
 
