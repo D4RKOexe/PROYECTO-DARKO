@@ -4,13 +4,13 @@ import fs from 'fs'
 import path from 'path'
 
 const handler = async (m, { conn }) => {
-  // Solo funciona como detector automático, no tiene comando
+  // No tiene comando, solo detector automático
 }
 
-handler.before = async (m, { conn }) => {
-  if (m.fromMe) return false
+handler.all = async (m, { conn }) => {
+  if (m.fromMe) return
   const text = m.text?.trim().toLowerCase() || ''
-  if (text !== 'hola') return false
+  if (text !== 'hola') return
 
   const audioUrl = 'https://files.catbox.moe/83v5ip.mp3'
   const tmpDir = path.join(process.cwd(), 'tmp')
@@ -21,7 +21,7 @@ handler.before = async (m, { conn }) => {
 
   try {
     const res = await fetch(audioUrl)
-    if (!res.ok) throw new Error('No se pudo descargar el audio')
+    if (!res.ok) return
     fs.writeFileSync(inFile, Buffer.from(await res.arrayBuffer()))
 
     await new Promise((resolve, reject) => {
@@ -41,11 +41,8 @@ handler.before = async (m, { conn }) => {
       mimetype: 'audio/ogg',
       ptt: true
     }, { quoted: m })
-
-    return true
   } catch (e) {
     console.error('[HOLA DETECTOR]', e.message)
-    return false
   } finally {
     try { fs.unlinkSync(inFile) } catch {}
     try { fs.unlinkSync(outFile) } catch {}
