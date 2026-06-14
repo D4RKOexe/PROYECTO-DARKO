@@ -9,7 +9,8 @@ const audios = {
   'Jaja': 'https://files.catbox.moe/dtq3km.mp3',
   'Buenos dias': 'https://files.catbox.moe/zenjbf.mp3',
   'Buenas noches': 'https://files.catbox.moe/2oqsuk.mp3',
-  'Xd': 'https://files.catbox.moe/n87j8k.mp3'
+  'Xd': 'https://files.catbox.moe/n87j8k.mp3',
+  'Loco': 'https://files.catbox.moe/oxorqc.mp3'
 }
 
 let handler = async (m, { conn }) => {
