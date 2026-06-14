@@ -3,22 +3,13 @@ import fetch from 'node-fetch'
 import fs from 'fs'
 import path from 'path'
 
-const palabrasClave = [
-  'hola',
-  'holaa',
-  'holaaa',
-  'holi',
-  'holii',
-  'holiii',
-  'ola',
-  'olaa',
-  'xd',
-  'jaja',
-  'jajaja',
-  'jajajaja'
-]
-
-const audioUrl = 'https://files.catbox.moe/83v5ip.mp3'
+const audios = {
+  'hola': 'https://files.catbox.moe/83v5ip.mp3',
+  'adios': 'https://files.catbox.moe/2dubrq.mp3',
+  'jaja': 'https://files.catbox.moe/dtq3km.mp3',
+  'buenos dias': 'https://files.catbox.moe/zenjbf.mp3',
+  'buenas noches': 'https://files.catbox.moe/2oqsuk.mp3'
+}
 
 let handler = async (m, { conn }) => {
 
@@ -30,7 +21,8 @@ handler.all = async function (m) {
 
   let texto = m.text.trim().toLowerCase()
 
-  if (!palabrasClave.includes(texto)) return
+  let audioUrl = audios[texto]
+  if (!audioUrl) return
 
   let conn = this
 
@@ -43,7 +35,7 @@ handler.all = async function (m) {
   try {
     let res = await fetch(audioUrl)
     if (!res.ok) {
-      console.log('[DETECTOR HOLA] Error descargando audio:', res.status)
+      console.log('[DETECTOR AUDIO] Error descargando audio:', res.status)
       return
     }
 
@@ -78,7 +70,7 @@ handler.all = async function (m) {
     }, { quoted: m })
 
   } catch (e) {
-    console.error('[DETECTOR HOLA] Error:', e.message)
+    console.error('[DETECTOR AUDIO] Error:', e.message)
   } finally {
     try { fs.unlinkSync(inFile) } catch {}
     try { fs.unlinkSync(outFile) } catch {}
