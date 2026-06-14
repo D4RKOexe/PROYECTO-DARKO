@@ -8,22 +8,26 @@ const textCyberpunk = t => t.replace(/[a-z]/gi, c => charset[c.toLowerCase()] ||
 
 const defaultMenu = {
   before: `
-—͟͟͞͞ ♱ *HINATA BOT* »
-> 🪐 𝙉𝙤𝙢𝙗𝙧𝙚 » %name
-> ⚡ 𝙀𝙭𝙥 » %exp / %maxexp
-> 🌐 𝙈𝙤𝙙𝙤 » %mode
-> ⏳ 𝘼𝙘𝙩𝙞𝙫𝙤 » %muptime
-> 👥 𝙐𝙨𝙪𝙖𝙧𝙞𝙤𝙨 » %totalreg
+࿇ ══━━━✥◈✥━━━══ ࿇
+    𝕳𝖎𝖓𝖆𝖙𝖆 𝕭𝖔𝖙
+࿇ ══━━━✥◈✥━━━══ ࿇
 
-> Repositorio oficial del bot 
-https://github.com/ElvigilanteDv/Hinata-bot
+𖣔 ɪɴꜰᴏ ˚ʚ♡ɞ˚
+❧ 𝙄𝙃 » %name
+❧ 𝙀𝙣 » %exp / %maxexp
+❧ 𝙄𝙣 » %mode
+❧ 𝙎 » %muptime
+❧ 𝙏 » %totalreg
+
+❧ 𝙀𝙧𝙮 » https://elvigilante-api.onrender.com/dash
+❧ 𝙀𝙦 » https://github.com/ElvigilanteDv/Hinata-bot
 
 %readmore
 `.trim(),
-  header: '\n⧼⋆꙳•〔 ♱ %category 〕⋆꙳•⧽',
-  body: '> 𖣘 %cmd',
-  footer: '╰⋆꙳•❅‧*₊⋆꙳︎‧*❆₊⋆╯',
-  after: '\n⌬ 𝗛𝗜𝗡𝗔𝗧𝗔 𝗠𝗘𝗡𝗨 🧬 - Sistema ejecutado con éxito.'
+  header: '\n𖣔 %category ˚ʚ♡ɞ˚',
+  body: '❧ %cmd',
+  footer: '⸻⸻⸻⸻⸻⸻',
+  after: '\n࿇ ══━━━✥◈✥━━━══ ࿇\nᶜʳᵉᵃᵃᵃ ᵖᵒʳ ᴱˡ ᵛⁱᵍⁱˡᵃⁿᵗᵉ ✦ ᴮʳᵃʸᵃⁿᴿᴷ\n࿇ ══━━━✥◈✥━━━══ ࿇'
 }
 
 const menuDir = './media/menu'
@@ -83,8 +87,8 @@ let handler = async (m, { conn, usedPrefix }) => {
       const cmds = help
         .filter(p => p.tags.includes(tag))
         .flatMap(p => p.help.map(c =>
-          menu.body.replace('%cmd', p.prefix ? c : usedPrefix + c) + 
-          (p.desc ? `\n> ✦ ${p.desc}` : '')
+          menu.body.replace('%cmd', p.prefix ? c : usedPrefix + c) +
+          (p.desc ? `\n   ↳ ${p.desc}` : '')
         )).join('\n')
       return cmds ? `${menu.header.replace('%category', tags[tag])}\n${cmds}\n${menu.footer}` : ''
     }).filter(Boolean),
@@ -98,7 +102,7 @@ let handler = async (m, { conn, usedPrefix }) => {
   await conn.sendMessage(m.chat, {
     image: thumb,
     caption: text,
-    footer: '🧠 HINATA SYSTEM ☘️',
+    footer: 'HINATA SYSTEM',
     headerType: 4
   })
 }
