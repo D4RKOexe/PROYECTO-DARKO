@@ -47,7 +47,7 @@ const fetchBuffer = url => fetch(url).then(r => r.arrayBuffer()).then(b => Buffe
 const defaultThumb = await fetchBuffer('https://files.catbox.moe/mln8cc.png')
 
 let handler = async (m, { conn, usedPrefix }) => {
-  await conn.sendMessage(m.chat, { react: { text: '⚔️', key: m.key } })
+  await conn.sendMessage(m.chat, { react: { text: '❧', key: m.key } })
 
   const botJid = conn.user.jid
   const menuMedia = loadMenuMedia(botJid)
