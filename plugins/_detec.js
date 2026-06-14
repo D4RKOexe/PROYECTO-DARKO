@@ -4,11 +4,12 @@ import fs from 'fs'
 import path from 'path'
 
 const audios = {
-  'hola': 'https://files.catbox.moe/83v5ip.mp3',
-  'adios': 'https://files.catbox.moe/2dubrq.mp3',
-  'jaja': 'https://files.catbox.moe/dtq3km.mp3',
-  'buenos dias': 'https://files.catbox.moe/zenjbf.mp3',
-  'buenas noches': 'https://files.catbox.moe/2oqsuk.mp3'
+  'Hola': 'https://files.catbox.moe/83v5ip.mp3',
+  'Adios': 'https://files.catbox.moe/2dubrq.mp3',
+  'Jaja': 'https://files.catbox.moe/dtq3km.mp3',
+  'Buenos dias': 'https://files.catbox.moe/zenjbf.mp3',
+  'Buenas noches': 'https://files.catbox.moe/2oqsuk.mp3',
+  'Xd': 'https://files.catbox.moe/n87j8k.mp3'
 }
 
 let handler = async (m, { conn }) => {
