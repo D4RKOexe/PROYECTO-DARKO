@@ -1,6 +1,3 @@
-// © 2026 EL VIGILANTE & BRAYANRK - HINATA BOT
-// No quitar créditos
-
 import fetch from 'node-fetch'
 
 const API_KEY = 'dvyer343179430300'
@@ -15,7 +12,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
   const input = text?.trim()
 
   if (!input) return conn.sendMessage(m.chat, {
-    text: `𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA BOT ㅤ֢ㅤׄㅤׅ\n\n❀ Descarga videos de TikTok\n\n> ${usedPrefix}${command} <link o nombre>\n> Ejemplo: ${usedPrefix}${command} ozuna\n> Ejemplo: ${usedPrefix}${command} https://vm.tiktok.com/xxx`
+    text: `⚡ ㅤׄㅤׅㅤׄ DARKO BOT ㅤ֢ㅤׄㅤׅ\n\n⚡ Descarga videos de TikTok\n\n> ${usedPrefix}${command} <link o nombre>\n> Ejemplo: ${usedPrefix}${command} ozuna\n> Ejemplo: ${usedPrefix}${command} https://vm.tiktok.com/xxx`
   }, { quoted: m })
 
   await m.react('🔍')
@@ -49,7 +46,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
     if (!json.ok || !json.download_url) {
       await m.react('❌')
       return conn.sendMessage(m.chat, {
-        text: '𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA BOT ㅤ֢ㅤׄㅤׅ\n\n❌ No se pudo obtener el video\n\n> Intenta más tarde'
+        text: '⚠️⁾ ㅤׄㅤׅㅤׄ DARKO BOT ㅤ֢ㅤׄㅤׅ\n\n❌ No se pudo obtener el video\n\n> Intenta más tarde'
       }, { quoted: m })
     }
 
@@ -58,7 +55,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
     const quality = json.quality || 'MP4'
     const thumbnail = json.thumbnail || null
 
-    const caption = `𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA BOT ㅤ֢ㅤׄㅤׅ\n\n❀ ${title}\n❀ Formato: *${quality}*\n❀ Plataforma: *TikTok*`
+    const caption = `🔽ㅤׄㅤׅㅤׄ DARKO BOT ㅤ֢ㅤׄㅤׅ\n\nℹ ${title}\nℹ Formato: *${quality}*\nℹ Plataforma: *TikTok*`
 
     try {
       await conn.sendMessage(m.chat, {
@@ -82,7 +79,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
   } catch (e) {
     await m.react('❌')
     await conn.sendMessage(m.chat, {
-      text: `𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA BOT ㅤ֢ㅤׄㅤׅ\n\n❌ Error al descargar\n\n> ${e.message}`
+      text: `⚠️ ㅤׄㅤׅㅤׄ DARKO BOT ㅤ֢ㅤׄㅤׅ\n\n❌ Error al descargar\n\n> ${e.message}`
     }, { quoted: m })
   }
 }
