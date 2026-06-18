@@ -1,7 +1,7 @@
 {
   "name": "hinata-bot-md",
   "version": "2.2.0",
-  "description": "La kunoichi del Clan Hyuga ahora en tu WhatsApp",
+  "description": "El mejor bot de todo latam en tu WhatsApp",
   "main": "index.js",
   "type": "module",
   "directories": {
@@ -12,16 +12,16 @@
   "scripts": {
     "start": "node index.js"
   },
-  "homepage": "https://github.com/ElvigilanteDv/Hinata-Bot",
+  "homepage": "",
   "author": {
-    "name": "El Vigilante & BrayanRK"
+    "name": "El Vigilante & BrayanRK& D4rko"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ElvigilanteDv/Hinata-Bot.git"
+    "url": ""
   },
   "bugs": {
-    "url": "https://github.com/ElvigilanteDv/Hinata-Bot/issues"
+    "url": ""
   },
   "license": "MIT-LICENSE",
   "dependencies": {
