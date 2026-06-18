@@ -55,7 +55,7 @@ Si te gusta el proyecto deja una estrella ⭐ en GitHub.
 
 ✨ DARKO_BOT ✨
 
-Más que un bot, una compañera digital.
+Tu aliado digital.
 
 ---
 
