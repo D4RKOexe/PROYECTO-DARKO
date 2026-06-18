@@ -1,216 +1,97 @@
-<div align="center">
-  <img src="https://files.catbox.moe/yp1tti.png" width="320">
+<⚡DARKO BOT⚡>
+  <img src="https://files.catbox.moe/7ktyoa.jpg" width="320">
+---
+</p>INFOℹ
 
-  <h1>𓆩⚝𓆪 HINATA BOT 𓍯 𓆩⚝𓆪</h1>
-  <p>La kunoichi del Clan Hyuga ahora en tu WhatsApp</p>
+DARKO_BOT es un bot multipropósito para WhatsApp Multi Device desarrollado para ofrecer una experiencia rápida, elegante y moderna.
 
-  ![Version](https://img.shields.io/badge/Version-2.2.0-blue?style=for-the-badge)
-  ![Commands](https://img.shields.io/badge/Commands-113+-purple?style=for-the-badge)
-  ![Node.js](https://img.shields.io/badge/Node.js-21+-green?style=for-the-badge)
-  ![WhatsApp](https://img.shields.io/badge/WhatsApp-Bot-25D366?style=for-the-badge&logo=whatsapp&logoColor=white)
-</div>
+Incluye funciones de administración, inteligencia artificial, entretenimiento, descargas, multimedia y mucho más.
+
+«⚡ La elegancia y el poder en un solo bot.»
 
 ---
 
-## 👨‍💻 CREADORES PRINCIPALES
+✨ Características
 
-<div align="center">
-
-**EL VIGILANTE 🇭🇳**
-Creador Principal
-
-**BRAYANRK 🇨🇴**
-Creador Principal
-
-</div>
-
----
-
-## 🌐 COMUNIDAD OFICIAL
-
-<div align="center">
-
-[![Grupo Oficial](https://img.shields.io/badge/Grupo_Oficial-WhatsApp-25D366?style=for-the-badge&logo=whatsapp&logoColor=white)](https://chat.whatsapp.com/EEppolIlNjGDZrmNyDERRr)
-
-</div>
-
----
-
-## ✦ SOBRE HINATA BOT
-
-Hinata Bot es un bot avanzado de WhatsApp inspirado en Hinata Hyuga. Combina sistemas RPG, economía virtual, gacha, juegos interactivos, descargas multimedia e inteligencia artificial conversacional con personalidad propia.
-
-Actualmente cuenta con más de **113 comandos**, organizados en múltiples categorías para brindar una experiencia completa, entretenida y dinámica para grupos y usuarios individuales.
-
----
-
-## ✨ CARACTERÍSTICAS PRINCIPALES
-
-- ⚔️ Sistema RPG Completo
-- 💎 Economía Virtual
-- 🎰 Sistema Gacha
-- 🎮 Minijuegos Interactivos
-- 📥 Descargas Multimedia
 - 🤖 Inteligencia Artificial
-- 👥 Administración de Grupos
-- 👑 Herramientas Exclusivas para Owner
-- 📊 Rankings Globales
-- 🏆 Sistema de Niveles y Experiencia
+- 🎮 Juegos
+- 📥 Descargas
+- 🎵 Multimedia
+- 🛡️ Administración de grupos
+- 🚫 Anti-Spam
+- 👑 Comandos Owner
+- ⚡ Alto rendimiento
+- 🌙 Diseño elegante
 
 ---
 
-## 📊 ESTADÍSTICAS DEL BOT
+👑 Comandos Principales
 
-| Categoría | Cantidad |
-|-----------|----------|
-| ⚔️ RPG | 26 |
-| 🎰 Gacha | 10 |
-| 🎮 Juegos | 4 |
-| 👥 Grupos | 19 |
-| 📥 Descargas | 8 |
-| 🎪 Diversión | 6 |
-| 🌸 Anime | 15 |
-| 🤖 IA | 2 |
-| 👑 Owner | 10 |
-| ℹ️ Información | 8 |
-| **TOTAL** | **113+** |
+Comando| Función
+.menu| Menú principal
+.ping| Velocidad del bot
+.owner| Información del creador
+.play| Descargar música
+.sticker| Crear sticker
+.ai| Chat IA
+.grupo| Herramientas de grupo
 
 ---
 
-## ⚔️ COMANDOS RPG (26)
+🛡️ Solo Owner
 
-`work` `work2` `daily` `weekly` `monthly` `fish` `crime` `cazar` `minar` `cofre` `aventura` `slut` `casino` `ruleta` `loteria` `steal` `pelear` `curar` `levelup` `clase` `perfil` `banco` `dep` `ret` `pay` `top`
-
----
-
-## 🎰 COMANDOS GACHA (10)
-
-`rw` `claim` `rw2` `inventario` `inventario2` `coleccion` `vender` `mercado` `regalar` `suertegacha`
-
----
-
-## 🎮 COMANDOS DE JUEGOS (4)
-
-`ahorcado` `tictactoe` `trivia` `ppt`
+Comando| Función
+.restart| Reiniciar bot
+.update| Actualizar
+.ban| Banear usuario
+.unban| Desbanear usuario
+.autoadmin| Administración automática
 
 ---
 
-## 👥 COMANDOS DE GRUPOS (19)
+⭐ Apóyanos
 
-`antilink` `close` `open` `delete` `demote` `promote` `kick` `infogrupo` `resetlink` `setdesc` `setname` `setphoto` `setwelcome` `welcome` `tagall` `admins` `confesar` `link` `top`
+Si te gusta el proyecto deja una estrella ⭐ en GitHub.
 
----
+✨ DARKO_BOT ✨
 
-## 📥 COMANDOS DE DESCARGAS (8)
-
-`play` `tiktok` `spotify` `instagram` `apk` `mediafire` `stickerly` `tenor`
+Más que un bot, una compañera digital.
 
 ---
 
-## 🎪 COMANDOS DE DIVERSIÓN (6)
+## 💻 𝗚𝘂𝗶𝗮 𝗱𝗲 𝗜𝗻𝘀𝘁𝗮𝗹𝗮𝗰𝗶𝗼𝗻 𝗲𝗻 𝗧𝗲𝗿𝗺𝘂𝘅
 
-`quien` `reto` `ship` `gay` `pp` `facto`
+Sigue estos pasos para instalar y ejecutar **ELYSSIA BOT MD** en tu dispositivo.
 
----
-
-## 🌸 COMANDOS ANIME (15)
-
-`angry` `solo` `sad` `kiss` `hug` `kick` `happy` `bite` `bonk` `bully` `smile` `smug` `tickle` `cringe` `slap`
-
----
-
-## 🤖 COMANDOS IA (2)
-
-`ia` `hinata`
-
----
-
-## 👑 COMANDOS OWNER (10)
-
-`dardiamantes` `darxp` `gachafull` `resetgacha` `join` `update` `getplugin` `bc` `spam` `exec`
-
----
-
-## ℹ️ COMANDOS DE INFORMACIÓN (8)
-
-`owner` `ping` `botinfo` `totalcmd` `inforpg` `infogacha` `infogroup` `infobot`
-
----
-
-## 🚀 INSTALACIÓN
-
+1. **Concede Permisos de Almacenamiento**
 ```bash
-git clone https://github.com/ElvigilanteDv/Hinata-Bot.git
-cd Hinata-Bot
-npm install
-npm start
+termux-setup-storage
 ```
 
----
+2.  **Actualiza y Prepara el Entorno**
+    ```bash
+    apt update && apt upgrade -y
+    pkg install -y git nodejs ffmpeg imagemagick
+    ```
 
-## 📋 REQUISITOS
+3.  **Clona el Repositorio del Bot**
+    ```bash
+    
+    ```
 
-- Node.js 21+
-- npm actualizado
-- 2 GB de RAM recomendados
-- Conexión a Internet
-- API Key de Groq (Opcional)
+4.  **Accede al Directorio del Proyecto**
+    ```bash
+ 
+    ```
 
----
+5.  **Instala las Dependencias de Node.js**
+    ```bash
+    npm install
+    ```
 
-## 🔥 FUNCIONES DESTACADAS
-
-✅ Sistema RPG avanzado  
-✅ Más de 113 comandos  
-✅ Economía virtual completa  
-✅ Gacha de personajes  
-✅ IA conversacional  
-✅ Juegos interactivos  
-✅ Descargador multimedia  
-✅ Sistema de niveles  
-✅ Herramientas administrativas  
-✅ Compatible con grupos y chats privados  
-
----
-
-## ⚠️ LICENCIA
-
-© 2026 EL VIGILANTE & BRAYANRK — Todos los derechos reservados.
-
-**PERMITIDO**
-
-✔️ Uso personal  
-✔️ Modificación conservando créditos  
-✔️ Compartir el proyecto sin fines comerciales  
-✔️ Crear contenido relacionado con el bot  
-
-**PROHIBIDO**
-
-❌ Vender el proyecto  
-❌ Eliminar créditos  
-❌ Reclamar autoría  
-❌ Redistribución comercial sin autorización  
-❌ Venta de versiones modificadas  
+6.  **Inicia el Bot**
+    ```bash
+    npm start
+    ```
 
 ---
-
-<div align="center">
-
-## ⭐ APOYA EL PROYECTO
-
-Si te gusta HINATA BOT:
-
-⭐ Dale una estrella al repositorio  
-💬 Únete a la comunidad oficial  
-🚀 Comparte el proyecto  
-❤️ Apoya a los desarrolladores  
-
----
-
-🌸 *"No me rendiré, porque quiero ser fuerte como Naruto-kun."*
-
-**𓆩⚝𓆪 HINATA BOT 𓍯 𓆩⚝𓆪**
-
-EL VIGILANTE 🇭🇳 • BRAYANRK 🇨🇴
-
-</div>
