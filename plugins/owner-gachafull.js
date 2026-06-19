@@ -37,11 +37,11 @@ let handler = async (m, { conn }) => {
 
   if (agregados === 0) {
     return conn.sendMessage(m.chat, {
-      text: '𖣔 「 HINATA GACHA FULL 」 ˚ʚ♡ɞ˚\n\n💫 » Ya tienes toda la colección\n📊 » ' + user.inventory.length + ' personajes'
+      text: '💬 「 DARKO GACHA FULL 」 💬\n\n💫 » Ya tienes toda la colección\n📊 » ' + user.inventory.length + ' personajes'
     }, { quoted: m })
   }
 
-  let texto = '𖣔 「 HINATA GACHA FULL 」 ˚ʚ♡ɞ˚\n\n'
+  let texto = '🔝 「 HINATA GACHA FULL 」 🔝\n\n'
   texto += '🌟 » Colección completada\n\n'
   texto += '📦 » +' + agregados + ' personajes nuevos\n'
   texto += '🎒 » Total: ' + user.inventory.length + '/' + characters.length + ' personajes\n\n'
