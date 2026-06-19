@@ -3,17 +3,15 @@ import chalk from 'chalk'
 import { fileURLToPath } from 'url'
 
 global.owner = [
-  ['59177474230', 'El Vigilante', true],
-  ['573223090406', 'BrayanRK', true],
-  ['51923657619', 'Nightvibe dev', true]  
+  ['51913454004', 'Gxrcix', true]  
 ]
 
 global.mods = []
 global.prems = []
 
-global.namebot = 'Hinata-Bot'
-global.packname = 'Hinata Bot 🌸'
-global.author = 'El vigilante & Brayan RK| © 𝟸𝟶𝟸𝟼 '
+global.namebot = 'Darko-Bot'
+global.packname = 'darko Bot 🌸'
+global.author = 'Gxrcix/Darko| © 𝟸𝟶𝟸𝟼 '
 global.moneda = 'Hinata'
 
 global.libreria = 'Baileys'
@@ -24,13 +22,13 @@ global.jadi = 'subHinata'
 global.yukiJadibts = true
 
 global.namecanal = '❇️'
-global.idcanal = '120363404707199986@newsletter'
-global.idcanal2 = '120363404707199986@newsletter'
+global.idcanal = ''
+global.idcanal2 = ''
 global.canal = 'pronto'
-global.canalreg = '120363404707199986@newsletter'
+global.canalreg = ''
 
 global.ch = {
-  ch1: '120363404707199986@newsletter'
+  ch1: ''
 }
 
 global.multiplier = 69
