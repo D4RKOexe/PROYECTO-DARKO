@@ -4,7 +4,7 @@ let handler = async (m, { conn }) => {
 
   if (!owners.includes(who)) {
     return conn.sendMessage(m.chat, {
-      text: '𖣔 「 HINATA RESET GACHA 」 ˚ʚ♡ɞ˚\n\n💫 » Solo los creadores'
+      text: '⚡ 「 DARKO RESET GACHA 」 ⚡\n\n💫 » Solo los creadores'
     }, { quoted: m })
   }
 
@@ -16,14 +16,14 @@ let handler = async (m, { conn }) => {
 
   if (!user.inventory || user.inventory.length === 0) {
     return conn.sendMessage(m.chat, {
-      text: '𖣔 「 HINATA RESET GACHA 」 ˚ʚ♡ɞ˚\n\n💫 » No tienes personajes'
+      text: '🔰 「 DARKO RESET GACHA 」 🔰\n\n💫 » No tienes personajes'
     }, { quoted: m })
   }
 
   let tenia = user.inventory.length
   user.inventory = []
 
-  let texto = '𖣔 「 HINATA RESET GACHA 」 ˚ʚ♡ɞ˚\n\n'
+  let texto = '🚫 「 DARKO RESET GACHA 」 🚫\n\n'
   texto += '🗑️ » Colección vaciada\n\n'
   texto += '📦 » -' + tenia + ' personajes\n'
   texto += '🎒 » Total: 0 personajes\n\n'
