@@ -1,6 +1,6 @@
 let handler = async (m, { conn, args, usedPrefix, command }) => {
   if (!args[0]) return conn.sendMessage(m.chat, {
-    text: `𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA BOT ㅤ֢ㅤׄㅤׅ\n\n❀ Gestión de usuarios premium\n\n> ${usedPrefix}darpremium <número>\n> ${usedPrefix}quitarpremium <número>\n> ${usedPrefix}listapremium`
+    text: `🔰⁾ ㅤׄㅤׅㅤׄ DARKO BOT ㅤ֢ㅤׄㅤׅ\n\n🔰 Gestión de usuarios premium\n\n> ${usedPrefix}darpremium <número>\n> ${usedPrefix}quitarpremium <número>\n> ${usedPrefix}listapremium`
   }, { quoted: m })
 
   const sub = command.toLowerCase()
@@ -17,14 +17,14 @@ let handler = async (m, { conn, args, usedPrefix, command }) => {
     const mentions = prems.map(([jid]) => jid)
 
     return conn.sendMessage(m.chat, {
-      text: `𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA BOT ㅤ֢ㅤׄㅤׅ\n\n╭━━━〔 💎 *USUARIOS PREMIUM* 〕━━⬣\n┃\n${lista}\n┃\n┃ 💎 Total: *${prems.length}*\n┃\n╰━━━━━━━━━━━━━━━━━━━━━━⬣`,
+      text: `𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA BOT ㅤ֢ㅤׄㅤׅ\n\n╭━━━〔 🔱 *USUARIOS PREMIUM* 〕━━⬣\n┃\n${lista}\n┃\n┃ 🔱 Total: *${prems.length}*\n┃\n╰━━━━━━━━━━━━━━━━━━━━━━⬣`,
       mentions
     }, { quoted: m })
   }
 
   let numero = args[0].replace(/[^0-9]/g, '')
   if (!numero) return conn.sendMessage(m.chat, {
-    text: '𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA BOT ㅤ֢ㅤׄㅤׅ\n\n❌ Número inválido\n\n> Ejemplo: .darpremium 591774742300'
+    text: 'ℹ⁾ ㅤׄㅤׅㅤׄ DARKO BOT ㅤ֢ㅤׄㅤׅ\n\n❌ Número inválido\n\n> Ejemplo: .darpremium 591774742300'
   }, { quoted: m })
 
   const jid = numero + '@s.whatsapp.net'
@@ -40,13 +40,13 @@ let handler = async (m, { conn, args, usedPrefix, command }) => {
     user.premiumTime = -1
 
     await conn.sendMessage(m.chat, {
-      text: `𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA BOT ㅤ֢ㅤׄㅤׅ\n\n╭━━━〔 💎 *PREMIUM ACTIVADO* 〕━━⬣\n┃\n┃ ✅ @${numero} ahora es premium\n┃ 💎 Acceso permanente\n┃\n╰━━━━━━━━━━━━━━━━━━━━━━⬣`,
+      text: `🔱 ⁾ ㅤׄㅤׅㅤׄ DARKO BOT ㅤ֢ㅤׄㅤׅ\n\n╭━━━〔 🔱 *PREMIUM ACTIVADO* 〕━━⬣\n┃\n┃ ✅ @${numero} ahora es premium\n┃ 💎 Acceso permanente\n┃\n╰━━━━━━━━━━━━━━━━━━━━━━⬣`,
       mentions: [jid]
     }, { quoted: m })
 
     try {
       await conn.sendMessage(jid, {
-        text: `𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA BOT ㅤ֢ㅤׄㅤׅ\n\n╭━━━〔 💎 *¡ERES PREMIUM!* 〕━━⬣\n┃\n┃ 🌸 ¡Felicidades!\n┃ ❀ Ahora tienes acceso premium\n┃ ❀ Disfruta los comandos exclusivos\n┃ 💎 Acceso permanente\n┃\n╰━━━━━━━━━━━━━━━━━━━━━━⬣`
+        text: `𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA BOT ㅤ֢ㅤׄㅤׅ\n\n╭━━━〔 🔱 *¡ERES PREMIUM!* 〕━━⬣\n┃\n┃ 🌸 ¡Felicidades!\n┃ ❀ Ahora tienes acceso premium\n┃ ❀ Disfruta los comandos exclusivos\n┃ 💎 Acceso permanente\n┃\n╰━━━━━━━━━━━━━━━━━━━━━━⬣`
       })
     } catch {}
 
@@ -54,7 +54,7 @@ let handler = async (m, { conn, args, usedPrefix, command }) => {
 
   } else if (sub === 'quitarpremium') {
     if (!user.premium) return conn.sendMessage(m.chat, {
-      text: `𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA BOT ㅤ֢ㅤׄㅤׅ\n\n❌ @${numero} no tiene premium`,
+      text: `ℹ ⁾ ㅤׄㅤׅㅤׄ HINATA BOT ㅤ֢ㅤׄㅤׅ\n\n❌ @${numero} no tiene premium`,
       mentions: [jid]
     }, { quoted: m })
 
@@ -62,7 +62,7 @@ let handler = async (m, { conn, args, usedPrefix, command }) => {
     user.premiumTime = 0
 
     await conn.sendMessage(m.chat, {
-      text: `𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA BOT ㅤ֢ㅤׄㅤׅ\n\n╭━━━〔 💎 *PREMIUM REMOVIDO* 〕━━⬣\n┃\n┃ ❌ @${numero} ya no es premium\n┃\n╰━━━━━━━━━━━━━━━━━━━━━━⬣`,
+      text: `ℹ⁾ ㅤׄㅤׅㅤׄ DARKO BOT ㅤ֢ㅤׄㅤׅ\n\n╭━━━〔 💎 *PREMIUM REMOVIDO* 〕━━⬣\n┃\n┃ ❌ @${numero} ya no es premium\n┃\n╰━━━━━━━━━━━━━━━━━━━━━━⬣`,
       mentions: [jid]
     }, { quoted: m })
 
