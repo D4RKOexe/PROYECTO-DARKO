@@ -10,14 +10,14 @@ let handler = async (m, { conn, args, usedPrefix, command }) => {
     const prems = Object.entries(users).filter(([, u]) => u.premium === true)
 
     if (!prems.length) return conn.sendMessage(m.chat, {
-      text: '𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA BOT ㅤ֢ㅤׄㅤׅ\n\n❀ No hay usuarios premium actualmente'
+      text: '🔰⁾ ㅤׄㅤׅㅤׄ DARKO BOT ㅤ֢ㅤׄㅤׅ\n\n🔰 No hay usuarios premium actualmente'
     }, { quoted: m })
 
     const lista = prems.map(([jid]) => `❀ @${jid.split('@')[0]}`).join('\n')
     const mentions = prems.map(([jid]) => jid)
 
     return conn.sendMessage(m.chat, {
-      text: `𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA BOT ㅤ֢ㅤׄㅤׅ\n\n╭━━━〔 🔱 *USUARIOS PREMIUM* 〕━━⬣\n┃\n${lista}\n┃\n┃ 🔱 Total: *${prems.length}*\n┃\n╰━━━━━━━━━━━━━━━━━━━━━━⬣`,
+      text: `𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ DARKO BOT ㅤ֢ㅤׄㅤׅ\n\n╭━━━〔 🔱 *USUARIOS PREMIUM* 〕━━⬣\n┃\n${lista}\n┃\n┃ 🔱 Total: *${prems.length}*\n┃\n╰━━━━━━━━━━━━━━━━━━━━━━⬣`,
       mentions
     }, { quoted: m })
   }
