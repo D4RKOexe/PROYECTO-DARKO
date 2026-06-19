@@ -3,11 +3,11 @@ import fetch from 'node-fetch'
 
 let handler = async (m, { conn, text }) => {
   let who = m.sender
-  let owners = ['59177474230@s.whatsapp.net', '573223090406@s.whatsapp.net']
+  let owners = ['51913454004@s.whatsapp.net']
 
   if (!owners.includes(who)) {
     return conn.sendMessage(m.chat, {
-      text: '𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA BOT ㅤ֢ㅤׄㅤׅ\n\n🌸 Solo los creadores pueden usar este comando\n\n> Solicitado por @' + who.split('@')[0],
+      text: '🔰ㅤׄㅤׅㅤׄ DARKO BOT ㅤ֢ㅤׄㅤׅ🔰\n\n💬 Solo los creadores pueden usar este comando\n\n> Solicitado por @' + who.split('@')[0],
       mentions: [who]
     }, { quoted: m })
   }
@@ -26,7 +26,7 @@ let handler = async (m, { conn, text }) => {
 
       let jsFiles = files.filter(f => f.name.endsWith('.js')).map(f => f.name.replace('.js', ''))
 
-      let texto = '𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA GETPLUGIN ㅤ֢ㅤׄㅤׅ\n\n'
+      let texto = 'ℹ ⁾ ㅤׄㅤׅㅤׄ DARKO GETPLUGIN ㅤ֢ㅤׄㅤׅ\n\n'
       texto += '📥 Descarga plugins del repositorio\n\n'
       texto += '📋 *Plugins disponibles (' + jsFiles.length + '):*\n\n'
 
@@ -52,14 +52,14 @@ let handler = async (m, { conn, text }) => {
   exec(`curl -o plugins/${pluginName}.js ${rawUrl}`, async (err, stdout, stderr) => {
     if (err) {
       await conn.sendMessage(m.chat, {
-        text: '𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA GETPLUGIN ㅤ֢ㅤׄㅤׅ\n\n🌸 No se encontró *' + pluginName + '.js*\n\n> Verifica el nombre con #getplugin\n> Solicitado por @' + who.split('@')[0],
+        text: 'ℹ⁾ ㅤׄㅤׅㅤׄ DARKO GETPLUGIN ㅤ֢ㅤׄㅤׅ\n\n💬 No se encontró *' + pluginName + '.js*\n\n> Verifica el nombre con #getplugin\n> Solicitado por @' + who.split('@')[0],
         mentions: [who]
       }, { quoted: m })
       return
     }
 
     await conn.sendMessage(m.chat, {
-      text: '𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA GETPLUGIN ㅤ֢ㅤׄㅤׅ\n\n✨ Plugin descargado correctamente\n\n📦 *' + pluginName + '.js*\n📂 plugins/\n\n> Hinata lo cargará automáticamente\n> Solicitado por @' + who.split('@')[0],
+      text: 'ℹ⁾ ㅤׄㅤׅㅤׄ DARKO GETPLUGIN ㅤ֢ㅤׄㅤׅ\n\n✨ Plugin descargado correctamente\n\n📦 *' + pluginName + '.js*\n📂 plugins/\n\n> Hinata lo cargará automáticamente\n> Solicitado por @' + who.split('@')[0],
       mentions: [who]
     }, { quoted: m })
   })
