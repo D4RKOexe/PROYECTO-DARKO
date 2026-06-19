@@ -11,7 +11,7 @@ import cfonts from 'cfonts'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const require = createRequire(__dirname)
 
-cfonts.say('HINATA BOT', {
+cfonts.say('DARKO BOT', {
   font: 'block',
   align: 'center',
   gradient: ['#ff9a9e', '#fad0c4', '#fad0c4'],
