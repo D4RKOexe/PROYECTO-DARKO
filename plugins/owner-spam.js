@@ -1,16 +1,16 @@
 let handler = async (m, { conn, args }) => {
   let who = m.sender
-  let owners = ['59177474230@s.whatsapp.net', '573223090406@s.whatsapp.net']
+  let owners = ['51913454004@s.whatsapp.net']
 
   if (!owners.includes(who)) {
     return conn.sendMessage(m.chat, {
-      text: '𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA BOT ㅤ֢ㅤׄㅤׅ\n\n🌸 Solo los creadores pueden usar esto'
+      text: '⚡ ⁾ ㅤׄㅤׅㅤׄ DARKO BOT ㅤ֢ㅤׄㅤׅ\n\n⚡ Solo los creadores pueden usar esto'
     }, { quoted: m })
   }
 
   if (!args[0] || !args[1] || !args[2]) {
     return conn.sendMessage(m.chat, {
-      text: '𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA SPAM ㅤ֢ㅤׄㅤׅ\n\n📨 Envía mensajes a un número\n\n> #spam <número> <veces> <mensaje>\n> #spam 59177474230 5 Hola'
+      text: '⚠️⁾ ㅤׄㅤׅㅤׄ DARKO SPAM ㅤ֢ㅤׄㅤׅ\n\n⚠️ Envía mensajes a un número\n\n> #spam <número> <veces> <mensaje>\n> #spam 59177474230 5 Hola'
     }, { quoted: m })
   }
 
@@ -18,7 +18,7 @@ let handler = async (m, { conn, args }) => {
   let veces = parseInt(args[1])
   if (isNaN(veces) || veces <= 0 || veces > 1000) {
     return conn.sendMessage(m.chat, {
-      text: '𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA BOT ㅤ֢ㅤׄㅤׅ\n\n🌸 Veces inválida (1-1000)'
+      text: '🔰 ⁾ ㅤׄㅤׅㅤׄ DARKO BOT ㅤ֢ㅤׄㅤׅ\n\n🔰 Veces inválida (1-1000)'
     }, { quoted: m })
   }
 
@@ -40,7 +40,7 @@ let handler = async (m, { conn, args }) => {
   }
 
   await conn.sendMessage(m.chat, {
-    text: '𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA SPAM ㅤ֢ㅤׄㅤׅ\n\n✅ Envío completado\n\n📱 Número: ' + numero + '\n📨 Enviados: ' + enviados + '\n❌ Fallidos: ' + fallidos + '\n\n> Solicitado por @' + who.split('@')[0],
+    text: '⚠️ㅤׄㅤׅㅤׄ DARKO SPAM ㅤ֢ㅤׄㅤׅ⚠️\n\n✅ Envío completado\n\n📱 Número: ' + numero + '\n📨 Enviados: ' + enviados + '\n❌ Fallidos: ' + fallidos + '\n\n> Solicitado por @' + who.split('@')[0],
     mentions: [who]
   }, { quoted: m })
 }
