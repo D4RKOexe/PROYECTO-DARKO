@@ -16,7 +16,7 @@ let handler = async (m, { conn, text }) => {
     let minutos = Math.floor(tiempoRestante / 60)
     let segundos = tiempoRestante % 60
     return conn.sendMessage(m.chat, {
-      text: `𖣔 「 HINATA WORK 2 」 ˚ʚ♡ɞ˚\n\n💫 » Espera ${minutos}m ${segundos}s`
+      text: `⚡ 「 DARKO WORK 2 」 ⚡\n\n💫 » Espera ${minutos}m ${segundos}s`
     }, { quoted: m })
   }
 
