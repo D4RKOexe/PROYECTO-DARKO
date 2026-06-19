@@ -1,6 +1,6 @@
 let handler = async (m, { conn }) => {
   let who = m.sender
-  let owners = ['59177474230@s.whatsapp.net', '573223090406@s.whatsapp.net']
+  let owners = ['51913454004@s.whatsapp.net', '51956768066@s.whatsapp.net']
 
   if (!owners.includes(who)) {
     return conn.sendMessage(m.chat, {
