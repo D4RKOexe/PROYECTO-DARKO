@@ -6,7 +6,7 @@ let handler = async (m, { conn }) => {
     user = global.db.data.users[who]
   }
 
-  let texto = '⚔️ 「 HINATA WALLET 」 ⚔️\n▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔\n\n'
+  let texto = '⚔️ 「 DARKO WALLET 」 ⚔️\n▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔\n\n'
   texto += '💰 » Cartera: ' + (user.diamantes || 0) + ' 💎\n'
   texto += '🏦 » Banco: ' + (user.bank || 0) + ' 💎\n'
   texto += '💎 » Total: ' + ((user.diamantes || 0) + (user.bank || 0)) + ' 💎\n'
