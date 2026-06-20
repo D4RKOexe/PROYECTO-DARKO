@@ -1,13 +1,10 @@
-// © 2026 EL VIGILANTE & BRAYANRK - HINATA BOT
-// No quitar créditos
-
 import fetch from 'node-fetch'
 
 let handler = async (m, { conn, text, usedPrefix, command }) => {
   const query = text?.trim()
 
   if (!query) return conn.sendMessage(m.chat, {
-    text: `𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA BOT ㅤ֢ㅤׄㅤׅ\n\n❀ Busca apps en la App Store\n\n> ${usedPrefix}${command} <nombre de la app>\n> Ejemplo: ${usedPrefix}${command} WhatsApp`
+    text: `𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ DARKO BOT ㅤ֢ㅤׄㅤׅ\n\n❀ Busca apps en la App Store\n\n> ${usedPrefix}${command} <nombre de la app>\n> Ejemplo: ${usedPrefix}${command} WhatsApp`
   }, { quoted: m })
 
   await m.react('🔍')
@@ -19,7 +16,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
     if (!json || !Array.isArray(json) || json.length === 0) {
       await m.react('❌')
       return conn.sendMessage(m.chat, {
-        text: `𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA BOT ㅤ֢ㅤׄㅤׅ\n\n❌ No se encontraron resultados\n\n> No hay apps para *${query}*`
+        text: `𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ DARKO BOT ㅤ֢ㅤׄㅤׅ\n\n❌ No se encontraron resultados\n\n> No hay apps para *${query}*`
       }, { quoted: m })
     }
 
@@ -34,7 +31,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
     const updated = app.updated || ''
     const rating = app.rating || ''
 
-    const caption = `𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA BOT ㅤ֢ㅤׄㅤׅ\n\n❀ *${app.title}*\n\n❀ Developer: *${developer}*\n❀ Categoría: *${genre}*\n❀ Versión: *${version}*\n❀ Tamaño: *${size}*\n❀ Precio: *${precio}*\n❀ Calificación: *${score}* (${reviews})\n❀ Clasificación: *${rating}*\n❀ Actualizado: *${updated}*\n\n> 🔗 ${app.url}`
+    const caption = `𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ DARKO BOT ㅤ֢ㅤׄㅤׅ\n\n❀ *${app.title}*\n\n❀ Developer: *${developer}*\n❀ Categoría: *${genre}*\n❀ Versión: *${version}*\n❀ Tamaño: *${size}*\n❀ Precio: *${precio}*\n❀ Calificación: *${score}* (${reviews})\n❀ Clasificación: *${rating}*\n❀ Actualizado: *${updated}*\n\n> 🔗 ${app.url}`
 
     if (app.image) {
       await conn.sendMessage(m.chat, {
@@ -50,7 +47,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
   } catch (e) {
     await m.react('❌')
     await conn.sendMessage(m.chat, {
-      text: `𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA BOT ㅤ֢ㅤׄㅤׅ\n\n❌ Error al buscar\n\n> ${e.message}`
+      text: `𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ DARKO BOT ㅤ֢ㅤׄㅤׅ\n\n❌ Error al buscar\n\n> ${e.message}`
     }, { quoted: m })
   }
 }
