@@ -16,7 +16,7 @@ let handler = async (m, { conn }) => {
     let minutos = Math.floor(tiempoRestante / 60)
     let segundos = tiempoRestante % 60
     return conn.sendMessage(m.chat, {
-      text: '⚔️ 「 HINATA WORK 」 ⚔️\n▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔\n\n⏳ » Descansando...\n🕐 » ' + minutos + 'm ' + segundos + 's\n\n▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔'
+      text: '⚔️ 「 DARKO WORK 」 ⚔️\n▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔\n\n⏳ » Descansando...\n🕐 » ' + minutos + 'm ' + segundos + 's\n\n▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔'
     }, { quoted: m })
   }
 
@@ -66,7 +66,7 @@ let handler = async (m, { conn }) => {
   user.exp = (user.exp || 0) + exp
   cooldownsWork[who] = now + 120000
 
-  let texto = '⚔️ 「 HINATA WORK 」 ⚔️\n▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔\n\n'
+  let texto = '⚔️ 「 DARKO WORK 」 ⚔️\n▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔\n\n'
   texto += '📋 » ' + trabajo.texto + '\n'
   texto += '💎 » Diamantes: ' + (cambio > 0 ? '+' : '') + cambio + ' ' + rareza + '\n'
   texto += '✨ » Experiencia: +' + exp + '\n'
