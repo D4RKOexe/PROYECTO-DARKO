@@ -16,13 +16,13 @@ let handler = async (m, { conn }) => {
     let minutos = Math.floor(tiempoRestante / 60)
     let segundos = tiempoRestante % 60
     return conn.sendMessage(m.chat, {
-      text: '🥷 「 HINATA STEAL 」 🥷\n✦•┈๑⋅⋯ ⋯⋅๑┈•✦\n\n💫 » Escondido de la policía\n⏳ » ' + minutos + 'm ' + segundos + 's\n\n✦•┈๑⋅⋯ ⋯⋅๑┈•✦'
+      text: '🥷 「 DARKO STEAL 」 🥷\n✦•┈๑⋅⋯ ⋯⋅๑┈•✦\n\n💫 » Escondido de la policía\n⏳ » ' + minutos + 'm ' + segundos + 's\n\n✦•┈๑⋅⋯ ⋯⋅๑┈•✦'
     }, { quoted: m })
   }
 
   let target = m.mentionedJid && m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : null
-  if (!target) return conn.sendMessage(m.chat, { text: '🥷 「 HINATA STEAL 」 🥷\n✦•┈๑⋅⋯ ⋯⋅๑┈•✦\n\n💫 » Menciona a quien robar\n\n✦•┈๑⋅⋯ ⋯⋅๑┈•✦\n> #steal @usuario' }, { quoted: m })
-  if (target === who) return conn.sendMessage(m.chat, { text: '🥷 「 HINATA STEAL 」 🥷\n✦•┈๑⋅⋯ ⋯⋅๑┈•✦\n\n💫 » No te robes a ti mismo\n\n✦•┈๑⋅⋯ ⋯⋅๑┈•✦' }, { quoted: m })
+  if (!target) return conn.sendMessage(m.chat, { text: '🥷 「 DARKO STEAL 」 🥷\n✦•┈๑⋅⋯ ⋯⋅๑┈•✦\n\n💫 » Menciona a quien robar\n\n✦•┈๑⋅⋯ ⋯⋅๑┈•✦\n> #steal @usuario' }, { quoted: m })
+  if (target === who) return conn.sendMessage(m.chat, { text: '🥷 「 DARKO STEAL 」 🥷\n✦•┈๑⋅⋯ ⋯⋅๑┈•✦\n\n💫 » No te robes a ti mismo\n\n✦•┈๑⋅⋯ ⋯⋅๑┈•✦' }, { quoted: m })
 
   let victim = global.db.data.users[target]
   if (!victim) {
@@ -34,7 +34,7 @@ let handler = async (m, { conn }) => {
 
   if (victimDiamantes <= 0) {
     return conn.sendMessage(m.chat, {
-      text: '🥷 「 HINATA STEAL 」 🥷\n✦•┈๑⋅⋯ ⋯⋅๑┈•✦\n\n💫 » @' + target.split('@')[0] + ' no tiene diamantes\n\n✦•┈๑⋅⋯ ⋯⋅๑┈•✦',
+      text: '🥷 「 DARKO STEAL 」 🥷\n✦•┈๑⋅⋯ ⋯⋅๑┈•✦\n\n💫 » @' + target.split('@')[0] + ' no tiene diamantes\n\n✦•┈๑⋅⋯ ⋯⋅๑┈•✦',
       mentions: [target]
     }, { quoted: m })
   }
@@ -63,7 +63,7 @@ let handler = async (m, { conn }) => {
     ]
 
     await conn.sendMessage(m.chat, {
-      text: '🥷 「 HINATA STEAL 」 🥷\n✦•┈๑⋅⋯ ⋯⋅๑┈•✦\n\n💫 » ROBO EXITOSO\n\n🎯 » @' + target.split('@')[0] + '\n💎 » Robaste: ' + robado + ' diamantes\n💰 » Tu total: ' + (user.diamantes || user.diamond || 0) + ' 💎\n\n' + mensajes[Math.floor(Math.random() * mensajes.length)] + '\n\n✦•┈๑⋅⋯ ⋯⋅๑┈•✦\n> ⏳ 45 minutos',
+      text: '🥷 「 DARKO STEAL 」 🥷\n✦•┈๑⋅⋯ ⋯⋅๑┈•✦\n\n💫 » ROBO EXITOSO\n\n🎯 » @' + target.split('@')[0] + '\n💎 » Robaste: ' + robado + ' diamantes\n💰 » Tu total: ' + (user.diamantes || user.diamond || 0) + ' 💎\n\n' + mensajes[Math.floor(Math.random() * mensajes.length)] + '\n\n✦•┈๑⋅⋯ ⋯⋅๑┈•✦\n> ⏳ 45 minutos',
       mentions: [target]
     }, { quoted: m })
   } else {
@@ -85,7 +85,7 @@ let handler = async (m, { conn }) => {
     ]
 
     await conn.sendMessage(m.chat, {
-      text: '🥷 「 HINATA STEAL 」 🥷\n✦•┈๑⋅⋯ ⋯⋅๑┈•✦\n\n💫 » TE ATRAPARON\n\n🎯 » @' + target.split('@')[0] + '\n💸 » Multa: ' + multa + ' diamantes\n💰 » Tu total: ' + (user.diamantes || user.diamond || 0) + ' 💎\n\n' + mensajes[Math.floor(Math.random() * mensajes.length)] + '\n\n✦•┈๑⋅⋯ ⋯⋅๑┈•✦\n> ⏳ 45 minutos',
+      text: '🥷 「 DARKO STEAL 」 🥷\n✦•┈๑⋅⋯ ⋯⋅๑┈•✦\n\n💫 » TE ATRAPARON\n\n🎯 » @' + target.split('@')[0] + '\n💸 » Multa: ' + multa + ' diamantes\n💰 » Tu total: ' + (user.diamantes || user.diamond || 0) + ' 💎\n\n' + mensajes[Math.floor(Math.random() * mensajes.length)] + '\n\n✦•┈๑⋅⋯ ⋯⋅๑┈•✦\n> ⏳ 45 minutos',
       mentions: [target]
     }, { quoted: m })
   }
