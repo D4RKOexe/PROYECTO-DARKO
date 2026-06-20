@@ -67,9 +67,9 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
     try { media = await prepareWAMessageMedia({ image: { url: 'https://files.catbox.moe/r60c8l.jpg' } }, { upload: conn.waUploadToServer }) } catch {}
 
     const interactiveMessage = proto.Message.InteractiveMessage.create({
-      header: { title: 'HINATA BOT - YOUTUBE', subtitle: 'Descarga música de YouTube', hasMediaAttachment: !!media, imageMessage: media?.imageMessage },
-      body: { text: `🎵 「 HINATA YOUTUBE 」 🎵\n\n💫 » Descarga audio de YouTube\n\n> ${usedPrefix}${command} <nombre o link>\n> Ejemplo: ${usedPrefix}${command} Naruto Opening 1\n> 💎 Cuesta 1 diamante por descarga\n\n> 🎧 API Oficial de El Vigilante\n> 🔗 https://elvigilante-api.onrender.com` },
-      footer: { text: '⫏⫏ HINATA BOT ✿' },
+      header: { title: 'DARKO-YT', subtitle: 'Descarga música de YouTube', hasMediaAttachment: !!media, imageMessage: media?.imageMessage },
+      body: { text: `🎵 「 DARKO YT 」 🎵\n\n💫 » Descarga audio de YouTube\n\n> ${usedPrefix}${command} <nombre o link>\n> Ejemplo: ${usedPrefix}${command} Naruto Opening 1\n> 💎 Cuesta 1 diamante por descarga\n\n> 🎧 API Oficial de El Vigilante\n> 🔗 https://elvigilante-api.onrender.com` },
+      footer: { text: '⫏⫏ DARKO BOT ✿' },
       nativeFlowMessage: { buttons: [{ name: 'single_select', buttonParamsJson: JSON.stringify({ title: '🎵 YOUTUBE', sections: [{ title: '¿Qué deseas hacer?', rows: [{ header: '🔍 BUSCAR', title: 'Buscar música', description: 'Escribe el nombre después del comando', id: 'ytinfo' }] }] }) }] }
     })
     const msg = generateWAMessageFromContent(m.chat, { viewOnceMessage: { message: { messageContextInfo: {}, interactiveMessage } } }, { quoted: m })
@@ -83,7 +83,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
   const diamantes = getDiamantes(user)
   if (diamantes < 1) {
     return conn.sendMessage(m.chat, {
-      text: `🎵 「 HINATA YOUTUBE 」\n\n💫 » No tienes suficientes diamantes\n💎 Necesitas: 1 | Tienes: ${diamantes}\n\n> Usa #work para ganar\n\n> 🎧 API Oficial de El Vigilante\n> 🔗 https://elvigilante-api.onrender.com`
+      text: `🎵 「 DARKO YT 」\n\n💫 » No tienes suficientes diamantes\n💎 Necesitas: 1 | Tienes: ${diamantes}\n\n> Usa #work para ganar\n\n> 🎧 API Oficial de El Vigilante\n> 🔗 https://elvigilante-api.onrender.com`
     }, { quoted: m })
   }
 
@@ -113,9 +113,9 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
     }))
 
     const interactiveMessage = proto.Message.InteractiveMessage.create({
-      header: { title: 'HINATA BOT - YOUTUBE', subtitle: `Resultados: ${input}`, hasMediaAttachment: !!media, imageMessage: media?.imageMessage },
+      header: { title: 'DARKO-YT', subtitle: `Resultados: ${input}`, hasMediaAttachment: !!media, imageMessage: media?.imageMessage },
       body: { text: `🔍 「 RESULTADOS 」\n\n💫 » Búsqueda: *${input}*\n📋 ${resultados.length} resultados encontrados\n\n> Elige el que quieras descargar\n> 💎 1 diamante\n\n> 🎧 API Oficial de El Vigilante\n> 🔗 https://elvigilante-api.onrender.com` },
-      footer: { text: '⫏⫏ HINATA BOT ✿' },
+      footer: { text: '⫏⫏ DARKO BOT ✿' },
       nativeFlowMessage: { buttons: [{ name: 'single_select', buttonParamsJson: JSON.stringify({ title: '🎵 RESULTADOS', sections: [{ title: `📋 ${input.toUpperCase().slice(0, 24)}`, rows }] }) }] }
     })
     const msg = generateWAMessageFromContent(m.chat, { viewOnceMessage: { message: { messageContextInfo: {}, interactiveMessage } } }, { quoted: m })
@@ -134,7 +134,7 @@ async function _descargarAudio(conn, m, videoUrl, title) {
   const diamantes = getDiamantes(user)
   if (diamantes < 1) {
     await conn.sendMessage(m.chat, {
-      text: `🎵 「 HINATA YOUTUBE 」\n\n💫 » No tienes suficientes diamantes\n💎 Necesitas: 1 | Tienes: ${diamantes}\n\n> Usa #work para ganar\n\n> 🎧 API Oficial de El Vigilante\n> 🔗 https://elvigilante-api.onrender.com`
+      text: `🎵 「 DARKO YOUTUBE 」\n\n💫 » No tienes suficientes diamantes\n💎 Necesitas: 1 | Tienes: ${diamantes}\n\n> Usa #work para ganar\n\n> 🎧 API Oficial de El Vigilante\n> 🔗 https://elvigilante-api.onrender.com`
     }, { quoted: m })
     return
   }
