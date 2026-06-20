@@ -9,33 +9,31 @@ const textCyberpunk = t => t.replace(/[a-z]/gi, c => charset[c.toLowerCase()] ||
 const defaultMenu = {
   before: `
 ࿇ ══━━━✥◈✥━━━══ ࿇
-    𝕳𝖎𝖓𝖆𝖙𝖆 𝕭𝖔𝖙
+    ĐªŘĶØ BØŤ
 ࿇ ══━━━✥◈✥━━━══ ࿇
 
 𖣔 ɪɴꜰᴏ ˚ʚ♡ɞ˚
-❧ Usuario
+👤 Usuario
 > %name
-❧ Experiencia
+✨ Experiencia
 > %exp / %maxexp
-❧ Modo
+👻 Modo
 > %mode
-❧ Activo
+💯 Activo
 > %muptime
-❧ Registrados
+✅ Registrados
 > %totalreg
 
-𖣔 ᴇɴʟᴀᴄᴇs ˚ʚ♡ɞ˚
+⛓ ᴇɴʟᴀᴄᴇs ˚ʚ♡ɞ˚
 ❧ API
 > https://elvigilante-api.onrender.com/dash
-❧ GitHub
-> https://github.com/ElvigilanteDv/Hinata-bot
 
 %readmore
 `.trim(),
   header: '\n𖣔 %category ˚ʚ♡ɞ˚',
   body: '❧ %cmd',
   footer: '⸻⸻⸻⸻⸻⸻',
-  after: '\n࿇ ══━━━✥◈✥━━━══ ࿇\n   𝕳𝖎𝖓𝖆𝖙𝖆 𝕭𝖔𝖙\n࿇ ══━━━✥◈✥━━━══ ࿇\n\n𖣔 ᴄʀᴇᴀᴅᴏʀᴇs ˚ʚ♡ɞ˚\n❧ El Vigilante\n❧ BrayanRK'
+  after: '\n࿇ ══━━━✥◈✥━━━══ ࿇\n   𝕳𝖎𝖓𝖆𝖙𝖆 𝕭𝖔𝖙\n࿇ ══━━━✥◈✥━━━══ ࿇\n\n𖣔 ᴄʀᴇᴀᴅᴏʀᴇs D4RKO\n'
 }
 
 const menuDir = './media/menu'
@@ -110,7 +108,7 @@ let handler = async (m, { conn, usedPrefix }) => {
   await conn.sendMessage(m.chat, {
     image: thumb,
     caption: text,
-    footer: 'HINATA SYSTEM',
+    footer: 'DARKO SYSTEM',
     headerType: 4
   })
 }
