@@ -76,7 +76,7 @@ const __dirname = global.__dirname(import.meta.url);
 console.log(chalk.bold.cyan('\n' + '═'.repeat(60)));
 console.log(chalk.bold.yellow('   🔰 DARKO BOT - ACTIVADO!!🔰'));
 console.log(chalk.bold.cyan('═'.repeat(60)));
-console.log(chalk.magenta('   「No me rendiré, porque quiero ser fuerte como Naruto-kun」'));
+console.log(chalk.magenta('   「conectando con Darko」'));
 console.log(chalk.bold.cyan('═'.repeat(60) + '\n'));
 
 global.opts = new Object(yargs(process.argv.slice(2)).exitProcess(false).parse());
