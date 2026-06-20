@@ -18,9 +18,9 @@ let crm4 = "IF9hdXRvcmVzcG9uZGVyLmpzIGluZm8tYm90Lmpz"
 let drm1 = ""
 let drm2 = ""
 let rtx = `
-🖥️ *VINCULACIÓN POR QR Hinata*
+🖥️ *VINCULACIÓN POR QR DARKO*
 
-🔖 *Pasos para vincularte a Hinata*:
+🔖 *Pasos para vincularte a DARKO*:
 1️⃣ Abre 𝗪𝗵𝗮𝘁𝘀𝗔𝗽𝗽 en tu teléfono  
 2️⃣ Pulsa ⋮ *Más opciones* → *Dispositivos vinculados*  
 3️⃣ Presiona *"Vincular un dispositivo"*  
@@ -30,7 +30,7 @@ let rtx = `
 let rtx2 = `
 🖥️ *VINCULACIÓN POR CÓDIGO DE 8 DÍGITOS*
 
-🔖 *Pasos para vincularte a Hinata*:
+🔖 *Pasos para vincularte a DARKO*:
 1️⃣ Abre 𝗪𝗵𝗮𝘁𝘀𝗔𝗽𝗽 en tu teléfono  
 2️⃣ Pulsa ⋮ *Más opciones* → *Dispositivos vinculados*  
 3️⃣ Presiona *"Vincular un dispositivo"*  
