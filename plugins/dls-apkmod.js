@@ -1,5 +1,4 @@
-// © 2026 EL VIGILANTE & BRAYANRK - HINATA BOT
-// No quitar créditos
+
 
 import fetch from 'node-fetch'
 
@@ -10,7 +9,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
   const query = text?.trim()
 
   if (!query) return conn.sendMessage(m.chat, {
-    text: `𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA BOT ㅤ֢ㅤׄㅤׅ\n\n❀ Descarga APKs modificados\n\n> ${usedPrefix}${command} <nombre>\n> Ejemplo: ${usedPrefix}${command} free fire mod`
+    text: `𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ DARKO BOT ㅤ֢ㅤׄㅤׅ\n\n❀ Descarga APKs modificados\n\n> ${usedPrefix}${command} <nombre>\n> Ejemplo: ${usedPrefix}${command} free fire mod`
   }, { quoted: m })
 
   await m.react('🔍')
@@ -22,7 +21,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
     if (!json.ok || !json.download_url) {
       await m.react('❌')
       return conn.sendMessage(m.chat, {
-        text: `𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA BOT ㅤ֢ㅤׄㅤׅ\n\n❌ No se encontró el APK\n\n> Intenta con otro nombre`
+        text: `𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ DARKO BOT ㅤ֢ㅤׄㅤׅ\n\n❌ No se encontró el APK\n\n> Intenta con otro nombre`
       }, { quoted: m })
     }
 
@@ -34,7 +33,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
     const downloadUrl = json.download_url
     const filename = json.filename || `${title}.apk`
 
-    const caption = `𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA BOT ㅤ֢ㅤׄㅤׅ\n\n❀ *${title}*\n❀ Versión: *${version}*\n❀ Tamaño: *${filesize}*\n${description ? `❀ Info: _${description.slice(0, 100)}..._\n` : ''}\n> APK Mod`
+    const caption = `𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ DARKO BOT ㅤ֢ㅤׄㅤׅ\n\n❀ *${title}*\n❀ Versión: *${version}*\n❀ Tamaño: *${filesize}*\n${description ? `❀ Info: _${description.slice(0, 100)}..._\n` : ''}\n> APK Mod`
 
     await m.react('⏳')
 
@@ -64,7 +63,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
   } catch (e) {
     await m.react('❌')
     await conn.sendMessage(m.chat, {
-      text: `𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA BOT ㅤ֢ㅤׄㅤׅ\n\n❌ Error al descargar\n\n> ${e.message}`
+      text: `𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ DARKO BOT ㅤ֢ㅤׄㅤׅ\n\n❌ Error al descargar\n\n> ${e.message}`
     }, { quoted: m })
   }
 }
