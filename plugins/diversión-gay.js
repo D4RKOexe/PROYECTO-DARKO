@@ -37,7 +37,7 @@ let handler = async (m, { conn }) => {
     barra += i < completado ? '🏳️‍🌈' : '⬛'
   }
 
-  let texto = '𖣔 「 HINATA GAYMETRO 」 ˚ʚ♡ɞ˚\n\n'
+  let texto = '𖣔 「 DARKO GAYMOMETRO 」 ˚ʚ♡ɞ˚\n\n'
   texto += '🎯 » ' + name + '\n\n'
   texto += emoji + ' » ' + porcentaje + '%\n'
   texto += '📊 » ' + barra + '\n'
@@ -50,6 +50,6 @@ let handler = async (m, { conn }) => {
 handler.help = ['gay']
 handler.tags = ['diversion']
 handler.command = /^(gay|gaymetro|lgbt)$/i
-handler.desc = 'Mide qué tan gay eres'
+handler.desc = 'DARKO Mide qué tan gay eres'
 
 export default handler
