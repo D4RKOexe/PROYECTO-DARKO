@@ -33,7 +33,7 @@ const defaultMenu = {
   header: '\n𖣔 %category ˚ʚ♡ɞ˚',
   body: '❧ %cmd',
   footer: '⸻⸻⸻⸻⸻⸻',
-  after: '\n࿇ ══━━━✥◈✥━━━══ ࿇\n   𝕳𝖎𝖓𝖆𝖙𝖆 𝕭𝖔𝖙\n࿇ ══━━━✥◈✥━━━══ ࿇\n\n𖣔 ᴄʀᴇᴀᴅᴏʀᴇs D4RKO\n'
+  after: '\n࿇ ══━━━✥◈✥━━━══ ࿇\n   Darko bot\n࿇ ══━━━✥◈✥━━━══ ࿇\n\n𖣔 ᴄʀᴇᴀᴅᴏʀᴇs D4RKO\n'
 }
 
 const menuDir = './media/menu'
