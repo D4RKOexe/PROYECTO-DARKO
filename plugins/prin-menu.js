@@ -50,7 +50,7 @@ const loadMenuMedia = jid => {
 
 const fetchBuffer = url => fetch(url).then(r => r.arrayBuffer()).then(b => Buffer.from(b))
 
-const defaultThumb = await fetchBuffer('https://files.catbox.moe/mln8cc.png')
+const defaultThumb = await fetchBuffer('https://files.catbox.moe/j2n2tl.jpg')
 
 let handler = async (m, { conn, usedPrefix }) => {
   await conn.sendMessage(m.chat, { react: { text: '❧', key: m.key } })
