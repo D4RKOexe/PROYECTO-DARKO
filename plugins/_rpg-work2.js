@@ -101,7 +101,7 @@ let handler = async (m, { conn, text }) => {
   let total = user.diamantes !== undefined ? user.diamantes : (user.diamond || 0)
   let name = '@' + who.split('@')[0]
 
-  let texto = `𖣔 「 HINATA WORK 2 」 ˚ʚ♡ɞ˚\n\n`
+  let texto = `⚡ 「 DARKO WORK 2 」 ˚⚡˚\n\n`
   texto += `${emoji} » ${name}\n`
   texto += `📋 ${mensaje}\n`
   texto += `💎 ${diamantes > 0 ? '+' : ''}${diamantes} diamantes\n`
