@@ -22,38 +22,37 @@ let handler = async (m, { conn }) => {
   let nodeVersion = process.version
 
   let texto = '࿇ ══━━━✥◈✥━━━══ ࿇\n'
-  texto += '    𝕴𝖓𝖋𝖔 𝕳𝖎𝖓𝖆𝖙𝖆\n'
+  texto += '    INFO DARKO\n'
   texto += '࿇ ══━━━✥◈✥━━━══ ࿇\n\n'
 
-  texto += '𖣔 ɢᴇɴᴇʀᴀʟ ˚ʚ♡ɞ˚\n'
+  texto += 'ℹ ɢᴇɴᴇʀᴀʟ ˚ʚ♡ɞ˚\n'
   texto += '❧ Nombre\n> Hinata Bot\n'
   texto += '❧ Versión\n> 2.2.0\n'
   texto += '❧ Total comandos\n> ' + totalComandos + '\n'
   texto += '❧ Tiempo activo\n> ' + uptimeTexto + '\n\n'
 
-  texto += '𖣔 ᴇsᴛᴀᴅísᴛɪᴄᴀs ˚ʚ♡ɞ˚\n'
+  texto += '📊 ᴇsᴛᴀᴅísᴛɪᴄᴀs ˚ʚ♡ɞ˚\n'
   texto += '❧ Usuarios registrados\n> ' + totalUsuarios + '\n'
   texto += '❧ Chats activos\n> ' + totalChats + '\n'
   texto += '❧ Memoria usada\n> ' + memoriaMB + ' MB\n\n'
 
-  texto += '𖣔 sɪsᴛᴇᴍᴀ ˚ʚ♡ɞ˚\n'
+  texto += '⚙️ sɪsᴛᴇᴍᴀ ˚ʚ♡ɞ˚\n'
   texto += '❧ Plataforma\n> ' + plataforma + '\n'
   texto += '❧ Node.js\n> ' + nodeVersion + '\n\n'
 
-  texto += '𖣔 ᴇɴʟᴀᴄᴇs ˚ʚ♡ɞ˚\n'
+  texto += '⛓ ᴇɴʟᴀᴄᴇs ˚ʚ♡ɞ˚\n'
   texto += '❧ API\n> https://elvigilante-api.onrender.com/dash\n'
-  texto += '❧ GitHub\n> https://github.com/ElvigilanteDv/Hinata-bot\n\n'
 
   texto += '࿇ ══━━━✥◈✥━━━══ ࿇\n'
-  texto += 'ᶜʳᵉᵃᵃᵃ ᵖᵒʳ ᴱˡ ᵛⁱᵍⁱˡᵃⁿᵗᵉ ✦ ᴮʳᵃʸᵃⁿᴿᴷ\n'
+  texto += 'creado por DARKO\n'
   texto += '࿇ ══━━━✥◈✥━━━══ ࿇'
 
   await conn.sendMessage(m.chat, { text: texto }, { quoted: m })
 }
 
-handler.help = ['hinata']
+handler.help = ['Darko']
 handler.tags = ['info']
-handler.command = /^(hinata|infohinata|infohinata|info)$/i
-handler.desc = 'Muestra información de la bot'
+handler.command = /^(darko|infodarko|infohinata|info)$/i
+handler.desc = 'Muestra información del bot'
 
 export default handler
