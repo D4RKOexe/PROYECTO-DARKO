@@ -11,7 +11,7 @@ const handler = async (m, { conn }) => {
   const mentionedJid = await m.mentionedJid
   const who = mentionedJid[0] ? mentionedJid[0] : m.quoted ? await m.quoted.sender : false
 
-  if (!who) return conn.reply(m.chat, `❀ *Por favor, menciona a la Hinata (o Sub-Hinata) o responde a un mensaje suyo para seleccionarlo como dios supremo.*`, m)
+  if (!who) return conn.reply(m.chat, `⚡ *Por favor, menciona a la DARKO (o Sub-bot) o responde a un mensaje suyo para seleccionarlo como dios supremo.*`, m)
 
   if (!subBots.includes(who)) return conn.reply(m.chat, `ꕥ *El usuario indicado no es un Bot activo del sistema.*`, m)
 
@@ -21,7 +21,7 @@ const handler = async (m, { conn }) => {
 
   try {
     chat.primaryBot = who
-    conn.reply(m.chat, `✰ *¡CONFIGURACIÓN ACTUALIZADA!* ✰\n\n➜ *Nueva Hinata principal:* @${who.split`@`[0]}\n> A partir de ahora, los comandos en este grupo serán ejecutados preferentemente por esta *bot*.`, m, { mentions: [who] })
+    conn.reply(m.chat, `✰ *¡CONFIGURACIÓN ACTUALIZADA!* ✰\n\n➜ *Nuevo bot principal:* @${who.split`@`[0]}\n> A partir de ahora, los comandos en este grupo serán ejecutados preferentemente por esta *bot*.`, m, { mentions: [who] })
   } catch (e) {
     conn.reply(m.chat, `⚠︎ *Ocurrió un error inesperado:*\n> ${e.message}`, m)
   }
