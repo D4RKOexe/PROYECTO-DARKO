@@ -8,7 +8,7 @@ let handler = async (m, { conn, args }) => {
 
   if (!args[0]) {
     return conn.sendMessage(m.chat, {
-      text: '🎡 「 HINATA RULETA 」 🎡\n✦•┈๑⋅⋯ ⋯⋅๑┈•✦\n\n💫 » Apuesta y gira la ruleta\n\n🎯 » #ruleta <cantidad> <color>\n🔴 » Red = x2\n⚫ » Black = x2\n🟢 » Green = x10\n\n✦•┈๑⋅⋯ ⋯⋅๑┈•✦\n> #ruleta 10 red'
+      text: '🎡 「 DARKO RULETA 」 🎡\n✦•┈๑⋅⋯ ⋯⋅๑┈•✦\n\n💫 » Apuesta y gira la ruleta\n\n🎯 » #ruleta <cantidad> <color>\n🔴 » Red = x2\n⚫ » Black = x2\n🟢 » Green = x10\n\n✦•┈๑⋅⋯ ⋯⋅๑┈•✦\n> #ruleta 10 red'
     }, { quoted: m })
   }
 
@@ -17,20 +17,20 @@ let handler = async (m, { conn, args }) => {
 
   if (isNaN(apuesta) || apuesta <= 0) {
     return conn.sendMessage(m.chat, {
-      text: '🎡 「 HINATA RULETA 」 🎡\n✦•┈๑⋅⋯ ⋯⋅๑┈•✦\n\n💫 » Cantidad inválida\n\n✦•┈๑⋅⋯ ⋯⋅๑┈•✦'
+      text: '🎡 「 DARKO RULETA 」 🎡\n✦•┈๑⋅⋯ ⋯⋅๑┈•✦\n\n💫 » Cantidad inválida\n\n✦•┈๑⋅⋯ ⋯⋅๑┈•✦'
     }, { quoted: m })
   }
 
   if (!color || !['red', 'black', 'green'].includes(color)) {
     return conn.sendMessage(m.chat, {
-      text: '🎡 「 HINATA RULETA 」 🎡\n✦•┈๑⋅⋯ ⋯⋅๑┈•✦\n\n💫 » Elige un color\n🔴 red | ⚫ black | 🟢 green\n\n✦•┈๑⋅⋯ ⋯⋅๑┈•✦'
+      text: '🎡 「 DARKO RULETA 」 🎡\n✦•┈๑⋅⋯ ⋯⋅๑┈•✦\n\n💫 » Elige un color\n🔴 red | ⚫ black | 🟢 green\n\n✦•┈๑⋅⋯ ⋯⋅๑┈•✦'
     }, { quoted: m })
   }
 
   let misDiamantes = user.diamantes || user.diamond || 0
   if (misDiamantes < apuesta) {
     return conn.sendMessage(m.chat, {
-      text: '🎡 「 HINATA RULETA 」 🎡\n✦•┈๑⋅⋯ ⋯⋅๑┈•✦\n\n💫 » No tienes tantos diamantes\n💰 » Tienes: ' + misDiamantes + ' 💎\n\n✦•┈๑⋅⋯ ⋯⋅๑┈•✦'
+      text: '🎡 「 DARKO RULETA 」 🎡\n✦•┈๑⋅⋯ ⋯⋅๑┈•✦\n\n💫 » No tienes tantos diamantes\n💰 » Tienes: ' + misDiamantes + ' 💎\n\n✦•┈๑⋅⋯ ⋯⋅๑┈•✦'
     }, { quoted: m })
   }
 
@@ -55,7 +55,7 @@ let handler = async (m, { conn, args }) => {
 
   let emojis = { red: '🔴', black: '⚫', green: '🟢' }
 
-  let texto = '🎡 「 HINATA RULETA 」 🎡\n✦•┈๑⋅⋯ ⋯⋅๑┈•✦\n\n'
+  let texto = '🎡 「 DARKO RULETA 」 🎡\n✦•┈๑⋅⋯ ⋯⋅๑┈•✦\n\n'
   texto += '💫 » Apostaste ' + apuesta + ' 💎 a ' + emojis[color] + '\n'
   texto += '🎡 » Girando... ¡Salió ' + emojis[resultado] + ' ' + resultado.toUpperCase() + '!\n\n'
 
