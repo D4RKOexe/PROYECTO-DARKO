@@ -123,7 +123,7 @@ if (chat.welcome && [27, 28, 32].includes(m.messageStubType)) {
   try {
     profilePic = await conn.profilePictureUrl(m.chat, 'image')
   } catch {
-    profilePic = 'https://files.catbox.moe/r60c8l.jpg'
+    profilePic = 'https://files.catbox.moe/j2n2tl.jpg'
   }
 
   if (m.messageStubType === 27) {
@@ -140,7 +140,7 @@ if (chat.welcome && [27, 28, 32].includes(m.messageStubType)) {
       texto += '花 » ' + groupMetadata.subject + '\n'
       texto += '桜 » Miembros: ' + groupSize + '\n\n'
       texto += '✧･ﾟ: *✧･ﾟ:* *:･ﾟ✧*:･ﾟ✧\n\n'
-      texto += '> Gracias por unirte ♡'
+      texto += '> QUE LA PASES BIEN'
     }
 
     await conn.sendMessage(m.chat, {
@@ -159,7 +159,7 @@ if (chat.welcome && [27, 28, 32].includes(m.messageStubType)) {
         .replace(/@members/g, groupSize)
     } else {
       texto = '⛩️ 「 HINATA BOT 」 ⛩️\n\n'
-      texto += '桜 » *ADIOS*\n'
+      texto += '桜 » *SE FUE😔*\n'
       texto += '風 » ' + userMention + '\n'
       texto += '花 » ' + groupMetadata.subject + '\n'
       texto += '桜 » Miembros: ' + groupSize + '\n\n'
