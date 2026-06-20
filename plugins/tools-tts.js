@@ -57,7 +57,7 @@ const handler = async (m, { conn, text }) => {
       .join('\n')
 
     let texto = '࿇ ══━━━✥◈✥━━━══ ࿇\n'
-    texto += '    𝕳𝖎𝖓𝖆𝖙𝖆 𝕿𝖙𝖘\n'
+    texto += '    ĐªŘĶØ ŤŤ§\n'
     texto += '࿇ ══━━━✥◈✥━━━══ ࿇\n\n'
 
     texto += '𖣔 ᴜsᴏ ˚ʚ♡ɞ˚\n'
@@ -65,7 +65,7 @@ const handler = async (m, { conn, text }) => {
     texto += '❧ #tts <voz>:<texto>\n\n'
 
     texto += '𖣔 ᴇᴊᴇᴍᴘʟᴏs ˚ʚ♡ɞ˚\n'
-    texto += '❧ #tts Hola soy Hinata\n'
+    texto += '❧ #tts Hola soy DARKO\n'
     texto += '❧ #tts timida:Hola me da pena\n'
     texto += '❧ #tts robot:Soy un robot\n\n'
 
@@ -91,7 +91,7 @@ const handler = async (m, { conn, text }) => {
 
   if (textoFinal.length > 500) {
     let texto = '࿇ ══━━━✥◈✥━━━══ ࿇\n'
-    texto += '    𝕳𝖎𝖓𝖆𝖙𝖆 𝕿𝖙𝖘\n'
+    texto += '    ĐªŘĶØ ŤŤ§\n'
     texto += '࿇ ══━━━✥◈✥━━━══ ࿇\n\n'
 
     texto += '𖣔 ᴇʀʀᴏʀ ˚ʚ♡ɞ˚\n'
@@ -125,7 +125,7 @@ const handler = async (m, { conn, text }) => {
     let resumen = textoFinal.length > 50 ? textoFinal.slice(0, 50) + '...' : textoFinal
 
     let texto = '࿇ ══━━━✥◈✥━━━══ ࿇\n'
-    texto += '    𝕳𝖎𝖓𝖆𝖙𝖆 𝕿𝖙𝖘\n'
+    texto += '    ĐªŘĶØ ŤŤ§\n'
     texto += '࿇ ══━━━✥◈✥━━━══ ࿇\n\n'
 
     texto += '𖣔 ᴀᴜᴅɪᴏ ɢᴇɴᴇʀᴀᴅᴏ ˚ʚ♡ɞ˚\n'
@@ -151,7 +151,7 @@ const handler = async (m, { conn, text }) => {
         }, { quoted: m })
 
         let textoFallback = '࿇ ══━━━✥◈✥━━━══ ࿇\n'
-        textoFallback += '    𝕳𝖎𝖓𝖆𝖙𝖆 𝕿𝖙𝖘\n'
+        textoFallback += '    ĐªŘĶØ ŤŤ§\n'
         textoFallback += '࿇ ══━━━✥◈✥━━━══ ࿇\n\n'
 
         textoFallback += '𖣔 ᴀᴠɪsᴏ ˚ʚ♡ɞ˚\n'
@@ -166,7 +166,7 @@ const handler = async (m, { conn, text }) => {
     }
 
     let textoError = '࿇ ══━━━✥◈✥━━━══ ࿇\n'
-    textoError += '    𝕳𝖎𝖓𝖆𝖙𝖆 𝕿𝖙𝖘\n'
+    textoError += '    ĐªŘĶØ ŤŤ§\n'
     textoError += '࿇ ══━━━✥◈✥━━━══ ࿇\n\n'
 
     textoError += '𖣔 ᴇʀʀᴏʀ ˚ʚ♡ɞ˚\n'
