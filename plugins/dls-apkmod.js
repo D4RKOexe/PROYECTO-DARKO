@@ -1,5 +1,3 @@
-
-
 import fetch from 'node-fetch'
 
 const API_KEY = 'dvyer343179430300'
