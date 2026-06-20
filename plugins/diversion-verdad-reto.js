@@ -210,14 +210,14 @@ const RETOS = [
 let handler = async (m, { conn, usedPrefix, command }) => {
   const interactiveMessage = proto.Message.InteractiveMessage.create({
     header: {
-      title: '𑁍ࠬܓ HINATA BOT 𑁍ࠬܓ',
+      title: '𑁍ࠬܓ DARKO BOT 𑁍ࠬܓ',
       subtitle: 'Verdad o Reto',
       hasMediaAttachment: false
     },
     body: {
-      text: `𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA BOT ㅤ֢ㅤׄㅤׅ\n\n❀ ¿Te atreves a jugar?\n\n> Elige tu destino...`
+      text: `𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ DARKO BOT ㅤ֢ㅤׄㅤׅ\n\n❀ ¿Te atreves a jugar?\n\n> Elige tu destino...`
     },
-    footer: { text: '⫏⫏ HINATA BOT ✿' },
+    footer: { text: '⫏⫏ DARKO BOT ✿' },
     nativeFlowMessage: {
       buttons: [{
         name: 'single_select',
@@ -259,7 +259,7 @@ handler.before = async (m, { conn }) => {
     await conn.sendMessage(m.chat, {
       video: { url: 'https://files.catbox.moe/og381s.mp4' },
       gifPlayback: true,
-      caption: `𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA BOT ㅤ֢ㅤׄㅤׅ\n\n💬 *VERDAD*\n\n❀ ${verdad}\n`
+      caption: `𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ DARKO BOT ㅤ֢ㅤׄㅤׅ\n\n💬 *VERDAD*\n\n❀ ${verdad}\n`
     }, { quoted: m })
     return true
   }
@@ -269,7 +269,7 @@ handler.before = async (m, { conn }) => {
     await conn.sendMessage(m.chat, {
       video: { url: 'https://files.catbox.moe/og381s.mp4' },
       gifPlayback: true,
-      caption: `𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA BOT ㅤ֢ㅤׄㅤׅ\n\n🎧 *RETO*\n\n❀ ${reto}\n`
+      caption: `𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ DARKO BOT ㅤ֢ㅤׄㅤׅ\n\n🎧 *RETO*\n\n❀ ${reto}\n`
     }, { quoted: m })
     return true
   }
