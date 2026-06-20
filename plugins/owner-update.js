@@ -4,7 +4,7 @@ const handler = async (m, { conn }) => {
   let who = m.sender
 
   let textoEspera = '࿇ ══━━━✥◈✥━━━══ ࿇\n'
-  textoEspera += '   𝕳𝖎𝖓𝖆𝖙𝖆 𝖀𝖕𝖉𝖆𝖙𝖊\n'
+  textoEspera += '   DARKO UPDATE\n'
   textoEspera += '࿇ ══━━━✥◈✥━━━══ ࿇\n\n'
   textoEspera += '𖣔 ʙᴜsᴄᴀɴᴅᴏ ᴀᴄᴛᴜᴀʟɪᴢᴀᴄɪᴏɴᴇs ˚ʚ♡ɞ˚\n'
   textoEspera += '❧ Espera un momento...\n\n'
@@ -33,7 +33,7 @@ const handler = async (m, { conn }) => {
       }
 
       let textoError = '࿇ ══━━━✥◈✥━━━══ ࿇\n'
-      textoError += '   𝕳𝖎𝖓𝖆𝖙𝖆 𝖀𝖕𝖉𝖆𝖙𝖊\n'
+      textoError += '   DARKO UPDATE\n'
       textoError += '࿇ ══━━━✥◈✥━━━══ ࿇\n\n'
       textoError += '𖣔 ᴇʀʀᴏʀ ˚ʚ♡ɞ˚\n'
       textoError += '❧ ' + motivo + '\n'
@@ -45,14 +45,14 @@ const handler = async (m, { conn }) => {
     }
 
     if (stdout.includes('Already up to date')) {
-      let textoAlDia = '𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA BOT ㅤ֢ㅤׄㅤׅ\n\n'
+      let textoAlDia = '🔝 ⁾ ㅤׄㅤׅㅤׄ DARKO BOT ㅤ֢ㅤׄㅤׅ\n\n'
       textoAlDia += '𖣔 ᴇsᴛᴀᴅᴏ ˚ʚ♡ɞ˚\n'
-      textoAlDia += '❧ Hinata ya está en su mejor versión\n'
+      textoAlDia += '❧ Darko ya está en su mejor versión\n'
       textoAlDia += '❧ No hay actualizaciones pendientes\n\n'
       textoAlDia += '> Solicitado por @' + who.split('@')[0]
 
       await conn.sendMessage(m.chat, {
-        image: { url: 'https://files.catbox.moe/b7a14a.png' },
+        image: { url: 'https://files.catbox.moe/lqf1hf.jpg' },
         caption: textoAlDia,
         mentions: [who]
       }, { quoted: m })
@@ -65,10 +65,10 @@ const handler = async (m, { conn }) => {
     let filesCreados = creados.map(c => c.split(' ').pop())
     let filesEliminados = eliminados.map(c => c.split(' ').pop())
 
-    let texto = '𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA BOT ACTUALIZADA ㅤ֢ㅤׄㅤׅ\n\n'
+    let texto = '✅ ⁾ ㅤׄㅤׅㅤׄ DARRKO BOT ACTUALIZADA ㅤ֢ㅤׄㅤׅ\n\n'
 
     texto += '𖣔 ʀᴇsᴜᴍᴇɴ ˚ʚ♡ɞ˚\n'
-    texto += '❧ Hinata se ha renovado\n\n'
+    texto += '❧ Darko se ha renovado\n\n'
 
     if (filesCreados.length > 0) {
       texto += '𖣔 ɴᴜᴇᴠᴏs ᴀʀᴄʜɪᴠᴏs ˚ʚ♡ɞ˚\n'
@@ -109,7 +109,7 @@ const handler = async (m, { conn }) => {
     texto += '> Actualizado por @' + who.split('@')[0]
 
     await conn.sendMessage(m.chat, {
-      image: { url: 'https://files.catbox.moe/b7a14a.png' },
+      image: { url: 'https://files.catbox.moe/lqf1hf.jpg' },
       caption: texto,
       mentions: [who]
     }, { quoted: m })
