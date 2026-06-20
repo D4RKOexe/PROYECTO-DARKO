@@ -60,6 +60,6 @@ let handler = async (m, { conn, text, mentionedJid }) => {
 handler.help = ['lesbiana']
 handler.tags = ['diversion']
 handler.command = /^(lesbiana|lesbian|lesbi)$/i
-handler.desc = 'Mide tu nivel lesbiana'
+handler.desc = 'DARKO Mide tu nivel lesbiana'
 
 export default handler
