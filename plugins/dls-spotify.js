@@ -18,15 +18,15 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
 
     const interactiveMessage = proto.Message.InteractiveMessage.create({
       header: {
-        title: 'HINATA BOT - SPOTIFY',
+        title: 'DARKO - SPOTIFY',
         subtitle: 'Busca y descarga música',
         hasMediaAttachment: true,
         imageMessage: media.imageMessage
       },
       body: {
-        text: '🟢 「 HINATA SPOTIFY 」 🟢\n\n💫 » Busca música en Spotify\n\n> ' + usedPrefix + command + ' <nombre>\n> Ejemplo: ' + usedPrefix + command + ' Twice\n> 💎 Cuesta 1 diamante por descarga'
+        text: '🟢 「 DARKO SPOTIFY 」 🟢\n\n💫 » Busca música en Spotify\n\n> ' + usedPrefix + command + ' <nombre>\n> Ejemplo: ' + usedPrefix + command + ' Twice\n> 💎 Cuesta 1 diamante por descarga'
       },
-      footer: { text: '⫏⫏ HINATA BOT ✿' },
+      footer: { text: '⫏⫏ DARKO BOT ⚡' },
       nativeFlowMessage: {
         buttons: [{
           name: 'single_select',
@@ -88,9 +88,9 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
         imageMessage: media ? media.imageMessage : undefined
       },
       body: {
-        text: '🟢 「 HINATA SPOTIFY 」 🟢\n\n💫 » Búsqueda: ' + text + '\n\n> Elige una canción\n> 💎 1 diamante al descargar'
+        text: '🟢 「 DARKO SPOTIFY 」 🟢\n\n💫 » Búsqueda: ' + text + '\n\n> Elige una canción\n> 💎 1 diamante al descargar'
       },
-      footer: { text: '⫏⫏ HINATA BOT ✿' },
+      footer: { text: '⫏⫏ DARKO BOT ✿' },
       nativeFlowMessage: {
         buttons: [{
           name: 'single_select',
@@ -133,7 +133,7 @@ handler.before = async (m, { conn }) => {
 
     let misDiamantes = user.diamantes || user.diamond || 0
     if (misDiamantes < 1) {
-      await conn.sendMessage(m.chat, { text: '🟢 「 HINATA SPOTIFY 」 🟢\n\n💫 » No tienes 1 diamante\n\n> Usa #work para ganar' }, { quoted: m })
+      await conn.sendMessage(m.chat, { text: '🟢 「 DARKO SPOTIFY 」 🟢\n\n💫 » No tienes 1 diamante\n\n> Usa #work para ganar' }, { quoted: m })
       return true
     }
 
@@ -175,7 +175,7 @@ handler.before = async (m, { conn }) => {
 
     await conn.sendMessage(m.chat, {
       image: { url: json.data.image || 'https://files.catbox.moe/r60c8l.jpg' },
-      caption: '🟢 「 HINATA SPOTIFY 」 🟢\n\n💫 » Descarga completada\n\n🎧 » ' + (json.data.title || titulo) + '\n👤 » ' + (json.data.author || '') + '\n💎 » Restantes: ' + total
+      caption: '🟢 「 DARKO SPOTIFY 」 🟢\n\n💫 » Descarga completada\n\n🎧 » ' + (json.data.title || titulo) + '\n👤 » ' + (json.data.author || '') + '\n💎 » Restantes: ' + total
     }, { quoted: m })
 
     await m.react('✅')
