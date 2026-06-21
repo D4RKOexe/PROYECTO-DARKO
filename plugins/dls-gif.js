@@ -18,8 +18,8 @@ let handler = async (m, { conn, text }) => {
     }]
 
     const interactiveMessage = proto.Message.InteractiveMessage.create({
-      header: { title: '🔍 HINATA TENOR 🔍', subtitle: 'Busca GIFs animados', hasMediaAttachment: false },
-      body: { text: '🔍 「 HINATA TENOR 」 🔍\n✦•┈๑⋅⋯ ⋯⋅๑┈•✦\n\n💫 » Busca GIFs en Tenor\n📝 » Elige o escribe: #tenor <búsqueda>\n\n✦•┈๑⋅⋯ ⋯⋅๑┈•✦' },
+      header: { title: '🔍 DARKO TENOR 🔍', subtitle: 'Busca GIFs animados', hasMediaAttachment: false },
+      body: { text: '🔍 「 DARKO TENOR 」 🔍\n✦•┈๑⋅⋯ ⋯⋅๑┈•✦\n\n💫 » Busca GIFs en Tenor\n📝 » Elige o escribe: #tenor <búsqueda>\n\n✦•┈๑⋅⋯ ⋯⋅๑┈•✦' },
       footer: { text: '⫏⫏ DARKO BOT ✅' },
       nativeFlowMessage: {
         buttons: [{
