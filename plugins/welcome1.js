@@ -134,7 +134,7 @@ if (chat.welcome && [27, 28, 32].includes(m.messageStubType)) {
         .replace(/@group/g, groupMetadata.subject)
         .replace(/@members/g, groupSize)
     } else {
-      texto = '⛩️ 「 HINATA BOT 」 ⛩️\n\n'
+      texto = '⛩️ 「 DARKO BOT 」 ⛩️\n\n'
       texto += '桜 » *BIENVENID@*\n'
       texto += '風 » ' + userMention + '\n'
       texto += '花 » ' + groupMetadata.subject + '\n'
@@ -158,7 +158,7 @@ if (chat.welcome && [27, 28, 32].includes(m.messageStubType)) {
         .replace(/@group/g, groupMetadata.subject)
         .replace(/@members/g, groupSize)
     } else {
-      texto = '⛩️ 「 HINATA BOT 」 ⛩️\n\n'
+      texto = '⛩️ 「 DARKO BOT 」 ⛩️\n\n'
       texto += '桜 » *SE FUE😔*\n'
       texto += '風 » ' + userMention + '\n'
       texto += '花 » ' + groupMetadata.subject + '\n'
