@@ -11,7 +11,7 @@ let handler = async (m, { conn, text, participants }) => {
   let name = '@' + elegido.id.split('@')[0]
 
   let respuestas = [
-    '🎲 La bot ha hablado...\n\n' + name + ' es ' + text,
+    '🎲 El bot ha hablado...\n\n' + name + ' es ' + text,
     '🔮 El destino dice que...\n\n' + name + ' es ' + text,
     '🎯 Sin duda alguna...\n\n' + name + ' es ' + text,
     '💀 No hay debate...\n\n' + name + ' es ' + text,
