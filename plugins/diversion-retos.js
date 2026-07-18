@@ -24,7 +24,7 @@ let retos = [
 let handler = async (m, { conn }) => {
   let reto = retos[Math.floor(Math.random() * retos.length)]
 
-  let texto = '🎯 「 HINATA RETO 」 🎯\n\n'
+  let texto = '🎯 「 DARKO RETO 」 🎯\n\n'
   texto += '💫 » Reto aleatorio\n\n'
   texto += reto + '\n\n'
   texto += '> Cumple el reto o paga 5 💎 de castigo'
