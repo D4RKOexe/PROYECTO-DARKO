@@ -11,7 +11,7 @@ let handler = async (m, { conn }) => {
 
   if (!global.lastRoll || !global.lastRoll[who]) {
     return conn.sendMessage(m.chat, {
-      text: '𖣔 「 HINATA CLAIM 」 ˚ʚ♡ɞ˚\n\n💫 » No tienes personaje pendiente\n\n> Usa #rw primero'
+      text: '✅「 DARKO CLAIM 」 ˚🎖˚\n\n💫 » No tienes personaje pendiente\n\n> Usa #rw primero'
     }, { quoted: m })
   }
 
@@ -32,7 +32,7 @@ let handler = async (m, { conn }) => {
   let total = user.diamantes !== undefined ? user.diamantes : (user.diamond || 0)
   let rarityEmojis = { 'SSR': '🌟', 'SR': '⭐', 'R': '✨' }
 
-  let texto = '𖣔 「 HINATA CLAIM 」 ˚ʚ♡ɞ˚\n\n'
+  let texto = '✅ 「 DARKO CLAIM 」 ˚🎖˚\n\n'
   texto += '  💫 Personaje reclamado\n\n'
   texto += '  ✦ ' + char.name + ' ✦\n'
   texto += '  ' + rarityEmojis[char.rarity] + ' Rareza: ' + char.rarity + '\n'
