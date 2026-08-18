@@ -24,9 +24,9 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
         imageMessage: media.imageMessage
       },
       body: {
-        text: '🎵 「 HINATA TIKTOK 」 🎵\n\n💫 » Busca videos en TikTok\n\n> ' + usedPrefix + command + ' <búsqueda>\n> Ejemplo: ' + usedPrefix + command + ' Chaewon\n> 💎 Cuesta 1 diamante por descarga'
+        text: '🎵 「 DARKO TK 」 🎵\n\n💫 » Busca videos en TikTok\n\n> ' + usedPrefix + command + ' <búsqueda>\n> Ejemplo: ' + usedPrefix + command + ' Chaewon\n> 💎 Cuesta 1 diamante por descarga'
       },
-      footer: { text: '⫏⫏ HINATA BOT ✿' },
+      footer: { text: '⫏⫏ DARKO BOT 💥' },
       nativeFlowMessage: {
         buttons: [{
           name: 'single_select',
@@ -56,7 +56,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
 
   if ((user.diamantes || user.diamond || 0) < 1) {
     return conn.sendMessage(m.chat, {
-      text: '🎵 「 HINATA TIKTOK 」 🎵\n\n💫 » No tienes suficientes diamantes\n\n💎 Necesitas: 1 diamante\n💰 Tienes: ' + (user.diamantes || user.diamond || 0) + ' diamantes\n\n> Usa #work para ganar'
+      text: '🎵 「 DARKO TK 」 🎵\n\n💫 » No tienes suficientes diamantes\n\n💎 Necesitas: 1 diamante\n💰 Tienes: ' + (user.diamantes || user.diamond || 0) + ' diamantes\n\n> Usa #work para ganar'
     }, { quoted: m })
   }
 
@@ -86,7 +86,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
 
       await conn.sendMessage(m.chat, {
         video: { url: videoUrl },
-        caption: '🎵 「 HINATA TIKTOK 」 🎵\n\n💫 » Descarga completada\n\n🎬 » ' + (json.data.title || '') + '\n👤 » ' + (json.data.author?.nickname || '') + '\n⏱️ » ' + (json.data.duration || '') + 's\n💎 » Restantes: ' + total
+        caption: '🎵 「 DARKO TK 」 🎵\n\n💫 » Descarga completada\n\n🎬 » ' + (json.data.title || '') + '\n👤 » ' + (json.data.author?.nickname || '') + '\n⏱️ » ' + (json.data.duration || '') + 's\n💎 » Restantes: ' + total
       }, { quoted: m })
 
       await m.react('✅')
@@ -133,9 +133,9 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
         imageMessage: media ? media.imageMessage : undefined
       },
       body: {
-        text: '🎵 「 HINATA TIKTOK 」 🎵\n\n💫 » Búsqueda: ' + query + '\n\n> Elige un video\n> 💎 1 diamante al descargar'
+        text: '🎵 「 DARKO TK 」 🎵\n\n💫 » Búsqueda: ' + query + '\n\n> Elige un video\n> 💎 1 diamante al descargar'
       },
-      footer: { text: '⫏⫏ HINATA BOT ✿' },
+      footer: { text: '⫏⫏ DARKO BOT 💥' },
       nativeFlowMessage: {
         buttons: [{
           name: 'single_select',
@@ -178,7 +178,7 @@ handler.before = async (m, { conn }) => {
 
     let misDiamantes = user.diamantes || user.diamond || 0
     if (misDiamantes < 1) {
-      await conn.sendMessage(m.chat, { text: '🎵 「 HINATA TIKTOK 」 🎵\n\n💫 » No tienes 1 diamante\n\n> Usa #work para ganar' }, { quoted: m })
+      await conn.sendMessage(m.chat, { text: '🎵 「 DARKO TK 」 🎵\n\n💫 » No tienes 1 diamante\n\n> Usa #work para ganar' }, { quoted: m })
       return true
     }
 
@@ -215,7 +215,7 @@ handler.before = async (m, { conn }) => {
 
     await conn.sendMessage(m.chat, {
       video: { url: videoDownloadUrl },
-      caption: '🎵 「 HINATA TIKTOK 」 🎵\n\n💫 » Descarga completada\n\n🎬 » ' + (json.data.title || titulo) + '\n👤 » ' + (json.data.author?.nickname || '') + '\n⏱️ » ' + (json.data.duration || '') + 's\n💎 » Restantes: ' + total
+      caption: '🎵 「 DARKO TK 」 🎵\n\n💫 » Descarga completada\n\n🎬 » ' + (json.data.title || titulo) + '\n👤 » ' + (json.data.author?.nickname || '') + '\n⏱️ » ' + (json.data.duration || '') + 's\n💎 » Restantes: ' + total
     }, { quoted: m })
 
     await m.react('✅')
