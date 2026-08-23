@@ -24,16 +24,13 @@ const defaultMenu = {
 ✅ Registrados
 > %totalreg
 
-⛓ ᴇɴʟᴀᴄᴇs ˚ʚ♡ɞ˚
-❧ API
-> https://elvigilante-api.onrender.com/dash
 
 %readmore
 `.trim(),
   header: '\n𖣔 %category ˚ʚ♡ɞ˚',
   body: '❧ %cmd',
   footer: '⸻⸻⸻⸻⸻⸻',
-  after: '\n࿇ ══━━━✥◈✥━━━══ ࿇\n   Darko bot\n࿇ ══━━━✥◈✥━━━══ ࿇\n\n𖣔 ᴄʀᴇᴀᴅᴏʀᴇs D4RKO\n'
+  after: '\n࿇ ══━━━✥◈✥━━━══ ࿇\n   Darko bot\n࿇ ══━━━✥◈✥━━━══ ࿇\n\n𖣔 ᴄʀᴇᴀᴅᴏʀᴇs D4RKO-Gxrcix\n'
 }
 
 const menuDir = './media/menu'
