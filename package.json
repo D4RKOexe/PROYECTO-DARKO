@@ -1,7 +1,7 @@
 {
   "name": "Proyecto-darko-md",
-  "version": "2.2.0",
-  "description": "El mejor bot de todo latam en tu WhatsApp",
+  "version": "2.3.0",
+  "description": "El mejor bot de todo latam en tu WhatsApp - Con características de Anoni_bot integradas",
   "main": "index.js",
   "type": "module",
   "directories": {
@@ -10,11 +10,12 @@
     "plugins": "plugins"
   },
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "test": "node --test test/*.test.js"
   },
   "homepage": "",
   "author": {
-    "name": "El Vigilante & BrayanRK& D4rko"
+    "name": "El Vigilante & BrayanRK & D4rko"
   },
   "repository": {
     "type": "git",
@@ -25,16 +26,21 @@
   },
   "license": "MIT-LICENSE",
   "dependencies": {
+    "@cacheable/node-cache": "^1.5.5",
     "@hapi/boom": "^10.0.1",
     "@whiskeysockets/baileys": "github:ElvigilanteDv/bails.git",
+    "async-mutex": "^0.5.0",
+    "audio-decode": "^2.2.2",
     "awesome-phonenumber": "^3.4.0",
-    "axios": "^1.1.2",
+    "axios": "^1.9.0",
     "acrcloud": "^1.4.0",
     "aptoide-scraper": "github:DIEGO-OFC/dv-aptoide-scraper",
+    "cache-manager": "^6.4.3",
     "cfonts": "^3.3.0",
     "chalk": "^5.1.0",
     "cheerio": "npm:cheerio@1.0.0-rc.12",
     "colors": "1.4.0",
+    "dotenv": "^16.4.5",
     "express": "^4.18.1",
     "figlet": "^1.7.0",
     "file-type": "^18.0.0",
@@ -46,13 +52,15 @@
     "google-it": "^1.6.4",
     "human-readable": "^0.2.1",
     "jsdom": "^20.0.1",
-    "jimp": "^0.16.1",
+    "jimp": "^1.6.0",
+    "libsignal": "npm:@meta.inc/libsignal",
     "link-preview-js": "^3.0.0",
     "lodash": "^4.17.21",
     "lowdb": "^3.0.0",
     "megajs": "^1.1.3",
     "mime-types": "^2.1.35",
     "mongoose": "^6.6.5",
+    "music-metadata": "^11.2.2",
     "node-cache": "^5.1.2",
     "node-fetch": "^3.2.10",
     "node-gtts": "^2.0.2",
@@ -61,12 +69,14 @@
     "openai": "^3.3.0",
     "pdfkit": "^0.13.0",
     "perf_hooks": "^0.0.1",
-    "pino": "^8.6.1",
+    "pino": "^9.6",
     "pino-pretty": "^9.1.1",
+    "protobufjs": "^7.5.2",
     "qrcode": "^1.5.1",
     "qrcode-terminal": "^0.12.0",
     "readline": "^1.3.0",
     "sanzy-spotifydl": "*",
+    "sharp": "^0.34.1",
     "similarity": "^1.2.1",
     "socket.io": "^4.5.2",
     "syntax-error": "^1.4.0",
@@ -74,11 +84,18 @@
     "translate-google-api": "^1.0.4",
     "url-file-size": "^1.0.5-1",
     "url-regex-safe": "^3.0.0",
-    "ws": "^8.17.1",
+    "ws": "^8.18.2",
     "yargs": "^17.3.1",
     "yt-search": "^2.10.3"
   },
   "optionalDependencies": {
     "moment-timezone": "^0.5.37"
-  }
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "directories": {
+    "lib": "lib"
+  },
+  "packageManager": "pnpm@10.11.0+sha512.6540583f41cc5f628eb3d9773ecee802f4f9ef9923cc45b69890fb47991d4b092964694ec3a4f738a420c918a333062c8b925d312f42e4f0c263eb603551f977"
 }
