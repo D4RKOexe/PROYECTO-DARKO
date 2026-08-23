@@ -9,7 +9,7 @@ const textCyberpunk = t => t.replace(/[a-z]/gi, c => charset[c.toLowerCase()] ||
 const defaultMenu = {
   before: `
 ࿇ ══━━━✥◈✥━━━══ ࿇
-    ĐªŘĶØ BØŤ
+    ĐªŘĶØ BØŤ/Gxrcix
 ࿇ ══━━━✥◈✥━━━══ ࿇
 
 𖣔 ɪɴꜰᴏ ˚ʚ♡ɞ˚
