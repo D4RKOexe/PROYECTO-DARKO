@@ -57,7 +57,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
   await m.react('🔍')
 
   try {
-    let searchUrl = `https://api.delirius.store/search/spotify?q=${encodeURIComponent(text)}&limit=10`
+    let searchUrl = `https://nyxdlapi.vercel.app/api/downloads/spotify?apikey=nyx_8_35kniYrUDxyl8horAJ9hy9LsZsbDNh`
     let searchRes = await fetch(searchUrl)
     let searchData = await searchRes.json()
 
@@ -152,7 +152,7 @@ handler.before = async (m, { conn }) => {
     await m.react('⏳')
     await conn.sendMessage(m.chat, { text: '⏳ Descargando...\n💎 -1 diamante' }, { quoted: m })
 
-    let downloadUrl = `https://api.delirius.store/download/spotifydl?url=${encodeURIComponent(spotifyUrl)}`
+    let downloadUrl = `https://nyxdlapi.vercel.app/api/downloads/spotify?apikey=nyx_8_35kniYrUDxyl8horAJ9hy9LsZsbDNh`
     let res = await fetch(downloadUrl)
     let json = await res.json()
 
