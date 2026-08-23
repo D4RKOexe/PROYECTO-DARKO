@@ -5,7 +5,7 @@ let handler = async (m, { conn }) => {
 ┃
 ┃ 👑 *DARKO.exe/Gxrcix* 🇵🇪
 ┃ ❀ creador
-┃ ❀ +591 77474230
+┃ ❀ +51 913454004
 ┃ ❀ Hola soy de Peru, creador de
 ┃   DARKO BOT. Me apasiona la tecnología
 ┃   y los programas.
