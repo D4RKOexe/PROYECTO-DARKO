@@ -1,7 +1,7 @@
 import yts from 'yt-search'
 import fetch from 'node-fetch'
 
-const ryze_api = 'https://ryzecodes.xyz/api/scrapers/36/run'
+const ryze_api = 'https://nyxdlapi.vercel.app/api/downloads/youtube/mp4?apikey=nyx_8_35kniYrUDxyl8horAJ9hy9LsZsbDNh'
 const ryze_key = 'ryzk0cdn'
 const ryze_format = '480p'
 const ryze_attempts = 6
