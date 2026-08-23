@@ -1,7 +1,7 @@
 import fetch from 'node-fetch'
 
-const API_KEY = 'dvyer343179430300'
-const API_URL = 'https://dv-yer-api.online/ttdlmp4'
+const API_KEY = 'nyx_8_35kniYrUDxyl8horAJ9hy9LsZsbDNh'
+const API_URL = 'https://nyxdlapi.vercel.app/api/downloads/tiktok'
 const SEARCH_URL = 'https://dv-yer-api.online/tiktoksearch'
 
 function isTikTokUrl(text) {
