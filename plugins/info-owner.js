@@ -1,40 +1,27 @@
 let handler = async (m, { conn }) => {
-  const texto = `𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ HINATA BOT ㅤ֢ㅤׄㅤׅ
+  const texto = `𑁍ࠬܓ ⁾ ㅤׄㅤׅㅤׄ DARKO BOT ㅤ֢ㅤׄㅤׅ
 
-╭━━━〔 👑 *CREADORES* 〕━━⬣
+╭━━━〔 👑 *CREADOR* 〕━━⬣
 ┃
-┃ 👑 *EL VIGILANTE* 🇭🇳
-┃ ❀ Desarrollador Principal
+┃ 👑 *DARKO.exe/Gxrcix* 🇵🇪
+┃ ❀ creador
 ┃ ❀ +591 77474230
-┃ ❀ Hola soy de Honduras, creador de
-┃   HINATA BOT. Me apasiona la tecnología
-┃   y el anime. Hinata es mi waifu favorita.
-┃ ❀ github.com/ElvigilanteDv
-┃
-┃ 👑 *BRAYANRK* 🇨🇴
-┃ ❀ Desarrollador Principal
-┃ ❀ +57 3223090406
-┃ ❀ Estudiante de Ingeniería de Software,
-┃   aprendiendo cada día sobre programación
-┃   y nuevas tecnologías.
-┃ ❀ github.com/BrayanRK
-┃
+┃ ❀ Hola soy de Peru, creador de
+┃   DARKO BOT. Me apasiona la tecnología
+┃   y los programas.
 ╰━━━━━━━━━━━━━━━━━━━━━━⬣
 
-╭━━━〔 🌸 *COMUNIDAD* 〕━━⬣
-┃
-┃ 💬 *Grupo Oficial*
-┃ ❀ https://chat.whatsapp.com/EEppolIlNjGDZrmNyDERRr
+╭━━━〔 🌸 *REPO* 〕━━
 ┃
 ┃ 📦 *Repositorio*
-┃ ❀ github.com/ElvigilanteDv/Hinata-Bot
+┃ ❀ ingcognito🤫
 ┃
 ╰━━━━━━━━━━━━━━━━━━━━━━⬣
 
-> Contáctanos si tienes dudas ♡`
+> Contáctanos si tienes dudas `
 
   await conn.sendMessage(m.chat, {
-    image: { url: 'https://files.catbox.moe/yp1tti.png' },
+    image: { url: 'https://files.catbox.moe/7ktyoa.jpg' },
     caption: texto
   }, { quoted: m })
 }
